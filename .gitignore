@@ -1,0 +1,25 @@
+# Generated outputs
+*.jpg
+*.jpeg
+*.png
+*.mp4
+*.webm
+*.webp
+output/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
