@@ -37,27 +37,19 @@ with open("output_openai_t2i.jpg", "wb") as f:
     f.write(img_bytes)
 print(f"Saved output_openai_t2i.jpg ({len(img_bytes):,} bytes)")
 
-# --- Image Edit (if you have an input image) ---------------------------------
-
-# Uncomment to try image editing:
+# --- Notes -------------------------------------------------------------------
 #
-# with open("input.jpg", "rb") as f:
-#     img_b64 = base64.b64encode(f.read()).decode()
+# OpenAI SDK limitations with the Nunchaku API:
 #
-# response = client.images.edit(
-#     model="nunchaku-qwen-image-edit",
-#     image="unused",  # OpenAI SDK requires this but Nunchaku uses `url`
-#     prompt="make it look like a watercolor painting",
-#     n=1,
-#     size="1024x1024",
-#     response_format="b64_json",
-#     extra_body={
-#         "url": f"data:image/jpeg;base64,{img_b64}",
-#         "tier": "fast",
-#     },
-# )
-# edited = base64.b64decode(response.data[0].b64_json)
-# with open("output_openai_i2i.jpg", "wb") as f:
-#     f.write(edited)
+# - `client.images.edit(...)` sends multipart form data, but Nunchaku's edit
+#   endpoint takes JSON with a `url` data URI. Use `requests` for i2i — see
+#   examples/python/image_to_image.py.
+#
+# - Video endpoints (`/v1/video/*`) aren't in the OpenAI SDK at all — there
+#   is no `client.videos.generate()`. Use `requests` for t2v/i2v — see
+#   examples/python/text_to_video.py and image_to_video.py.
+#
+# For text-to-image the OpenAI SDK works cleanly; pass Nunchaku-specific
+# parameters (`tier`, `num_inference_steps`, `seed`) via `extra_body`.
 
 print("Done!")

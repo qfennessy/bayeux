@@ -308,12 +308,36 @@ response = client.images.generate(
 
 ## Examples
 
-| File | Description |
-|------|-------------|
-| [`examples/python/text_to_image.py`](examples/python/text_to_image.py) | Text-to-image |
-| [`examples/python/image_to_image.py`](examples/python/image_to_image.py) | Image editing |
-| [`examples/python/text_to_video.py`](examples/python/text_to_video.py) | Text-to-video |
-| [`examples/python/image_to_video.py`](examples/python/image_to_video.py) | Image-to-video (shows `messages` format) |
+Four flavors per endpoint — pick the one closest to your hackathon stack.
+
+### Python (`requests`)
+| File | Endpoint |
+|------|----------|
+| [`examples/python/text_to_image.py`](examples/python/text_to_image.py) | `/v1/images/generations` |
+| [`examples/python/image_to_image.py`](examples/python/image_to_image.py) | `/v1/images/edits` |
+| [`examples/python/text_to_video.py`](examples/python/text_to_video.py) | `/v1/video/generations` |
+| [`examples/python/image_to_video.py`](examples/python/image_to_video.py) | `/v1/video/animations` (shows `messages` format) |
+
+### Python (OpenAI SDK)
+| File | Notes |
+|------|-------|
+| [`examples/python/openai_sdk.py`](examples/python/openai_sdk.py) | Works for text-to-image. Edit and video need raw `requests` — see notes in the file. |
+
+### JavaScript (fetch)
+| File | Endpoint |
+|------|----------|
+| [`examples/javascript/text_to_image.mjs`](examples/javascript/text_to_image.mjs) | `/v1/images/generations` |
+| [`examples/javascript/image_to_image.mjs`](examples/javascript/image_to_image.mjs) | `/v1/images/edits` |
+| [`examples/javascript/text_to_video.mjs`](examples/javascript/text_to_video.mjs) | `/v1/video/generations` |
+| [`examples/javascript/image_to_video.mjs`](examples/javascript/image_to_video.mjs) | `/v1/video/animations` |
+
+### cURL
+| File | Endpoint |
+|------|----------|
+| [`examples/curl/text_to_image.sh`](examples/curl/text_to_image.sh) | `/v1/images/generations` |
+| [`examples/curl/image_to_image.sh`](examples/curl/image_to_image.sh) | `/v1/images/edits` |
+| [`examples/curl/text_to_video.sh`](examples/curl/text_to_video.sh) | `/v1/video/generations` |
+| [`examples/curl/image_to_video.sh`](examples/curl/image_to_video.sh) | `/v1/video/animations` |
 | [`examples/python/openai_sdk.py`](examples/python/openai_sdk.py) | OpenAI SDK usage |
 | [`examples/javascript/text_to_image.mjs`](examples/javascript/text_to_image.mjs) | Text-to-image in JS |
 | [`examples/javascript/image_to_video.mjs`](examples/javascript/image_to_video.mjs) | Image-to-video in JS |
