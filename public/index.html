@@ -18,9 +18,14 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
-  font-size: 16px;
-  line-height: 1.55;
+  /* Crisp system sans for body legibility; serif is reserved for the
+     h1 wordmark and panel titles below. */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 header {
   padding: 3rem 1.5rem 1.5rem;
@@ -28,12 +33,31 @@ header {
   border-bottom: 1px solid var(--rule);
 }
 header h1 {
-  font-family: ui-serif, Georgia, serif;
-  font-size: 3rem;
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  font-size: 3.25rem;
   margin: 0 0 0.5rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  font-weight: 600;
 }
-header p { margin: 0; color: var(--muted); }
+header > p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+header .disclaimer {
+  max-width: 620px;
+  margin: 0.9rem auto 0;
+  padding: 0.65rem 1.1rem;
+  background: rgba(122, 46, 32, 0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+}
+header .disclaimer strong { color: var(--accent); }
+header .stats {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
 header .links {
   margin-top: 1rem;
   font-size: 0.95rem;
@@ -86,15 +110,20 @@ header .links a:hover { border-bottom-color: var(--accent); }
 }
 .sponsors .pitch {
   margin: 0;
-  font-size: 0.95rem;
-  font-style: italic;
-  line-height: 1.5;
-  opacity: 0.95;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #fff;
+}
+.sponsors .pitch code {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
 .sponsors .pitch a {
   color: #fff;
+  font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.55);
   text-underline-offset: 2px;
 }
 main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 4rem; }
@@ -109,30 +138,17 @@ main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 4rem; }
   margin: 0;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--rule);
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
   font-size: 1.5rem;
   font-weight: 600;
 }
-.tapestry h2 .style {
-  display: inline-block;
-  font-size: 0.85rem;
+.tapestry h2 .style-descriptor {
   color: var(--muted);
   font-weight: 400;
-  margin-left: 0.5rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.tapestry h2 .variant {
-  display: inline-block;
-  font-size: 0.7rem;
-  color: var(--accent);
-  font-weight: 500;
-  margin-left: 0.5rem;
-  padding: 0.1rem 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  vertical-align: middle;
+  font-size: 1.05rem;
+  margin-left: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 .tapestry .hero { display: block; width: 100%; height: auto; }
 .tapestry details { border-top: 1px solid var(--rule); }
@@ -196,13 +212,19 @@ footer {
 }
 footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
-footer .tagline { font-style: italic; margin-top: 0.5rem; }
+footer .tagline { margin-top: 0.5rem; color: var(--muted); }
 </style>
 </head>
 <body>
 <header>
   <h1>bayeux</h1>
-  <p>Family-history tapestries. 19 tapestries.</p>
+  <p>Tapestries of fictional family histories.</p>
+  <p class="disclaimer">
+    <strong>These chronicles are fictional.</strong> Every family, name, and
+    event shown here was invented to demonstrate the pipeline — any resemblance
+    to real people or events is coincidental.
+  </p>
+  <p class="stats">6 tapestries across 6 families and 5 styles.</p>
   <section class="sponsors" aria-label="Sponsors">
     <p class="label">Sponsored by</p>
     <p class="logos">
@@ -227,8 +249,8 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
 </header>
 <main>
 <section class="tapestry">
-  <h2>The Chen-Vasquez Chronicle <span class="style">bayeux</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/chen-vasquez-1865-bayeux-poisson.jpg" alt="The Chen-Vasquez Chronicle rendered in bayeux style">
+  <h2>The Chen-Vasquez Chronicle <span class="style-descriptor">— Rembrandt style</span></h2>
+  <img class="hero" loading="lazy" src="tapestries/chen-vasquez-1865-rembrandt.jpg" alt="The Chen-Vasquez Chronicle rendered in Rembrandt style">
   <details>
     <summary>12 panels</summary>
     <ol class="panels">
@@ -308,332 +330,8 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
   </details>
 </section>
 <section class="tapestry">
-  <h2>The Chen-Vasquez Chronicle <span class="style">hanna-barbera</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/chen-vasquez-1865-hanna-barbera-poisson.jpg" alt="The Chen-Vasquez Chronicle rendered in hanna-barbera style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1865 The Chen Family Arrival</h3>
-  <p class="meta"><span class="year">1865</span> · immigration · people: Fu-hai Chen, Mei-ling Chen, Wei Chen (infant), Jian Chen, Lin-hua Chen, Hong-wei Chen, longshoremen</p>
-  <p class="paragraph">In the spring of 1865, the Chen family stepped off a Pacific Mail steamer at the San Francisco wharf after a six-week voyage from Hong Kong. Father Fu-hai carried a bamboo trunk balanced on a shoulder pole, and mother Mei-ling held baby Wei against the cold Pacific wind. The harbor was crowded with gulls, longshoremen, and piled crates of tea and silk.</p>
-  <details><summary>Image prompt</summary><p>At a bustling 1865 San Francisco wharf, Fu-hai Chen, a weary father in rugged work clothes, balances a bamboo trunk on a shoulder pole. Beside him, Mei-ling Chen, a young mother in a simple travel-worn tunic, cradles infant Wei Chen wrapped in a thick wool blanket against the biting wind. Rough longshoremen in oilskin coats unload tea crates nearby. The misty harbor is filled with squawking gulls, creating a tense, hopeful atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1867 Jian Chen in the Sierra Nevada</h3>
-  <p class="meta"><span class="year">1867</span> · labor · people: Jian Chen, fellow Chinese railroad laborers</p>
-  <p class="paragraph">Eldest son Jian was hired onto the Central Pacific Railroad, chipping granite inside a half-finished Sierra Nevada tunnel. He swung a heavy hammer by lantern light beside other Chinese laborers, their queues tied up under knit caps. Beyond the tunnel mouth, snowdrifts leaned against the wooden scaffolds.</p>
-  <details><summary>Image prompt</summary><p>Jian Chen, a sturdy young man in his twenties wearing rough work clothes and a knit cap over his tied-up queue, swings a heavy iron hammer against cold granite. He stands in the dimly lit, smoke-filled interior of a Sierra Nevada railway tunnel alongside fellow Chinese railroad laborers, who are also striking rock. Flickering lanterns cast long, dramatic shadows. Beyond the tunnel opening, massive snowdrifts press against timber scaffolds, creating a harsh, industrious, and frozen atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1870 Mei-ling and Lin-hua Working</h3>
-  <p class="meta"><span class="year">1870</span> · family · people: Mei-ling Chen, Lin-hua Chen</p>
-  <p class="paragraph">In a narrow Sacramento storefront, Mei-ling and her daughter Lin-hua ran a hand laundry behind a painted sign reading CHEN WASH HOUSE. Steam rose from copper tubs as they pressed white shirts with heavy irons. A row of folded bundles lined a shelf, each tagged with a paper customer&#x27;s ticket.</p>
-  <details><summary>Image prompt</summary><p>In the dim, steam-filled interior of a Sacramento laundry, Mei-ling Chen, a sturdy woman in her forties wearing a simple dark linen tunic, presses a white shirt with a heavy iron. Beside her, her daughter Lin-hua Chen, a slender young girl in a faded cotton apron, carefully folds linens near copper tubs. The room is cluttered with hanging laundry and shelves stacked with neat, paper-tagged bundles under the warm glow of a hanging lantern.</p></details>
-</li>
-<li class="panel">
-  <h3>1878 Hong-wei Chen’s Herbal Shop</h3>
-  <p class="meta"><span class="year">1878</span> · family · people: Hong-wei Chen, elderly customer</p>
-  <p class="paragraph">Middle brother Hong-wei opened a small herbalist&#x27;s shop on Dupont Street in San Francisco&#x27;s Chinatown. He stood behind a wooden counter fitted with many small drawers, weighing dried ginseng on a brass balance. A painted scroll of medicinal roots hung on the wall, and an old customer waited on a stool.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim Chinatown apothecary, Hong-wei Chen, a young man in a clean scholar&#x27;s tunic with a focused expression, carefully measures dried ginseng on a brass balance scale behind a weathered wooden counter of many tiny drawers. A painted botanical scroll hangs on the exposed brick wall. An elderly customer with a hunched back and worn indigo clothing sits patiently on a wooden stool, waiting for his remedy as sunlight filters through a storefront window</p></details>
-</li>
-<li class="panel">
-  <h3>1872 Wei Chen Learns English</h3>
-  <p class="meta"><span class="year">1872</span> · childhood · people: Wei Chen, Protestant mission teacher, Chinese classmates, Mexican classmates, Anglo classmates</p>
-  <p class="paragraph">Seven-year-old Wei sat on a wooden bench at a Protestant mission school in Sacramento, copying English letters from a slate. A white teacher in a high collar walked among a mix of Chinese, Mexican, and Anglo children. Wei&#x27;s queue hung down his back as he bent over his work.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1872 Sacramento mission classroom, seven-year-old Wei Chen with a long braided queue wears simple cotton tunic clothes while hunched over a wooden bench. Beside him, a severe Protestant mission teacher in a tall lace-trimmed high collar walks down the aisle. Diverse Chinese classmates, Mexican classmates, and Anglo classmates are seated at various desks, all focused on slate boards. The room features peeling plaster walls, antique inkwells, and dust motes dancing in shafts of morning light.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 The Chens Face Exclusion</h3>
-  <p class="meta"><span class="year">1882</span> · history · people: Hong-wei Chen, Fu-hai Chen, Mei-ling Chen, Jian Chen</p>
-  <p class="paragraph">In 1882 the family gathered around the kitchen table as Hong-wei read aloud from a newspaper reporting the Chinese Exclusion Act. Fu-hai, gray-haired now, stared at the stove; Mei-ling folded her hands; Jian, still unmarried, set down a tea cup. A printed broadside with the act&#x27;s text lay on the table.</p>
-  <details><summary>Image prompt</summary><p>In a dim 1880s kitchen, Hong-wei Chen, a middle-aged man in a linen shirt, reads from a newspaper. Beside him, gray-haired Fu-hai Chen sits hunched toward the stove, while Mei-ling Chen, an elegant woman in a high-collared blouse, folds her hands. Young Jian Chen, dressed in a simple cotton jacket, rests a ceramic teacup on the wooden table. A printed broadside detailing the Chinese Exclusion Act lies prominently in the center under warm, flickering lamplight.</p></details>
-</li>
-<li class="panel">
-  <h3>1887 Wei Chen at the Vineyard</h3>
-  <p class="meta"><span class="year">1887</span> · labor · people: Wei Chen, Mexican field workers, Chinese field workers</p>
-  <p class="paragraph">Grown now, Wei took work at the Vasquez vineyard in the Napa Valley, once part of a Californio land grant. He carried a wooden basket of purple grapes down a long row of vines toward a waiting mule cart. Mexican and Chinese workers moved along the rows under a hot autumn sun.</p>
-  <details><summary>Image prompt</summary><p>Under a sweltering autumn sun, Wei Chen, a young man in a worn linen shirt and straw hat, carries a heavy wooden basket overflowing with deep purple grapes through the Napa Valley vines. Nearby, Mexican field workers in weathered trousers and Chinese field workers in traditional loose tunics move rhythmically down the long, dusty rows toward a waiting wooden mule cart. The scene captures the golden light of the vineyard and the labor of the harvest.</p></details>
-</li>
-<li class="panel">
-  <h3>1888 Wei and Dolores Meet</h3>
-  <p class="meta"><span class="year">1888</span> · courtship · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">Under a great valley oak at the edge of the vineyard, Wei met Dolores Vasquez, the vintner&#x27;s youngest daughter. She held a clay jug of water for the workers; he had paused, hat in hand, to drink. Behind them, the adobe walls of the old rancho rose against golden hills.</p>
-  <details><summary>Image prompt</summary><p>Under the expansive shade of a sprawling valley oak, Wei Chen, a slender young man in dusty laborer clothes with a wide-brimmed hat in hand, pauses to drink. Beside him stands Dolores Vasquez, the vintner&#x27;s youthful daughter, wearing a simple linen dress and holding a rustic clay water jug. Behind them, the sun-drenched adobe walls of an old rancho contrast with rolling, golden California hills under a clear blue sky during the golden hour.</p></details>
-</li>
-<li class="panel">
-  <h3>1889 Wei and Dolores Wed</h3>
-  <p class="meta"><span class="year">1889</span> · marriage · people: Wei Chen, Dolores Vasquez, mission priest, Lin-hua Chen, Rafael Vasquez</p>
-  <p class="paragraph">In 1889 Wei and Dolores married quietly at a small mission chapel in Sonoma, the ceremony conducted in Spanish and Latin. Wei wore a black American suit; Dolores wore a lace mantilla over dark hair. Two witnesses stood beside them: his sister Lin-hua and her elder brother Rafael, the families still uncertain of one another.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim, sun-dappled mission chapel in Sonoma, Wei Chen, a slender young man in a sharp black suit, stands beside his bride, Dolores Vasquez, who wears a delicate lace mantilla over her dark hair. A bearded mission priest officiates at an altar adorned with flickering candles. Standing slightly apart are Lin-hua Chen, wearing a modest silk dress, and Rafael Vasquez, a tall, stern man in a vest, watching the ceremony with a reserved, watchful expression.</p></details>
-</li>
-<li class="panel">
-  <h3>1895 Wei and Dolores Cooking</h3>
-  <p class="meta"><span class="year">1895</span> · family · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">In the adobe farmhouse kitchen, Dolores rolled corn tortillas at one end of a long plank table while Wei chopped scallions and ginger at the other. A pot of red mole simmered on one side of the wood stove, a pot of rice porridge on the other. Strings of dried chiles and dried mushrooms hung from the same ceiling beam.</p>
-  <details><summary>Image prompt</summary><p>In a rustic 1895 adobe kitchen, Wei Chen, a slender middle-aged man in a simple linen shirt, stands at a wooden plank table carefully chopping ginger. Nearby, Dolores Vasquez, a sturdy woman in her thirties wearing a flour-dusted apron over a calico dress, rolls fresh corn tortillas. Sunlight streams through a small window onto the wood stove, where red mole and rice porridge simmer, while dried chiles and mushrooms hang from overhead ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Hong-wei Flees the Rubble</h3>
-  <p class="meta"><span class="year">1906</span> · history · people: Hong-wei Chen, Hong-wei&#x27;s wife, Hong-wei&#x27;s small children, Fu-hai Chen, Wei Chen</p>
-  <p class="paragraph">On the morning of April 18, 1906, the family ran from their San Francisco flat as the city shook and chimneys fell. Hong-wei stood in the street clutching an account book; his wife carried their small children; an elderly Fu-hai leaned on Wei&#x27;s arm. Smoke rose in black columns over Chinatown behind them.</p>
-  <details><summary>Image prompt</summary><p>The morning sun is obscured by thick, swirling black smoke in 1906 San Francisco. Hong-wei Chen, a middle-aged man in a rumpled linen shirt, stands in the street clutching a worn leather account book. Nearby, his wife, a young woman in a traditional apron, holds two small children close. Elderly Fu-hai Chen, wearing a frail silk tunic, leans heavily on the arm of young Wei Chen, who looks back toward collapsing brick chimneys in terror.</p></details>
-</li>
-<li class="panel">
-  <h3>1943 The Chen-Vasquez Siblings at the Gate</h3>
-  <p class="meta"><span class="year">1943</span> · legacy · people: Miguel Chen-Vasquez, Elena Chen-Vasquez, Tomás Chen-Vasquez</p>
-  <p class="paragraph">Three grandchildren of Wei and Dolores stood together at the vineyard gate during the Second World War. Miguel wore a U.S. Army uniform bound for the Pacific; Elena wore a nurse&#x27;s cape, bound for a San Francisco hospital; young Tomás, still in high school, held schoolbooks. Beyond the gate stretched the old rancho&#x27;s vineyard rows toward the hills.</p>
-  <details><summary>Image prompt</summary><p>In 1943, three siblings stand at a weathered iron vineyard gate at sunset. Miguel Chen-Vasquez, a tall young man in a crisp olive-drab U.S. Army uniform, gazes toward distant hills. Beside him, Elena Chen-Vasquez, a graceful woman in a dark nurse’s cape and white uniform, looks on somberly. Younger brother Tomás Chen-Vasquez, a lanky teenager wearing a letterman sweater and holding a stack of vintage schoolbooks, stands between them. Golden light illuminates the sprawling vineyard rows.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Chen-Vasquez Chronicle <span class="style">rembrandt</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/chen-vasquez-1865-rembrandt-poisson.jpg" alt="The Chen-Vasquez Chronicle rendered in rembrandt style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1865 The Chen Family Arrival</h3>
-  <p class="meta"><span class="year">1865</span> · immigration · people: Fu-hai Chen, Mei-ling Chen, Wei Chen (infant), Jian Chen, Lin-hua Chen, Hong-wei Chen, longshoremen</p>
-  <p class="paragraph">In the spring of 1865, the Chen family stepped off a Pacific Mail steamer at the San Francisco wharf after a six-week voyage from Hong Kong. Father Fu-hai carried a bamboo trunk balanced on a shoulder pole, and mother Mei-ling held baby Wei against the cold Pacific wind. The harbor was crowded with gulls, longshoremen, and piled crates of tea and silk.</p>
-  <details><summary>Image prompt</summary><p>At a bustling 1865 San Francisco wharf, Fu-hai Chen, a weary father in rugged work clothes, balances a bamboo trunk on a shoulder pole. Beside him, Mei-ling Chen, a young mother in a simple travel-worn tunic, cradles infant Wei Chen wrapped in a thick wool blanket against the biting wind. Rough longshoremen in oilskin coats unload tea crates nearby. The misty harbor is filled with squawking gulls, creating a tense, hopeful atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1867 Jian Chen in the Sierra Nevada</h3>
-  <p class="meta"><span class="year">1867</span> · labor · people: Jian Chen, fellow Chinese railroad laborers</p>
-  <p class="paragraph">Eldest son Jian was hired onto the Central Pacific Railroad, chipping granite inside a half-finished Sierra Nevada tunnel. He swung a heavy hammer by lantern light beside other Chinese laborers, their queues tied up under knit caps. Beyond the tunnel mouth, snowdrifts leaned against the wooden scaffolds.</p>
-  <details><summary>Image prompt</summary><p>Jian Chen, a sturdy young man in his twenties wearing rough work clothes and a knit cap over his tied-up queue, swings a heavy iron hammer against cold granite. He stands in the dimly lit, smoke-filled interior of a Sierra Nevada railway tunnel alongside fellow Chinese railroad laborers, who are also striking rock. Flickering lanterns cast long, dramatic shadows. Beyond the tunnel opening, massive snowdrifts press against timber scaffolds, creating a harsh, industrious, and frozen atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1870 Mei-ling and Lin-hua Working</h3>
-  <p class="meta"><span class="year">1870</span> · family · people: Mei-ling Chen, Lin-hua Chen</p>
-  <p class="paragraph">In a narrow Sacramento storefront, Mei-ling and her daughter Lin-hua ran a hand laundry behind a painted sign reading CHEN WASH HOUSE. Steam rose from copper tubs as they pressed white shirts with heavy irons. A row of folded bundles lined a shelf, each tagged with a paper customer&#x27;s ticket.</p>
-  <details><summary>Image prompt</summary><p>In the dim, steam-filled interior of a Sacramento laundry, Mei-ling Chen, a sturdy woman in her forties wearing a simple dark linen tunic, presses a white shirt with a heavy iron. Beside her, her daughter Lin-hua Chen, a slender young girl in a faded cotton apron, carefully folds linens near copper tubs. The room is cluttered with hanging laundry and shelves stacked with neat, paper-tagged bundles under the warm glow of a hanging lantern.</p></details>
-</li>
-<li class="panel">
-  <h3>1878 Hong-wei Chen’s Herbal Shop</h3>
-  <p class="meta"><span class="year">1878</span> · family · people: Hong-wei Chen, elderly customer</p>
-  <p class="paragraph">Middle brother Hong-wei opened a small herbalist&#x27;s shop on Dupont Street in San Francisco&#x27;s Chinatown. He stood behind a wooden counter fitted with many small drawers, weighing dried ginseng on a brass balance. A painted scroll of medicinal roots hung on the wall, and an old customer waited on a stool.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim Chinatown apothecary, Hong-wei Chen, a young man in a clean scholar&#x27;s tunic with a focused expression, carefully measures dried ginseng on a brass balance scale behind a weathered wooden counter of many tiny drawers. A painted botanical scroll hangs on the exposed brick wall. An elderly customer with a hunched back and worn indigo clothing sits patiently on a wooden stool, waiting for his remedy as sunlight filters through a storefront window</p></details>
-</li>
-<li class="panel">
-  <h3>1872 Wei Chen Learns English</h3>
-  <p class="meta"><span class="year">1872</span> · childhood · people: Wei Chen, Protestant mission teacher, Chinese classmates, Mexican classmates, Anglo classmates</p>
-  <p class="paragraph">Seven-year-old Wei sat on a wooden bench at a Protestant mission school in Sacramento, copying English letters from a slate. A white teacher in a high collar walked among a mix of Chinese, Mexican, and Anglo children. Wei&#x27;s queue hung down his back as he bent over his work.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1872 Sacramento mission classroom, seven-year-old Wei Chen with a long braided queue wears simple cotton tunic clothes while hunched over a wooden bench. Beside him, a severe Protestant mission teacher in a tall lace-trimmed high collar walks down the aisle. Diverse Chinese classmates, Mexican classmates, and Anglo classmates are seated at various desks, all focused on slate boards. The room features peeling plaster walls, antique inkwells, and dust motes dancing in shafts of morning light.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 The Chens Face Exclusion</h3>
-  <p class="meta"><span class="year">1882</span> · history · people: Hong-wei Chen, Fu-hai Chen, Mei-ling Chen, Jian Chen</p>
-  <p class="paragraph">In 1882 the family gathered around the kitchen table as Hong-wei read aloud from a newspaper reporting the Chinese Exclusion Act. Fu-hai, gray-haired now, stared at the stove; Mei-ling folded her hands; Jian, still unmarried, set down a tea cup. A printed broadside with the act&#x27;s text lay on the table.</p>
-  <details><summary>Image prompt</summary><p>In a dim 1880s kitchen, Hong-wei Chen, a middle-aged man in a linen shirt, reads from a newspaper. Beside him, gray-haired Fu-hai Chen sits hunched toward the stove, while Mei-ling Chen, an elegant woman in a high-collared blouse, folds her hands. Young Jian Chen, dressed in a simple cotton jacket, rests a ceramic teacup on the wooden table. A printed broadside detailing the Chinese Exclusion Act lies prominently in the center under warm, flickering lamplight.</p></details>
-</li>
-<li class="panel">
-  <h3>1887 Wei Chen at the Vineyard</h3>
-  <p class="meta"><span class="year">1887</span> · labor · people: Wei Chen, Mexican field workers, Chinese field workers</p>
-  <p class="paragraph">Grown now, Wei took work at the Vasquez vineyard in the Napa Valley, once part of a Californio land grant. He carried a wooden basket of purple grapes down a long row of vines toward a waiting mule cart. Mexican and Chinese workers moved along the rows under a hot autumn sun.</p>
-  <details><summary>Image prompt</summary><p>Under a sweltering autumn sun, Wei Chen, a young man in a worn linen shirt and straw hat, carries a heavy wooden basket overflowing with deep purple grapes through the Napa Valley vines. Nearby, Mexican field workers in weathered trousers and Chinese field workers in traditional loose tunics move rhythmically down the long, dusty rows toward a waiting wooden mule cart. The scene captures the golden light of the vineyard and the labor of the harvest.</p></details>
-</li>
-<li class="panel">
-  <h3>1888 Wei and Dolores Meet</h3>
-  <p class="meta"><span class="year">1888</span> · courtship · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">Under a great valley oak at the edge of the vineyard, Wei met Dolores Vasquez, the vintner&#x27;s youngest daughter. She held a clay jug of water for the workers; he had paused, hat in hand, to drink. Behind them, the adobe walls of the old rancho rose against golden hills.</p>
-  <details><summary>Image prompt</summary><p>Under the expansive shade of a sprawling valley oak, Wei Chen, a slender young man in dusty laborer clothes with a wide-brimmed hat in hand, pauses to drink. Beside him stands Dolores Vasquez, the vintner&#x27;s youthful daughter, wearing a simple linen dress and holding a rustic clay water jug. Behind them, the sun-drenched adobe walls of an old rancho contrast with rolling, golden California hills under a clear blue sky during the golden hour.</p></details>
-</li>
-<li class="panel">
-  <h3>1889 Wei and Dolores Wed</h3>
-  <p class="meta"><span class="year">1889</span> · marriage · people: Wei Chen, Dolores Vasquez, mission priest, Lin-hua Chen, Rafael Vasquez</p>
-  <p class="paragraph">In 1889 Wei and Dolores married quietly at a small mission chapel in Sonoma, the ceremony conducted in Spanish and Latin. Wei wore a black American suit; Dolores wore a lace mantilla over dark hair. Two witnesses stood beside them: his sister Lin-hua and her elder brother Rafael, the families still uncertain of one another.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim, sun-dappled mission chapel in Sonoma, Wei Chen, a slender young man in a sharp black suit, stands beside his bride, Dolores Vasquez, who wears a delicate lace mantilla over her dark hair. A bearded mission priest officiates at an altar adorned with flickering candles. Standing slightly apart are Lin-hua Chen, wearing a modest silk dress, and Rafael Vasquez, a tall, stern man in a vest, watching the ceremony with a reserved, watchful expression.</p></details>
-</li>
-<li class="panel">
-  <h3>1895 Wei and Dolores Cooking</h3>
-  <p class="meta"><span class="year">1895</span> · family · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">In the adobe farmhouse kitchen, Dolores rolled corn tortillas at one end of a long plank table while Wei chopped scallions and ginger at the other. A pot of red mole simmered on one side of the wood stove, a pot of rice porridge on the other. Strings of dried chiles and dried mushrooms hung from the same ceiling beam.</p>
-  <details><summary>Image prompt</summary><p>In a rustic 1895 adobe kitchen, Wei Chen, a slender middle-aged man in a simple linen shirt, stands at a wooden plank table carefully chopping ginger. Nearby, Dolores Vasquez, a sturdy woman in her thirties wearing a flour-dusted apron over a calico dress, rolls fresh corn tortillas. Sunlight streams through a small window onto the wood stove, where red mole and rice porridge simmer, while dried chiles and mushrooms hang from overhead ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Hong-wei Flees the Rubble</h3>
-  <p class="meta"><span class="year">1906</span> · history · people: Hong-wei Chen, Hong-wei&#x27;s wife, Hong-wei&#x27;s small children, Fu-hai Chen, Wei Chen</p>
-  <p class="paragraph">On the morning of April 18, 1906, the family ran from their San Francisco flat as the city shook and chimneys fell. Hong-wei stood in the street clutching an account book; his wife carried their small children; an elderly Fu-hai leaned on Wei&#x27;s arm. Smoke rose in black columns over Chinatown behind them.</p>
-  <details><summary>Image prompt</summary><p>The morning sun is obscured by thick, swirling black smoke in 1906 San Francisco. Hong-wei Chen, a middle-aged man in a rumpled linen shirt, stands in the street clutching a worn leather account book. Nearby, his wife, a young woman in a traditional apron, holds two small children close. Elderly Fu-hai Chen, wearing a frail silk tunic, leans heavily on the arm of young Wei Chen, who looks back toward collapsing brick chimneys in terror.</p></details>
-</li>
-<li class="panel">
-  <h3>1943 The Chen-Vasquez Siblings at the Gate</h3>
-  <p class="meta"><span class="year">1943</span> · legacy · people: Miguel Chen-Vasquez, Elena Chen-Vasquez, Tomás Chen-Vasquez</p>
-  <p class="paragraph">Three grandchildren of Wei and Dolores stood together at the vineyard gate during the Second World War. Miguel wore a U.S. Army uniform bound for the Pacific; Elena wore a nurse&#x27;s cape, bound for a San Francisco hospital; young Tomás, still in high school, held schoolbooks. Beyond the gate stretched the old rancho&#x27;s vineyard rows toward the hills.</p>
-  <details><summary>Image prompt</summary><p>In 1943, three siblings stand at a weathered iron vineyard gate at sunset. Miguel Chen-Vasquez, a tall young man in a crisp olive-drab U.S. Army uniform, gazes toward distant hills. Beside him, Elena Chen-Vasquez, a graceful woman in a dark nurse’s cape and white uniform, looks on somberly. Younger brother Tomás Chen-Vasquez, a lanky teenager wearing a letterman sweater and holding a stack of vintage schoolbooks, stands between them. Golden light illuminates the sprawling vineyard rows.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Chen-Vasquez Chronicle <span class="style">ukiyo-e</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/chen-vasquez-1865-ukiyo-e-poisson.jpg" alt="The Chen-Vasquez Chronicle rendered in ukiyo-e style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1865 The Chen Family Arrival</h3>
-  <p class="meta"><span class="year">1865</span> · immigration · people: Fu-hai Chen, Mei-ling Chen, Wei Chen (infant), Jian Chen, Lin-hua Chen, Hong-wei Chen, longshoremen</p>
-  <p class="paragraph">In the spring of 1865, the Chen family stepped off a Pacific Mail steamer at the San Francisco wharf after a six-week voyage from Hong Kong. Father Fu-hai carried a bamboo trunk balanced on a shoulder pole, and mother Mei-ling held baby Wei against the cold Pacific wind. The harbor was crowded with gulls, longshoremen, and piled crates of tea and silk.</p>
-  <details><summary>Image prompt</summary><p>At a bustling 1865 San Francisco wharf, Fu-hai Chen, a weary father in rugged work clothes, balances a bamboo trunk on a shoulder pole. Beside him, Mei-ling Chen, a young mother in a simple travel-worn tunic, cradles infant Wei Chen wrapped in a thick wool blanket against the biting wind. Rough longshoremen in oilskin coats unload tea crates nearby. The misty harbor is filled with squawking gulls, creating a tense, hopeful atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1867 Jian Chen in the Sierra Nevada</h3>
-  <p class="meta"><span class="year">1867</span> · labor · people: Jian Chen, fellow Chinese railroad laborers</p>
-  <p class="paragraph">Eldest son Jian was hired onto the Central Pacific Railroad, chipping granite inside a half-finished Sierra Nevada tunnel. He swung a heavy hammer by lantern light beside other Chinese laborers, their queues tied up under knit caps. Beyond the tunnel mouth, snowdrifts leaned against the wooden scaffolds.</p>
-  <details><summary>Image prompt</summary><p>Jian Chen, a sturdy young man in his twenties wearing rough work clothes and a knit cap over his tied-up queue, swings a heavy iron hammer against cold granite. He stands in the dimly lit, smoke-filled interior of a Sierra Nevada railway tunnel alongside fellow Chinese railroad laborers, who are also striking rock. Flickering lanterns cast long, dramatic shadows. Beyond the tunnel opening, massive snowdrifts press against timber scaffolds, creating a harsh, industrious, and frozen atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1870 Mei-ling and Lin-hua Working</h3>
-  <p class="meta"><span class="year">1870</span> · family · people: Mei-ling Chen, Lin-hua Chen</p>
-  <p class="paragraph">In a narrow Sacramento storefront, Mei-ling and her daughter Lin-hua ran a hand laundry behind a painted sign reading CHEN WASH HOUSE. Steam rose from copper tubs as they pressed white shirts with heavy irons. A row of folded bundles lined a shelf, each tagged with a paper customer&#x27;s ticket.</p>
-  <details><summary>Image prompt</summary><p>In the dim, steam-filled interior of a Sacramento laundry, Mei-ling Chen, a sturdy woman in her forties wearing a simple dark linen tunic, presses a white shirt with a heavy iron. Beside her, her daughter Lin-hua Chen, a slender young girl in a faded cotton apron, carefully folds linens near copper tubs. The room is cluttered with hanging laundry and shelves stacked with neat, paper-tagged bundles under the warm glow of a hanging lantern.</p></details>
-</li>
-<li class="panel">
-  <h3>1878 Hong-wei Chen’s Herbal Shop</h3>
-  <p class="meta"><span class="year">1878</span> · family · people: Hong-wei Chen, elderly customer</p>
-  <p class="paragraph">Middle brother Hong-wei opened a small herbalist&#x27;s shop on Dupont Street in San Francisco&#x27;s Chinatown. He stood behind a wooden counter fitted with many small drawers, weighing dried ginseng on a brass balance. A painted scroll of medicinal roots hung on the wall, and an old customer waited on a stool.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim Chinatown apothecary, Hong-wei Chen, a young man in a clean scholar&#x27;s tunic with a focused expression, carefully measures dried ginseng on a brass balance scale behind a weathered wooden counter of many tiny drawers. A painted botanical scroll hangs on the exposed brick wall. An elderly customer with a hunched back and worn indigo clothing sits patiently on a wooden stool, waiting for his remedy as sunlight filters through a storefront window</p></details>
-</li>
-<li class="panel">
-  <h3>1872 Wei Chen Learns English</h3>
-  <p class="meta"><span class="year">1872</span> · childhood · people: Wei Chen, Protestant mission teacher, Chinese classmates, Mexican classmates, Anglo classmates</p>
-  <p class="paragraph">Seven-year-old Wei sat on a wooden bench at a Protestant mission school in Sacramento, copying English letters from a slate. A white teacher in a high collar walked among a mix of Chinese, Mexican, and Anglo children. Wei&#x27;s queue hung down his back as he bent over his work.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1872 Sacramento mission classroom, seven-year-old Wei Chen with a long braided queue wears simple cotton tunic clothes while hunched over a wooden bench. Beside him, a severe Protestant mission teacher in a tall lace-trimmed high collar walks down the aisle. Diverse Chinese classmates, Mexican classmates, and Anglo classmates are seated at various desks, all focused on slate boards. The room features peeling plaster walls, antique inkwells, and dust motes dancing in shafts of morning light.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 The Chens Face Exclusion</h3>
-  <p class="meta"><span class="year">1882</span> · history · people: Hong-wei Chen, Fu-hai Chen, Mei-ling Chen, Jian Chen</p>
-  <p class="paragraph">In 1882 the family gathered around the kitchen table as Hong-wei read aloud from a newspaper reporting the Chinese Exclusion Act. Fu-hai, gray-haired now, stared at the stove; Mei-ling folded her hands; Jian, still unmarried, set down a tea cup. A printed broadside with the act&#x27;s text lay on the table.</p>
-  <details><summary>Image prompt</summary><p>In a dim 1880s kitchen, Hong-wei Chen, a middle-aged man in a linen shirt, reads from a newspaper. Beside him, gray-haired Fu-hai Chen sits hunched toward the stove, while Mei-ling Chen, an elegant woman in a high-collared blouse, folds her hands. Young Jian Chen, dressed in a simple cotton jacket, rests a ceramic teacup on the wooden table. A printed broadside detailing the Chinese Exclusion Act lies prominently in the center under warm, flickering lamplight.</p></details>
-</li>
-<li class="panel">
-  <h3>1887 Wei Chen at the Vineyard</h3>
-  <p class="meta"><span class="year">1887</span> · labor · people: Wei Chen, Mexican field workers, Chinese field workers</p>
-  <p class="paragraph">Grown now, Wei took work at the Vasquez vineyard in the Napa Valley, once part of a Californio land grant. He carried a wooden basket of purple grapes down a long row of vines toward a waiting mule cart. Mexican and Chinese workers moved along the rows under a hot autumn sun.</p>
-  <details><summary>Image prompt</summary><p>Under a sweltering autumn sun, Wei Chen, a young man in a worn linen shirt and straw hat, carries a heavy wooden basket overflowing with deep purple grapes through the Napa Valley vines. Nearby, Mexican field workers in weathered trousers and Chinese field workers in traditional loose tunics move rhythmically down the long, dusty rows toward a waiting wooden mule cart. The scene captures the golden light of the vineyard and the labor of the harvest.</p></details>
-</li>
-<li class="panel">
-  <h3>1888 Wei and Dolores Meet</h3>
-  <p class="meta"><span class="year">1888</span> · courtship · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">Under a great valley oak at the edge of the vineyard, Wei met Dolores Vasquez, the vintner&#x27;s youngest daughter. She held a clay jug of water for the workers; he had paused, hat in hand, to drink. Behind them, the adobe walls of the old rancho rose against golden hills.</p>
-  <details><summary>Image prompt</summary><p>Under the expansive shade of a sprawling valley oak, Wei Chen, a slender young man in dusty laborer clothes with a wide-brimmed hat in hand, pauses to drink. Beside him stands Dolores Vasquez, the vintner&#x27;s youthful daughter, wearing a simple linen dress and holding a rustic clay water jug. Behind them, the sun-drenched adobe walls of an old rancho contrast with rolling, golden California hills under a clear blue sky during the golden hour.</p></details>
-</li>
-<li class="panel">
-  <h3>1889 Wei and Dolores Wed</h3>
-  <p class="meta"><span class="year">1889</span> · marriage · people: Wei Chen, Dolores Vasquez, mission priest, Lin-hua Chen, Rafael Vasquez</p>
-  <p class="paragraph">In 1889 Wei and Dolores married quietly at a small mission chapel in Sonoma, the ceremony conducted in Spanish and Latin. Wei wore a black American suit; Dolores wore a lace mantilla over dark hair. Two witnesses stood beside them: his sister Lin-hua and her elder brother Rafael, the families still uncertain of one another.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim, sun-dappled mission chapel in Sonoma, Wei Chen, a slender young man in a sharp black suit, stands beside his bride, Dolores Vasquez, who wears a delicate lace mantilla over her dark hair. A bearded mission priest officiates at an altar adorned with flickering candles. Standing slightly apart are Lin-hua Chen, wearing a modest silk dress, and Rafael Vasquez, a tall, stern man in a vest, watching the ceremony with a reserved, watchful expression.</p></details>
-</li>
-<li class="panel">
-  <h3>1895 Wei and Dolores Cooking</h3>
-  <p class="meta"><span class="year">1895</span> · family · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">In the adobe farmhouse kitchen, Dolores rolled corn tortillas at one end of a long plank table while Wei chopped scallions and ginger at the other. A pot of red mole simmered on one side of the wood stove, a pot of rice porridge on the other. Strings of dried chiles and dried mushrooms hung from the same ceiling beam.</p>
-  <details><summary>Image prompt</summary><p>In a rustic 1895 adobe kitchen, Wei Chen, a slender middle-aged man in a simple linen shirt, stands at a wooden plank table carefully chopping ginger. Nearby, Dolores Vasquez, a sturdy woman in her thirties wearing a flour-dusted apron over a calico dress, rolls fresh corn tortillas. Sunlight streams through a small window onto the wood stove, where red mole and rice porridge simmer, while dried chiles and mushrooms hang from overhead ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Hong-wei Flees the Rubble</h3>
-  <p class="meta"><span class="year">1906</span> · history · people: Hong-wei Chen, Hong-wei&#x27;s wife, Hong-wei&#x27;s small children, Fu-hai Chen, Wei Chen</p>
-  <p class="paragraph">On the morning of April 18, 1906, the family ran from their San Francisco flat as the city shook and chimneys fell. Hong-wei stood in the street clutching an account book; his wife carried their small children; an elderly Fu-hai leaned on Wei&#x27;s arm. Smoke rose in black columns over Chinatown behind them.</p>
-  <details><summary>Image prompt</summary><p>The morning sun is obscured by thick, swirling black smoke in 1906 San Francisco. Hong-wei Chen, a middle-aged man in a rumpled linen shirt, stands in the street clutching a worn leather account book. Nearby, his wife, a young woman in a traditional apron, holds two small children close. Elderly Fu-hai Chen, wearing a frail silk tunic, leans heavily on the arm of young Wei Chen, who looks back toward collapsing brick chimneys in terror.</p></details>
-</li>
-<li class="panel">
-  <h3>1943 The Chen-Vasquez Siblings at the Gate</h3>
-  <p class="meta"><span class="year">1943</span> · legacy · people: Miguel Chen-Vasquez, Elena Chen-Vasquez, Tomás Chen-Vasquez</p>
-  <p class="paragraph">Three grandchildren of Wei and Dolores stood together at the vineyard gate during the Second World War. Miguel wore a U.S. Army uniform bound for the Pacific; Elena wore a nurse&#x27;s cape, bound for a San Francisco hospital; young Tomás, still in high school, held schoolbooks. Beyond the gate stretched the old rancho&#x27;s vineyard rows toward the hills.</p>
-  <details><summary>Image prompt</summary><p>In 1943, three siblings stand at a weathered iron vineyard gate at sunset. Miguel Chen-Vasquez, a tall young man in a crisp olive-drab U.S. Army uniform, gazes toward distant hills. Beside him, Elena Chen-Vasquez, a graceful woman in a dark nurse’s cape and white uniform, looks on somberly. Younger brother Tomás Chen-Vasquez, a lanky teenager wearing a letterman sweater and holding a stack of vintage schoolbooks, stands between them. Golden light illuminates the sprawling vineyard rows.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Chen-Vasquez Chronicle <span class="style">watercolor</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/chen-vasquez-1865-watercolor-poisson.jpg" alt="The Chen-Vasquez Chronicle rendered in watercolor style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1865 The Chen Family Arrival</h3>
-  <p class="meta"><span class="year">1865</span> · immigration · people: Fu-hai Chen, Mei-ling Chen, Wei Chen (infant), Jian Chen, Lin-hua Chen, Hong-wei Chen, longshoremen</p>
-  <p class="paragraph">In the spring of 1865, the Chen family stepped off a Pacific Mail steamer at the San Francisco wharf after a six-week voyage from Hong Kong. Father Fu-hai carried a bamboo trunk balanced on a shoulder pole, and mother Mei-ling held baby Wei against the cold Pacific wind. The harbor was crowded with gulls, longshoremen, and piled crates of tea and silk.</p>
-  <details><summary>Image prompt</summary><p>At a bustling 1865 San Francisco wharf, Fu-hai Chen, a weary father in rugged work clothes, balances a bamboo trunk on a shoulder pole. Beside him, Mei-ling Chen, a young mother in a simple travel-worn tunic, cradles infant Wei Chen wrapped in a thick wool blanket against the biting wind. Rough longshoremen in oilskin coats unload tea crates nearby. The misty harbor is filled with squawking gulls, creating a tense, hopeful atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1867 Jian Chen in the Sierra Nevada</h3>
-  <p class="meta"><span class="year">1867</span> · labor · people: Jian Chen, fellow Chinese railroad laborers</p>
-  <p class="paragraph">Eldest son Jian was hired onto the Central Pacific Railroad, chipping granite inside a half-finished Sierra Nevada tunnel. He swung a heavy hammer by lantern light beside other Chinese laborers, their queues tied up under knit caps. Beyond the tunnel mouth, snowdrifts leaned against the wooden scaffolds.</p>
-  <details><summary>Image prompt</summary><p>Jian Chen, a sturdy young man in his twenties wearing rough work clothes and a knit cap over his tied-up queue, swings a heavy iron hammer against cold granite. He stands in the dimly lit, smoke-filled interior of a Sierra Nevada railway tunnel alongside fellow Chinese railroad laborers, who are also striking rock. Flickering lanterns cast long, dramatic shadows. Beyond the tunnel opening, massive snowdrifts press against timber scaffolds, creating a harsh, industrious, and frozen atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1870 Mei-ling and Lin-hua Working</h3>
-  <p class="meta"><span class="year">1870</span> · family · people: Mei-ling Chen, Lin-hua Chen</p>
-  <p class="paragraph">In a narrow Sacramento storefront, Mei-ling and her daughter Lin-hua ran a hand laundry behind a painted sign reading CHEN WASH HOUSE. Steam rose from copper tubs as they pressed white shirts with heavy irons. A row of folded bundles lined a shelf, each tagged with a paper customer&#x27;s ticket.</p>
-  <details><summary>Image prompt</summary><p>In the dim, steam-filled interior of a Sacramento laundry, Mei-ling Chen, a sturdy woman in her forties wearing a simple dark linen tunic, presses a white shirt with a heavy iron. Beside her, her daughter Lin-hua Chen, a slender young girl in a faded cotton apron, carefully folds linens near copper tubs. The room is cluttered with hanging laundry and shelves stacked with neat, paper-tagged bundles under the warm glow of a hanging lantern.</p></details>
-</li>
-<li class="panel">
-  <h3>1878 Hong-wei Chen’s Herbal Shop</h3>
-  <p class="meta"><span class="year">1878</span> · family · people: Hong-wei Chen, elderly customer</p>
-  <p class="paragraph">Middle brother Hong-wei opened a small herbalist&#x27;s shop on Dupont Street in San Francisco&#x27;s Chinatown. He stood behind a wooden counter fitted with many small drawers, weighing dried ginseng on a brass balance. A painted scroll of medicinal roots hung on the wall, and an old customer waited on a stool.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim Chinatown apothecary, Hong-wei Chen, a young man in a clean scholar&#x27;s tunic with a focused expression, carefully measures dried ginseng on a brass balance scale behind a weathered wooden counter of many tiny drawers. A painted botanical scroll hangs on the exposed brick wall. An elderly customer with a hunched back and worn indigo clothing sits patiently on a wooden stool, waiting for his remedy as sunlight filters through a storefront window</p></details>
-</li>
-<li class="panel">
-  <h3>1872 Wei Chen Learns English</h3>
-  <p class="meta"><span class="year">1872</span> · childhood · people: Wei Chen, Protestant mission teacher, Chinese classmates, Mexican classmates, Anglo classmates</p>
-  <p class="paragraph">Seven-year-old Wei sat on a wooden bench at a Protestant mission school in Sacramento, copying English letters from a slate. A white teacher in a high collar walked among a mix of Chinese, Mexican, and Anglo children. Wei&#x27;s queue hung down his back as he bent over his work.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1872 Sacramento mission classroom, seven-year-old Wei Chen with a long braided queue wears simple cotton tunic clothes while hunched over a wooden bench. Beside him, a severe Protestant mission teacher in a tall lace-trimmed high collar walks down the aisle. Diverse Chinese classmates, Mexican classmates, and Anglo classmates are seated at various desks, all focused on slate boards. The room features peeling plaster walls, antique inkwells, and dust motes dancing in shafts of morning light.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 The Chens Face Exclusion</h3>
-  <p class="meta"><span class="year">1882</span> · history · people: Hong-wei Chen, Fu-hai Chen, Mei-ling Chen, Jian Chen</p>
-  <p class="paragraph">In 1882 the family gathered around the kitchen table as Hong-wei read aloud from a newspaper reporting the Chinese Exclusion Act. Fu-hai, gray-haired now, stared at the stove; Mei-ling folded her hands; Jian, still unmarried, set down a tea cup. A printed broadside with the act&#x27;s text lay on the table.</p>
-  <details><summary>Image prompt</summary><p>In a dim 1880s kitchen, Hong-wei Chen, a middle-aged man in a linen shirt, reads from a newspaper. Beside him, gray-haired Fu-hai Chen sits hunched toward the stove, while Mei-ling Chen, an elegant woman in a high-collared blouse, folds her hands. Young Jian Chen, dressed in a simple cotton jacket, rests a ceramic teacup on the wooden table. A printed broadside detailing the Chinese Exclusion Act lies prominently in the center under warm, flickering lamplight.</p></details>
-</li>
-<li class="panel">
-  <h3>1887 Wei Chen at the Vineyard</h3>
-  <p class="meta"><span class="year">1887</span> · labor · people: Wei Chen, Mexican field workers, Chinese field workers</p>
-  <p class="paragraph">Grown now, Wei took work at the Vasquez vineyard in the Napa Valley, once part of a Californio land grant. He carried a wooden basket of purple grapes down a long row of vines toward a waiting mule cart. Mexican and Chinese workers moved along the rows under a hot autumn sun.</p>
-  <details><summary>Image prompt</summary><p>Under a sweltering autumn sun, Wei Chen, a young man in a worn linen shirt and straw hat, carries a heavy wooden basket overflowing with deep purple grapes through the Napa Valley vines. Nearby, Mexican field workers in weathered trousers and Chinese field workers in traditional loose tunics move rhythmically down the long, dusty rows toward a waiting wooden mule cart. The scene captures the golden light of the vineyard and the labor of the harvest.</p></details>
-</li>
-<li class="panel">
-  <h3>1888 Wei and Dolores Meet</h3>
-  <p class="meta"><span class="year">1888</span> · courtship · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">Under a great valley oak at the edge of the vineyard, Wei met Dolores Vasquez, the vintner&#x27;s youngest daughter. She held a clay jug of water for the workers; he had paused, hat in hand, to drink. Behind them, the adobe walls of the old rancho rose against golden hills.</p>
-  <details><summary>Image prompt</summary><p>Under the expansive shade of a sprawling valley oak, Wei Chen, a slender young man in dusty laborer clothes with a wide-brimmed hat in hand, pauses to drink. Beside him stands Dolores Vasquez, the vintner&#x27;s youthful daughter, wearing a simple linen dress and holding a rustic clay water jug. Behind them, the sun-drenched adobe walls of an old rancho contrast with rolling, golden California hills under a clear blue sky during the golden hour.</p></details>
-</li>
-<li class="panel">
-  <h3>1889 Wei and Dolores Wed</h3>
-  <p class="meta"><span class="year">1889</span> · marriage · people: Wei Chen, Dolores Vasquez, mission priest, Lin-hua Chen, Rafael Vasquez</p>
-  <p class="paragraph">In 1889 Wei and Dolores married quietly at a small mission chapel in Sonoma, the ceremony conducted in Spanish and Latin. Wei wore a black American suit; Dolores wore a lace mantilla over dark hair. Two witnesses stood beside them: his sister Lin-hua and her elder brother Rafael, the families still uncertain of one another.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim, sun-dappled mission chapel in Sonoma, Wei Chen, a slender young man in a sharp black suit, stands beside his bride, Dolores Vasquez, who wears a delicate lace mantilla over her dark hair. A bearded mission priest officiates at an altar adorned with flickering candles. Standing slightly apart are Lin-hua Chen, wearing a modest silk dress, and Rafael Vasquez, a tall, stern man in a vest, watching the ceremony with a reserved, watchful expression.</p></details>
-</li>
-<li class="panel">
-  <h3>1895 Wei and Dolores Cooking</h3>
-  <p class="meta"><span class="year">1895</span> · family · people: Wei Chen, Dolores Vasquez</p>
-  <p class="paragraph">In the adobe farmhouse kitchen, Dolores rolled corn tortillas at one end of a long plank table while Wei chopped scallions and ginger at the other. A pot of red mole simmered on one side of the wood stove, a pot of rice porridge on the other. Strings of dried chiles and dried mushrooms hung from the same ceiling beam.</p>
-  <details><summary>Image prompt</summary><p>In a rustic 1895 adobe kitchen, Wei Chen, a slender middle-aged man in a simple linen shirt, stands at a wooden plank table carefully chopping ginger. Nearby, Dolores Vasquez, a sturdy woman in her thirties wearing a flour-dusted apron over a calico dress, rolls fresh corn tortillas. Sunlight streams through a small window onto the wood stove, where red mole and rice porridge simmer, while dried chiles and mushrooms hang from overhead ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Hong-wei Flees the Rubble</h3>
-  <p class="meta"><span class="year">1906</span> · history · people: Hong-wei Chen, Hong-wei&#x27;s wife, Hong-wei&#x27;s small children, Fu-hai Chen, Wei Chen</p>
-  <p class="paragraph">On the morning of April 18, 1906, the family ran from their San Francisco flat as the city shook and chimneys fell. Hong-wei stood in the street clutching an account book; his wife carried their small children; an elderly Fu-hai leaned on Wei&#x27;s arm. Smoke rose in black columns over Chinatown behind them.</p>
-  <details><summary>Image prompt</summary><p>The morning sun is obscured by thick, swirling black smoke in 1906 San Francisco. Hong-wei Chen, a middle-aged man in a rumpled linen shirt, stands in the street clutching a worn leather account book. Nearby, his wife, a young woman in a traditional apron, holds two small children close. Elderly Fu-hai Chen, wearing a frail silk tunic, leans heavily on the arm of young Wei Chen, who looks back toward collapsing brick chimneys in terror.</p></details>
-</li>
-<li class="panel">
-  <h3>1943 The Chen-Vasquez Siblings at the Gate</h3>
-  <p class="meta"><span class="year">1943</span> · legacy · people: Miguel Chen-Vasquez, Elena Chen-Vasquez, Tomás Chen-Vasquez</p>
-  <p class="paragraph">Three grandchildren of Wei and Dolores stood together at the vineyard gate during the Second World War. Miguel wore a U.S. Army uniform bound for the Pacific; Elena wore a nurse&#x27;s cape, bound for a San Francisco hospital; young Tomás, still in high school, held schoolbooks. Beyond the gate stretched the old rancho&#x27;s vineyard rows toward the hills.</p>
-  <details><summary>Image prompt</summary><p>In 1943, three siblings stand at a weathered iron vineyard gate at sunset. Miguel Chen-Vasquez, a tall young man in a crisp olive-drab U.S. Army uniform, gazes toward distant hills. Beside him, Elena Chen-Vasquez, a graceful woman in a dark nurse’s cape and white uniform, looks on somberly. Younger brother Tomás Chen-Vasquez, a lanky teenager wearing a letterman sweater and holding a stack of vintage schoolbooks, stands between them. Golden light illuminates the sprawling vineyard rows.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Nakamura-Kealoha Chronicle <span class="style">bayeux</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/nakamura-kealoha-1908-bayeux-poisson.jpg" alt="The Nakamura-Kealoha Chronicle rendered in bayeux style">
+  <h2>The Nakamura-Kealoha Chronicle <span class="style-descriptor">— Ukiyo-e style</span></h2>
+  <img class="hero" loading="lazy" src="tapestries/nakamura-kealoha-1908-ukiyo-e.jpg" alt="The Nakamura-Kealoha Chronicle rendered in Ukiyo-e style">
   <details>
     <summary>12 panels</summary>
     <ol class="panels">
@@ -713,332 +411,8 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
   </details>
 </section>
 <section class="tapestry">
-  <h2>The Nakamura-Kealoha Chronicle <span class="style">hanna-barbera</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/nakamura-kealoha-1908-hanna-barbera-poisson.jpg" alt="The Nakamura-Kealoha Chronicle rendered in hanna-barbera style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1908 Sachiko Inoue&#x27;s Formal Portrait</h3>
-  <p class="meta"><span class="year">1908</span> · emigration · people: Sachiko Inoue, Hiroshima village photographer</p>
-  <p class="paragraph">In a small photography studio in a Hiroshima village in 1908, twenty-year-old Sachiko Inoue sat for a formal portrait in a crisp kimono. A photographer in a Western suit stooped behind a wooden plate camera. The photograph would be mailed across the Pacific to a sugarcane worker in Hawaii she had never met.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Inoue, a young Japanese woman of twenty with her hair intricately styled and wearing a stiff, patterned silk kimono, sits perfectly still on a wooden stool. Opposite her, a Hiroshima village photographer, a middle-aged man in a sharp, dark Western-style wool suit, leans behind a heavy, antique bellows camera on a tripod. Sunlight filters through a paper screen, casting soft shadows in the cramped, modest studio filled with wooden equipment, creating a solemn, expectant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1909 Sachiko Arrives in Honolulu</h3>
-  <p class="meta"><span class="year">1909</span> · immigration · people: Sachiko Inoue, Tadao Nakamura, fellow picture brides, plantation agents</p>
-  <p class="paragraph">A year later Sachiko stepped off the Nippon Maru at the Honolulu pier, clutching the photograph that matched her waiting husband. Tadao Nakamura, a lean man in a straw hat and work clothes, bowed to her among a crowd of other picture brides and plantation agents. Palm trees leaned over the bright harbor.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Honolulu pier, Sachiko Inoue, a young Japanese woman in a modest patterned kimono, grips a small portrait while stepping off the Nippon Maru. She gazes at Tadao Nakamura, a lean, weathered laborer wearing a straw hat and worn work clothes. Surrounding them, a diverse group of fellow picture brides in traditional dress and stern plantation agents in suits mingle beneath swaying palm trees under a bright, clear sky.</p></details>
-</li>
-<li class="panel">
-  <h3>1912 Sachiko and Tadao in the Cane</h3>
-  <p class="meta"><span class="year">1912</span> · labor · people: Sachiko Nakamura, Tadao Nakamura, plantation luna</p>
-  <p class="paragraph">On an Oahu sugar plantation, rows of tin-roofed worker barracks stretched toward green cane fields. Sachiko hung laundry on a line outside one of the shacks while Tadao, in a wide hat and canvas leggings, swung a machete among the tall cane. A luna on horseback rode down the narrow dirt road.</p>
-  <details><summary>Image prompt</summary><p>In the golden late afternoon sun of an Oahu sugar plantation, Sachiko Nakamura, a young woman in a simple faded cotton dress and white headscarf, pins laundry to a weathered line. Nearby, her husband Tadao Nakamura, a lean middle-aged man in canvas leggings and a wide straw hat, strikes the dense green stalks with his machete. A stern plantation luna, seated tall upon a sturdy brown horse, approaches along the dusty road, creating a tense, observant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1923 Kenji at Language School</h3>
-  <p class="meta"><span class="year">1923</span> · childhood · people: Japanese-language teacher, Nakamura children, Kenji Nakamura, plantation-camp classmates</p>
-  <p class="paragraph">After the public school day, the Nakamura children walked to a small wooden Japanese-language school beside the plantation camp. A teacher in a dark kimono stood at a blackboard writing hiragana; ten children in neat rows copied the characters. The youngest son, Kenji, sat at the end of the front row.</p>
-  <details><summary>Image prompt</summary><p>Inside a rustic wooden classroom in a plantation camp, a Japanese-language teacher, a middle-aged woman in a structured dark silk kimono with her hair in a traditional bun, stands writing hiragana on a dusty blackboard. In the foreground, Kenji Nakamura, a small boy of seven with neat hair and a plain shirt, sits at a wooden desk focusing intently. Ten Nakamura children and plantation-camp classmates, all dressed in clean but worn clothes, sit in rows, softly illuminated by afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1925 Sachiko and Tadao at Temple</h3>
-  <p class="meta"><span class="year">1925</span> · faith · people: Sachiko Nakamura, Tadao Nakamura, Nakamura children</p>
-  <p class="paragraph">On a Sunday morning the family climbed the steps of a Hongwanji Buddhist temple with a wooden bell tower. Sachiko lit incense before a gilded altar; Tadao knelt beside her; the children bowed behind them. Through the open doors, sugarcane fields stretched toward the sea.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Nakamura, a graceful woman in a floral kimono with her hair in a traditional bun, lights incense sticks before a gleaming gilded altar. Beside her, Tadao Nakamura, a stern man in a crisp linen suit, kneels in prayer on the temple floor. Behind them, several young Nakamura children in simple cotton outfits bow respectfully. The scene is bathed in bright morning sunlight with distant sugarcane fields visible through the wooden temple doors.</p></details>
-</li>
-<li class="panel">
-  <h3>1937 Kenji at the Cannery</h3>
-  <p class="meta"><span class="year">1937</span> · work · people: Kenji Nakamura, cannery line women</p>
-  <p class="paragraph">Grown into a young man, Kenji worked at a pineapple cannery in Honolulu. He stood at a long stainless-steel line trimming fruit, his sleeves rolled to the elbow, an apron over his work shirt. Women in white caps and aprons worked beside him, slicing and packing the bright yellow rings.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a sturdy young man in his twenties wearing a grease-stained work shirt with sleeves rolled high and a heavy canvas apron, stands at a long stainless-steel industrial line. Beside him, several cannery line women in crisp white caps and modest aprons rhythmically slice and pack vibrant golden pineapple rings. The atmosphere is humid and busy with the sharp, sweet scent of fruit under bright, clinical fluorescent lighting in a bustling Honolulu factory.</p></details>
-</li>
-<li class="panel">
-  <h3>1938 Kenji Meets Leilani Kealoha</h3>
-  <p class="meta"><span class="year">1938</span> · courtship · people: Kenji Nakamura, Leilani Kealoha, luau guests</p>
-  <p class="paragraph">At a Saturday luau on a beach near Waikiki, Kenji met Leilani Kealoha, a hula dancer from a Hawaiian family of fishermen and chanters. She stood barefoot on lauhala mats, a plumeria lei around her neck, a ti-leaf skirt at her hips. He stood at the edge of the gathering, unsure whether to approach.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Waikiki beach luau, Leilani Kealoha, a young graceful Hawaiian woman with flowing dark hair and a vibrant ti-leaf skirt, performs on woven lauhala mats. Kenji Nakamura, a shy Japanese man in a crisp white linen shirt and trousers, watches her from the edge of the crowd. Nearby, festive luau guests lounge on the sand amidst palm trees and scattered plumeria flowers under a bright midday tropical sun.</p></details>
-</li>
-<li class="panel">
-  <h3>1939 Kenji and Leilani United</h3>
-  <p class="meta"><span class="year">1939</span> · marriage · people: Kenji Nakamura, Leilani Kealoha, Shinto priest, Hawaiian kahu</p>
-  <p class="paragraph">In 1939 Kenji and Leilani married in a ceremony that joined two traditions. A Shinto priest in white robes purified the couple with a sakaki branch while a Hawaiian kahu blessed them with ti-leaf salt water. Leilani wore a white holokū; a lei and a cup of sake rested on the low altar between them.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young man in a dark tailored suit, stands beside Leilani Kealoha, who wears a traditional white silk holokū and a fragrant plumeria lei. They kneel before a low altar in a sunlit outdoor space. A Shinto priest in flowing white robes holds a sakaki branch, while a Hawaiian kahu in simple ceremonial attire offers a blessing with ti-leaf water. A small wooden cup of sake rests on the altar between them.</p></details>
-</li>
-<li class="panel">
-  <h3>1941 Tadao Taken From Home</h3>
-  <p class="meta"><span class="year">1941</span> · history · people: Tadao Nakamura, FBI agents, Sachiko Nakamura, Leilani Kealoha, Nakamura children</p>
-  <p class="paragraph">On a December afternoon in 1941, FBI agents in dark coats escorted Tadao from his plantation house as his family watched from the doorway. Sachiko, gray-haired, held Leilani&#x27;s arm; the children stood silent. Smoke still rose faintly over Pearl Harbor in the distance behind them.</p>
-  <details><summary>Image prompt</summary><p>On a gloomy December afternoon, Tadao Nakamura, a middle-aged Japanese-American farmer in a crisp white shirt, is escorted by two stoic FBI agents in heavy wool trench coats. Standing in the doorway of their plantation home, elderly Sachiko Nakamura with silver-streaked hair and her young adult granddaughter Leilani Kealoha wearing a floral tea dress look on with fearful expressions, while the small, silent Nakamura children cluster behind them. Faint, dark smoke rises in the distant horizon.</p></details>
-</li>
-<li class="panel">
-  <h3>1944 Kenji Amidst Italian Ruins</h3>
-  <p class="meta"><span class="year">1944</span> · service · people: Kenji Nakamura, 442nd RCT nisei soldiers</p>
-  <p class="paragraph">Kenji, in the uniform of the 442nd Regimental Combat Team, moved with his squad through a rubbled Italian village in 1944. He carried a rifle and a medic&#x27;s pack; a small folded photograph of Leilani was tucked inside his helmet liner. Other nisei soldiers advanced along the shattered street.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young Japanese-American soldier in his early twenties with a focused gaze and a dusty 442nd Regimental Combat Team uniform, cautiously steps through a crumbling stone street in a war-torn Italian village. Behind him, other nisei soldiers in standard-issue olive drab gear move alertly through the debris. The late afternoon sun casts long shadows over shattered masonry and broken timber, creating a somber, gritty, and atmospheric historical scene.</p></details>
-</li>
-<li class="panel">
-  <h3>1952 Kenji and Leilani in Waikiki</h3>
-  <p class="meta"><span class="year">1952</span> · legacy · people: Kenji Nakamura, Leilani Kealoha, Leilani&#x27;s hula students, Waikiki tourists</p>
-  <p class="paragraph">In 1952 Kenji opened a surfboard shop on a Waikiki side street, its painted sign reading NAKAMURA-KEALOHA SURF &amp; REPAIR. He stood in the open doorway shaping a redwood board with a hand plane while Leilani, now a hula teacher, led a small class of children on the lanai behind. Tourists passed on the sidewalk beyond.</p>
-  <details><summary>Image prompt</summary><p>Inside a sun-drenched Waikiki shop in 1952, Kenji Nakamura, a lean middle-aged man in a rolled-sleeve shirt, focusely shapes a dark redwood surfboard with a hand plane. Through an open doorway, Leilani Kealoha, an elegant woman in a floral holoku dress, gracefully teaches a group of young hula students on the wooden lanai. In the background, diverse 1950s tourists walk along a bustling, sun-baked tropical side street.</p></details>
-</li>
-<li class="panel">
-  <h3>2010 Family Farewell at Sunset</h3>
-  <p class="meta"><span class="year">2010</span> · legacy · people: outrigger-paddling grandchild, Tokyo-bound grandchild, outrigger crew, Nakamura-Kealoha great-granddaughter</p>
-  <p class="paragraph">Years later the family gathered on the beach at sunset. One grandchild paddled offshore in a Hawaiian outrigger with his crew; another, in a dark suit, held a plane ticket to Tokyo for an engineering job; a small great-granddaughter in a white dress held a lei in one hand and a folded paper crane in the other. The sky behind them was the color of fire.</p>
-  <details><summary>Image prompt</summary><p>On a tropical beach at sunset, an outrigger-paddling grandchild and his athletic outrigger crew glide across fiery orange waters. Nearby, a Tokyo-bound grandchild in a sharp, modern dark suit stands on the golden sand, clutching a plane ticket. Beside him, Nakamura-Kealoha great-granddaughter, a young girl in a delicate white cotton dress, stands patiently holding a fragrant plumeria lei and a meticulously folded paper crane. The sky is ablaze with deep crimson clouds.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Nakamura-Kealoha Chronicle <span class="style">rembrandt</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/nakamura-kealoha-1908-rembrandt-poisson.jpg" alt="The Nakamura-Kealoha Chronicle rendered in rembrandt style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1908 Sachiko Inoue&#x27;s Formal Portrait</h3>
-  <p class="meta"><span class="year">1908</span> · emigration · people: Sachiko Inoue, Hiroshima village photographer</p>
-  <p class="paragraph">In a small photography studio in a Hiroshima village in 1908, twenty-year-old Sachiko Inoue sat for a formal portrait in a crisp kimono. A photographer in a Western suit stooped behind a wooden plate camera. The photograph would be mailed across the Pacific to a sugarcane worker in Hawaii she had never met.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Inoue, a young Japanese woman of twenty with her hair intricately styled and wearing a stiff, patterned silk kimono, sits perfectly still on a wooden stool. Opposite her, a Hiroshima village photographer, a middle-aged man in a sharp, dark Western-style wool suit, leans behind a heavy, antique bellows camera on a tripod. Sunlight filters through a paper screen, casting soft shadows in the cramped, modest studio filled with wooden equipment, creating a solemn, expectant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1909 Sachiko Arrives in Honolulu</h3>
-  <p class="meta"><span class="year">1909</span> · immigration · people: Sachiko Inoue, Tadao Nakamura, fellow picture brides, plantation agents</p>
-  <p class="paragraph">A year later Sachiko stepped off the Nippon Maru at the Honolulu pier, clutching the photograph that matched her waiting husband. Tadao Nakamura, a lean man in a straw hat and work clothes, bowed to her among a crowd of other picture brides and plantation agents. Palm trees leaned over the bright harbor.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Honolulu pier, Sachiko Inoue, a young Japanese woman in a modest patterned kimono, grips a small portrait while stepping off the Nippon Maru. She gazes at Tadao Nakamura, a lean, weathered laborer wearing a straw hat and worn work clothes. Surrounding them, a diverse group of fellow picture brides in traditional dress and stern plantation agents in suits mingle beneath swaying palm trees under a bright, clear sky.</p></details>
-</li>
-<li class="panel">
-  <h3>1912 Sachiko and Tadao in the Cane</h3>
-  <p class="meta"><span class="year">1912</span> · labor · people: Sachiko Nakamura, Tadao Nakamura, plantation luna</p>
-  <p class="paragraph">On an Oahu sugar plantation, rows of tin-roofed worker barracks stretched toward green cane fields. Sachiko hung laundry on a line outside one of the shacks while Tadao, in a wide hat and canvas leggings, swung a machete among the tall cane. A luna on horseback rode down the narrow dirt road.</p>
-  <details><summary>Image prompt</summary><p>In the golden late afternoon sun of an Oahu sugar plantation, Sachiko Nakamura, a young woman in a simple faded cotton dress and white headscarf, pins laundry to a weathered line. Nearby, her husband Tadao Nakamura, a lean middle-aged man in canvas leggings and a wide straw hat, strikes the dense green stalks with his machete. A stern plantation luna, seated tall upon a sturdy brown horse, approaches along the dusty road, creating a tense, observant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1923 Kenji at Language School</h3>
-  <p class="meta"><span class="year">1923</span> · childhood · people: Japanese-language teacher, Nakamura children, Kenji Nakamura, plantation-camp classmates</p>
-  <p class="paragraph">After the public school day, the Nakamura children walked to a small wooden Japanese-language school beside the plantation camp. A teacher in a dark kimono stood at a blackboard writing hiragana; ten children in neat rows copied the characters. The youngest son, Kenji, sat at the end of the front row.</p>
-  <details><summary>Image prompt</summary><p>Inside a rustic wooden classroom in a plantation camp, a Japanese-language teacher, a middle-aged woman in a structured dark silk kimono with her hair in a traditional bun, stands writing hiragana on a dusty blackboard. In the foreground, Kenji Nakamura, a small boy of seven with neat hair and a plain shirt, sits at a wooden desk focusing intently. Ten Nakamura children and plantation-camp classmates, all dressed in clean but worn clothes, sit in rows, softly illuminated by afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1925 Sachiko and Tadao at Temple</h3>
-  <p class="meta"><span class="year">1925</span> · faith · people: Sachiko Nakamura, Tadao Nakamura, Nakamura children</p>
-  <p class="paragraph">On a Sunday morning the family climbed the steps of a Hongwanji Buddhist temple with a wooden bell tower. Sachiko lit incense before a gilded altar; Tadao knelt beside her; the children bowed behind them. Through the open doors, sugarcane fields stretched toward the sea.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Nakamura, a graceful woman in a floral kimono with her hair in a traditional bun, lights incense sticks before a gleaming gilded altar. Beside her, Tadao Nakamura, a stern man in a crisp linen suit, kneels in prayer on the temple floor. Behind them, several young Nakamura children in simple cotton outfits bow respectfully. The scene is bathed in bright morning sunlight with distant sugarcane fields visible through the wooden temple doors.</p></details>
-</li>
-<li class="panel">
-  <h3>1937 Kenji at the Cannery</h3>
-  <p class="meta"><span class="year">1937</span> · work · people: Kenji Nakamura, cannery line women</p>
-  <p class="paragraph">Grown into a young man, Kenji worked at a pineapple cannery in Honolulu. He stood at a long stainless-steel line trimming fruit, his sleeves rolled to the elbow, an apron over his work shirt. Women in white caps and aprons worked beside him, slicing and packing the bright yellow rings.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a sturdy young man in his twenties wearing a grease-stained work shirt with sleeves rolled high and a heavy canvas apron, stands at a long stainless-steel industrial line. Beside him, several cannery line women in crisp white caps and modest aprons rhythmically slice and pack vibrant golden pineapple rings. The atmosphere is humid and busy with the sharp, sweet scent of fruit under bright, clinical fluorescent lighting in a bustling Honolulu factory.</p></details>
-</li>
-<li class="panel">
-  <h3>1938 Kenji Meets Leilani Kealoha</h3>
-  <p class="meta"><span class="year">1938</span> · courtship · people: Kenji Nakamura, Leilani Kealoha, luau guests</p>
-  <p class="paragraph">At a Saturday luau on a beach near Waikiki, Kenji met Leilani Kealoha, a hula dancer from a Hawaiian family of fishermen and chanters. She stood barefoot on lauhala mats, a plumeria lei around her neck, a ti-leaf skirt at her hips. He stood at the edge of the gathering, unsure whether to approach.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Waikiki beach luau, Leilani Kealoha, a young graceful Hawaiian woman with flowing dark hair and a vibrant ti-leaf skirt, performs on woven lauhala mats. Kenji Nakamura, a shy Japanese man in a crisp white linen shirt and trousers, watches her from the edge of the crowd. Nearby, festive luau guests lounge on the sand amidst palm trees and scattered plumeria flowers under a bright midday tropical sun.</p></details>
-</li>
-<li class="panel">
-  <h3>1939 Kenji and Leilani United</h3>
-  <p class="meta"><span class="year">1939</span> · marriage · people: Kenji Nakamura, Leilani Kealoha, Shinto priest, Hawaiian kahu</p>
-  <p class="paragraph">In 1939 Kenji and Leilani married in a ceremony that joined two traditions. A Shinto priest in white robes purified the couple with a sakaki branch while a Hawaiian kahu blessed them with ti-leaf salt water. Leilani wore a white holokū; a lei and a cup of sake rested on the low altar between them.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young man in a dark tailored suit, stands beside Leilani Kealoha, who wears a traditional white silk holokū and a fragrant plumeria lei. They kneel before a low altar in a sunlit outdoor space. A Shinto priest in flowing white robes holds a sakaki branch, while a Hawaiian kahu in simple ceremonial attire offers a blessing with ti-leaf water. A small wooden cup of sake rests on the altar between them.</p></details>
-</li>
-<li class="panel">
-  <h3>1941 Tadao Taken From Home</h3>
-  <p class="meta"><span class="year">1941</span> · history · people: Tadao Nakamura, FBI agents, Sachiko Nakamura, Leilani Kealoha, Nakamura children</p>
-  <p class="paragraph">On a December afternoon in 1941, FBI agents in dark coats escorted Tadao from his plantation house as his family watched from the doorway. Sachiko, gray-haired, held Leilani&#x27;s arm; the children stood silent. Smoke still rose faintly over Pearl Harbor in the distance behind them.</p>
-  <details><summary>Image prompt</summary><p>On a gloomy December afternoon, Tadao Nakamura, a middle-aged Japanese-American farmer in a crisp white shirt, is escorted by two stoic FBI agents in heavy wool trench coats. Standing in the doorway of their plantation home, elderly Sachiko Nakamura with silver-streaked hair and her young adult granddaughter Leilani Kealoha wearing a floral tea dress look on with fearful expressions, while the small, silent Nakamura children cluster behind them. Faint, dark smoke rises in the distant horizon.</p></details>
-</li>
-<li class="panel">
-  <h3>1944 Kenji Amidst Italian Ruins</h3>
-  <p class="meta"><span class="year">1944</span> · service · people: Kenji Nakamura, 442nd RCT nisei soldiers</p>
-  <p class="paragraph">Kenji, in the uniform of the 442nd Regimental Combat Team, moved with his squad through a rubbled Italian village in 1944. He carried a rifle and a medic&#x27;s pack; a small folded photograph of Leilani was tucked inside his helmet liner. Other nisei soldiers advanced along the shattered street.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young Japanese-American soldier in his early twenties with a focused gaze and a dusty 442nd Regimental Combat Team uniform, cautiously steps through a crumbling stone street in a war-torn Italian village. Behind him, other nisei soldiers in standard-issue olive drab gear move alertly through the debris. The late afternoon sun casts long shadows over shattered masonry and broken timber, creating a somber, gritty, and atmospheric historical scene.</p></details>
-</li>
-<li class="panel">
-  <h3>1952 Kenji and Leilani in Waikiki</h3>
-  <p class="meta"><span class="year">1952</span> · legacy · people: Kenji Nakamura, Leilani Kealoha, Leilani&#x27;s hula students, Waikiki tourists</p>
-  <p class="paragraph">In 1952 Kenji opened a surfboard shop on a Waikiki side street, its painted sign reading NAKAMURA-KEALOHA SURF &amp; REPAIR. He stood in the open doorway shaping a redwood board with a hand plane while Leilani, now a hula teacher, led a small class of children on the lanai behind. Tourists passed on the sidewalk beyond.</p>
-  <details><summary>Image prompt</summary><p>Inside a sun-drenched Waikiki shop in 1952, Kenji Nakamura, a lean middle-aged man in a rolled-sleeve shirt, focusely shapes a dark redwood surfboard with a hand plane. Through an open doorway, Leilani Kealoha, an elegant woman in a floral holoku dress, gracefully teaches a group of young hula students on the wooden lanai. In the background, diverse 1950s tourists walk along a bustling, sun-baked tropical side street.</p></details>
-</li>
-<li class="panel">
-  <h3>2010 Family Farewell at Sunset</h3>
-  <p class="meta"><span class="year">2010</span> · legacy · people: outrigger-paddling grandchild, Tokyo-bound grandchild, outrigger crew, Nakamura-Kealoha great-granddaughter</p>
-  <p class="paragraph">Years later the family gathered on the beach at sunset. One grandchild paddled offshore in a Hawaiian outrigger with his crew; another, in a dark suit, held a plane ticket to Tokyo for an engineering job; a small great-granddaughter in a white dress held a lei in one hand and a folded paper crane in the other. The sky behind them was the color of fire.</p>
-  <details><summary>Image prompt</summary><p>On a tropical beach at sunset, an outrigger-paddling grandchild and his athletic outrigger crew glide across fiery orange waters. Nearby, a Tokyo-bound grandchild in a sharp, modern dark suit stands on the golden sand, clutching a plane ticket. Beside him, Nakamura-Kealoha great-granddaughter, a young girl in a delicate white cotton dress, stands patiently holding a fragrant plumeria lei and a meticulously folded paper crane. The sky is ablaze with deep crimson clouds.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Nakamura-Kealoha Chronicle <span class="style">ukiyo-e</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/nakamura-kealoha-1908-ukiyo-e-poisson.jpg" alt="The Nakamura-Kealoha Chronicle rendered in ukiyo-e style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1908 Sachiko Inoue&#x27;s Formal Portrait</h3>
-  <p class="meta"><span class="year">1908</span> · emigration · people: Sachiko Inoue, Hiroshima village photographer</p>
-  <p class="paragraph">In a small photography studio in a Hiroshima village in 1908, twenty-year-old Sachiko Inoue sat for a formal portrait in a crisp kimono. A photographer in a Western suit stooped behind a wooden plate camera. The photograph would be mailed across the Pacific to a sugarcane worker in Hawaii she had never met.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Inoue, a young Japanese woman of twenty with her hair intricately styled and wearing a stiff, patterned silk kimono, sits perfectly still on a wooden stool. Opposite her, a Hiroshima village photographer, a middle-aged man in a sharp, dark Western-style wool suit, leans behind a heavy, antique bellows camera on a tripod. Sunlight filters through a paper screen, casting soft shadows in the cramped, modest studio filled with wooden equipment, creating a solemn, expectant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1909 Sachiko Arrives in Honolulu</h3>
-  <p class="meta"><span class="year">1909</span> · immigration · people: Sachiko Inoue, Tadao Nakamura, fellow picture brides, plantation agents</p>
-  <p class="paragraph">A year later Sachiko stepped off the Nippon Maru at the Honolulu pier, clutching the photograph that matched her waiting husband. Tadao Nakamura, a lean man in a straw hat and work clothes, bowed to her among a crowd of other picture brides and plantation agents. Palm trees leaned over the bright harbor.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Honolulu pier, Sachiko Inoue, a young Japanese woman in a modest patterned kimono, grips a small portrait while stepping off the Nippon Maru. She gazes at Tadao Nakamura, a lean, weathered laborer wearing a straw hat and worn work clothes. Surrounding them, a diverse group of fellow picture brides in traditional dress and stern plantation agents in suits mingle beneath swaying palm trees under a bright, clear sky.</p></details>
-</li>
-<li class="panel">
-  <h3>1912 Sachiko and Tadao in the Cane</h3>
-  <p class="meta"><span class="year">1912</span> · labor · people: Sachiko Nakamura, Tadao Nakamura, plantation luna</p>
-  <p class="paragraph">On an Oahu sugar plantation, rows of tin-roofed worker barracks stretched toward green cane fields. Sachiko hung laundry on a line outside one of the shacks while Tadao, in a wide hat and canvas leggings, swung a machete among the tall cane. A luna on horseback rode down the narrow dirt road.</p>
-  <details><summary>Image prompt</summary><p>In the golden late afternoon sun of an Oahu sugar plantation, Sachiko Nakamura, a young woman in a simple faded cotton dress and white headscarf, pins laundry to a weathered line. Nearby, her husband Tadao Nakamura, a lean middle-aged man in canvas leggings and a wide straw hat, strikes the dense green stalks with his machete. A stern plantation luna, seated tall upon a sturdy brown horse, approaches along the dusty road, creating a tense, observant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1923 Kenji at Language School</h3>
-  <p class="meta"><span class="year">1923</span> · childhood · people: Japanese-language teacher, Nakamura children, Kenji Nakamura, plantation-camp classmates</p>
-  <p class="paragraph">After the public school day, the Nakamura children walked to a small wooden Japanese-language school beside the plantation camp. A teacher in a dark kimono stood at a blackboard writing hiragana; ten children in neat rows copied the characters. The youngest son, Kenji, sat at the end of the front row.</p>
-  <details><summary>Image prompt</summary><p>Inside a rustic wooden classroom in a plantation camp, a Japanese-language teacher, a middle-aged woman in a structured dark silk kimono with her hair in a traditional bun, stands writing hiragana on a dusty blackboard. In the foreground, Kenji Nakamura, a small boy of seven with neat hair and a plain shirt, sits at a wooden desk focusing intently. Ten Nakamura children and plantation-camp classmates, all dressed in clean but worn clothes, sit in rows, softly illuminated by afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1925 Sachiko and Tadao at Temple</h3>
-  <p class="meta"><span class="year">1925</span> · faith · people: Sachiko Nakamura, Tadao Nakamura, Nakamura children</p>
-  <p class="paragraph">On a Sunday morning the family climbed the steps of a Hongwanji Buddhist temple with a wooden bell tower. Sachiko lit incense before a gilded altar; Tadao knelt beside her; the children bowed behind them. Through the open doors, sugarcane fields stretched toward the sea.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Nakamura, a graceful woman in a floral kimono with her hair in a traditional bun, lights incense sticks before a gleaming gilded altar. Beside her, Tadao Nakamura, a stern man in a crisp linen suit, kneels in prayer on the temple floor. Behind them, several young Nakamura children in simple cotton outfits bow respectfully. The scene is bathed in bright morning sunlight with distant sugarcane fields visible through the wooden temple doors.</p></details>
-</li>
-<li class="panel">
-  <h3>1937 Kenji at the Cannery</h3>
-  <p class="meta"><span class="year">1937</span> · work · people: Kenji Nakamura, cannery line women</p>
-  <p class="paragraph">Grown into a young man, Kenji worked at a pineapple cannery in Honolulu. He stood at a long stainless-steel line trimming fruit, his sleeves rolled to the elbow, an apron over his work shirt. Women in white caps and aprons worked beside him, slicing and packing the bright yellow rings.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a sturdy young man in his twenties wearing a grease-stained work shirt with sleeves rolled high and a heavy canvas apron, stands at a long stainless-steel industrial line. Beside him, several cannery line women in crisp white caps and modest aprons rhythmically slice and pack vibrant golden pineapple rings. The atmosphere is humid and busy with the sharp, sweet scent of fruit under bright, clinical fluorescent lighting in a bustling Honolulu factory.</p></details>
-</li>
-<li class="panel">
-  <h3>1938 Kenji Meets Leilani Kealoha</h3>
-  <p class="meta"><span class="year">1938</span> · courtship · people: Kenji Nakamura, Leilani Kealoha, luau guests</p>
-  <p class="paragraph">At a Saturday luau on a beach near Waikiki, Kenji met Leilani Kealoha, a hula dancer from a Hawaiian family of fishermen and chanters. She stood barefoot on lauhala mats, a plumeria lei around her neck, a ti-leaf skirt at her hips. He stood at the edge of the gathering, unsure whether to approach.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Waikiki beach luau, Leilani Kealoha, a young graceful Hawaiian woman with flowing dark hair and a vibrant ti-leaf skirt, performs on woven lauhala mats. Kenji Nakamura, a shy Japanese man in a crisp white linen shirt and trousers, watches her from the edge of the crowd. Nearby, festive luau guests lounge on the sand amidst palm trees and scattered plumeria flowers under a bright midday tropical sun.</p></details>
-</li>
-<li class="panel">
-  <h3>1939 Kenji and Leilani United</h3>
-  <p class="meta"><span class="year">1939</span> · marriage · people: Kenji Nakamura, Leilani Kealoha, Shinto priest, Hawaiian kahu</p>
-  <p class="paragraph">In 1939 Kenji and Leilani married in a ceremony that joined two traditions. A Shinto priest in white robes purified the couple with a sakaki branch while a Hawaiian kahu blessed them with ti-leaf salt water. Leilani wore a white holokū; a lei and a cup of sake rested on the low altar between them.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young man in a dark tailored suit, stands beside Leilani Kealoha, who wears a traditional white silk holokū and a fragrant plumeria lei. They kneel before a low altar in a sunlit outdoor space. A Shinto priest in flowing white robes holds a sakaki branch, while a Hawaiian kahu in simple ceremonial attire offers a blessing with ti-leaf water. A small wooden cup of sake rests on the altar between them.</p></details>
-</li>
-<li class="panel">
-  <h3>1941 Tadao Taken From Home</h3>
-  <p class="meta"><span class="year">1941</span> · history · people: Tadao Nakamura, FBI agents, Sachiko Nakamura, Leilani Kealoha, Nakamura children</p>
-  <p class="paragraph">On a December afternoon in 1941, FBI agents in dark coats escorted Tadao from his plantation house as his family watched from the doorway. Sachiko, gray-haired, held Leilani&#x27;s arm; the children stood silent. Smoke still rose faintly over Pearl Harbor in the distance behind them.</p>
-  <details><summary>Image prompt</summary><p>On a gloomy December afternoon, Tadao Nakamura, a middle-aged Japanese-American farmer in a crisp white shirt, is escorted by two stoic FBI agents in heavy wool trench coats. Standing in the doorway of their plantation home, elderly Sachiko Nakamura with silver-streaked hair and her young adult granddaughter Leilani Kealoha wearing a floral tea dress look on with fearful expressions, while the small, silent Nakamura children cluster behind them. Faint, dark smoke rises in the distant horizon.</p></details>
-</li>
-<li class="panel">
-  <h3>1944 Kenji Amidst Italian Ruins</h3>
-  <p class="meta"><span class="year">1944</span> · service · people: Kenji Nakamura, 442nd RCT nisei soldiers</p>
-  <p class="paragraph">Kenji, in the uniform of the 442nd Regimental Combat Team, moved with his squad through a rubbled Italian village in 1944. He carried a rifle and a medic&#x27;s pack; a small folded photograph of Leilani was tucked inside his helmet liner. Other nisei soldiers advanced along the shattered street.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young Japanese-American soldier in his early twenties with a focused gaze and a dusty 442nd Regimental Combat Team uniform, cautiously steps through a crumbling stone street in a war-torn Italian village. Behind him, other nisei soldiers in standard-issue olive drab gear move alertly through the debris. The late afternoon sun casts long shadows over shattered masonry and broken timber, creating a somber, gritty, and atmospheric historical scene.</p></details>
-</li>
-<li class="panel">
-  <h3>1952 Kenji and Leilani in Waikiki</h3>
-  <p class="meta"><span class="year">1952</span> · legacy · people: Kenji Nakamura, Leilani Kealoha, Leilani&#x27;s hula students, Waikiki tourists</p>
-  <p class="paragraph">In 1952 Kenji opened a surfboard shop on a Waikiki side street, its painted sign reading NAKAMURA-KEALOHA SURF &amp; REPAIR. He stood in the open doorway shaping a redwood board with a hand plane while Leilani, now a hula teacher, led a small class of children on the lanai behind. Tourists passed on the sidewalk beyond.</p>
-  <details><summary>Image prompt</summary><p>Inside a sun-drenched Waikiki shop in 1952, Kenji Nakamura, a lean middle-aged man in a rolled-sleeve shirt, focusely shapes a dark redwood surfboard with a hand plane. Through an open doorway, Leilani Kealoha, an elegant woman in a floral holoku dress, gracefully teaches a group of young hula students on the wooden lanai. In the background, diverse 1950s tourists walk along a bustling, sun-baked tropical side street.</p></details>
-</li>
-<li class="panel">
-  <h3>2010 Family Farewell at Sunset</h3>
-  <p class="meta"><span class="year">2010</span> · legacy · people: outrigger-paddling grandchild, Tokyo-bound grandchild, outrigger crew, Nakamura-Kealoha great-granddaughter</p>
-  <p class="paragraph">Years later the family gathered on the beach at sunset. One grandchild paddled offshore in a Hawaiian outrigger with his crew; another, in a dark suit, held a plane ticket to Tokyo for an engineering job; a small great-granddaughter in a white dress held a lei in one hand and a folded paper crane in the other. The sky behind them was the color of fire.</p>
-  <details><summary>Image prompt</summary><p>On a tropical beach at sunset, an outrigger-paddling grandchild and his athletic outrigger crew glide across fiery orange waters. Nearby, a Tokyo-bound grandchild in a sharp, modern dark suit stands on the golden sand, clutching a plane ticket. Beside him, Nakamura-Kealoha great-granddaughter, a young girl in a delicate white cotton dress, stands patiently holding a fragrant plumeria lei and a meticulously folded paper crane. The sky is ablaze with deep crimson clouds.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Nakamura-Kealoha Chronicle <span class="style">watercolor</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/nakamura-kealoha-1908-watercolor-poisson.jpg" alt="The Nakamura-Kealoha Chronicle rendered in watercolor style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1908 Sachiko Inoue&#x27;s Formal Portrait</h3>
-  <p class="meta"><span class="year">1908</span> · emigration · people: Sachiko Inoue, Hiroshima village photographer</p>
-  <p class="paragraph">In a small photography studio in a Hiroshima village in 1908, twenty-year-old Sachiko Inoue sat for a formal portrait in a crisp kimono. A photographer in a Western suit stooped behind a wooden plate camera. The photograph would be mailed across the Pacific to a sugarcane worker in Hawaii she had never met.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Inoue, a young Japanese woman of twenty with her hair intricately styled and wearing a stiff, patterned silk kimono, sits perfectly still on a wooden stool. Opposite her, a Hiroshima village photographer, a middle-aged man in a sharp, dark Western-style wool suit, leans behind a heavy, antique bellows camera on a tripod. Sunlight filters through a paper screen, casting soft shadows in the cramped, modest studio filled with wooden equipment, creating a solemn, expectant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1909 Sachiko Arrives in Honolulu</h3>
-  <p class="meta"><span class="year">1909</span> · immigration · people: Sachiko Inoue, Tadao Nakamura, fellow picture brides, plantation agents</p>
-  <p class="paragraph">A year later Sachiko stepped off the Nippon Maru at the Honolulu pier, clutching the photograph that matched her waiting husband. Tadao Nakamura, a lean man in a straw hat and work clothes, bowed to her among a crowd of other picture brides and plantation agents. Palm trees leaned over the bright harbor.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Honolulu pier, Sachiko Inoue, a young Japanese woman in a modest patterned kimono, grips a small portrait while stepping off the Nippon Maru. She gazes at Tadao Nakamura, a lean, weathered laborer wearing a straw hat and worn work clothes. Surrounding them, a diverse group of fellow picture brides in traditional dress and stern plantation agents in suits mingle beneath swaying palm trees under a bright, clear sky.</p></details>
-</li>
-<li class="panel">
-  <h3>1912 Sachiko and Tadao in the Cane</h3>
-  <p class="meta"><span class="year">1912</span> · labor · people: Sachiko Nakamura, Tadao Nakamura, plantation luna</p>
-  <p class="paragraph">On an Oahu sugar plantation, rows of tin-roofed worker barracks stretched toward green cane fields. Sachiko hung laundry on a line outside one of the shacks while Tadao, in a wide hat and canvas leggings, swung a machete among the tall cane. A luna on horseback rode down the narrow dirt road.</p>
-  <details><summary>Image prompt</summary><p>In the golden late afternoon sun of an Oahu sugar plantation, Sachiko Nakamura, a young woman in a simple faded cotton dress and white headscarf, pins laundry to a weathered line. Nearby, her husband Tadao Nakamura, a lean middle-aged man in canvas leggings and a wide straw hat, strikes the dense green stalks with his machete. A stern plantation luna, seated tall upon a sturdy brown horse, approaches along the dusty road, creating a tense, observant atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1923 Kenji at Language School</h3>
-  <p class="meta"><span class="year">1923</span> · childhood · people: Japanese-language teacher, Nakamura children, Kenji Nakamura, plantation-camp classmates</p>
-  <p class="paragraph">After the public school day, the Nakamura children walked to a small wooden Japanese-language school beside the plantation camp. A teacher in a dark kimono stood at a blackboard writing hiragana; ten children in neat rows copied the characters. The youngest son, Kenji, sat at the end of the front row.</p>
-  <details><summary>Image prompt</summary><p>Inside a rustic wooden classroom in a plantation camp, a Japanese-language teacher, a middle-aged woman in a structured dark silk kimono with her hair in a traditional bun, stands writing hiragana on a dusty blackboard. In the foreground, Kenji Nakamura, a small boy of seven with neat hair and a plain shirt, sits at a wooden desk focusing intently. Ten Nakamura children and plantation-camp classmates, all dressed in clean but worn clothes, sit in rows, softly illuminated by afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1925 Sachiko and Tadao at Temple</h3>
-  <p class="meta"><span class="year">1925</span> · faith · people: Sachiko Nakamura, Tadao Nakamura, Nakamura children</p>
-  <p class="paragraph">On a Sunday morning the family climbed the steps of a Hongwanji Buddhist temple with a wooden bell tower. Sachiko lit incense before a gilded altar; Tadao knelt beside her; the children bowed behind them. Through the open doors, sugarcane fields stretched toward the sea.</p>
-  <details><summary>Image prompt</summary><p>Sachiko Nakamura, a graceful woman in a floral kimono with her hair in a traditional bun, lights incense sticks before a gleaming gilded altar. Beside her, Tadao Nakamura, a stern man in a crisp linen suit, kneels in prayer on the temple floor. Behind them, several young Nakamura children in simple cotton outfits bow respectfully. The scene is bathed in bright morning sunlight with distant sugarcane fields visible through the wooden temple doors.</p></details>
-</li>
-<li class="panel">
-  <h3>1937 Kenji at the Cannery</h3>
-  <p class="meta"><span class="year">1937</span> · work · people: Kenji Nakamura, cannery line women</p>
-  <p class="paragraph">Grown into a young man, Kenji worked at a pineapple cannery in Honolulu. He stood at a long stainless-steel line trimming fruit, his sleeves rolled to the elbow, an apron over his work shirt. Women in white caps and aprons worked beside him, slicing and packing the bright yellow rings.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a sturdy young man in his twenties wearing a grease-stained work shirt with sleeves rolled high and a heavy canvas apron, stands at a long stainless-steel industrial line. Beside him, several cannery line women in crisp white caps and modest aprons rhythmically slice and pack vibrant golden pineapple rings. The atmosphere is humid and busy with the sharp, sweet scent of fruit under bright, clinical fluorescent lighting in a bustling Honolulu factory.</p></details>
-</li>
-<li class="panel">
-  <h3>1938 Kenji Meets Leilani Kealoha</h3>
-  <p class="meta"><span class="year">1938</span> · courtship · people: Kenji Nakamura, Leilani Kealoha, luau guests</p>
-  <p class="paragraph">At a Saturday luau on a beach near Waikiki, Kenji met Leilani Kealoha, a hula dancer from a Hawaiian family of fishermen and chanters. She stood barefoot on lauhala mats, a plumeria lei around her neck, a ti-leaf skirt at her hips. He stood at the edge of the gathering, unsure whether to approach.</p>
-  <details><summary>Image prompt</summary><p>At a sun-drenched Waikiki beach luau, Leilani Kealoha, a young graceful Hawaiian woman with flowing dark hair and a vibrant ti-leaf skirt, performs on woven lauhala mats. Kenji Nakamura, a shy Japanese man in a crisp white linen shirt and trousers, watches her from the edge of the crowd. Nearby, festive luau guests lounge on the sand amidst palm trees and scattered plumeria flowers under a bright midday tropical sun.</p></details>
-</li>
-<li class="panel">
-  <h3>1939 Kenji and Leilani United</h3>
-  <p class="meta"><span class="year">1939</span> · marriage · people: Kenji Nakamura, Leilani Kealoha, Shinto priest, Hawaiian kahu</p>
-  <p class="paragraph">In 1939 Kenji and Leilani married in a ceremony that joined two traditions. A Shinto priest in white robes purified the couple with a sakaki branch while a Hawaiian kahu blessed them with ti-leaf salt water. Leilani wore a white holokū; a lei and a cup of sake rested on the low altar between them.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young man in a dark tailored suit, stands beside Leilani Kealoha, who wears a traditional white silk holokū and a fragrant plumeria lei. They kneel before a low altar in a sunlit outdoor space. A Shinto priest in flowing white robes holds a sakaki branch, while a Hawaiian kahu in simple ceremonial attire offers a blessing with ti-leaf water. A small wooden cup of sake rests on the altar between them.</p></details>
-</li>
-<li class="panel">
-  <h3>1941 Tadao Taken From Home</h3>
-  <p class="meta"><span class="year">1941</span> · history · people: Tadao Nakamura, FBI agents, Sachiko Nakamura, Leilani Kealoha, Nakamura children</p>
-  <p class="paragraph">On a December afternoon in 1941, FBI agents in dark coats escorted Tadao from his plantation house as his family watched from the doorway. Sachiko, gray-haired, held Leilani&#x27;s arm; the children stood silent. Smoke still rose faintly over Pearl Harbor in the distance behind them.</p>
-  <details><summary>Image prompt</summary><p>On a gloomy December afternoon, Tadao Nakamura, a middle-aged Japanese-American farmer in a crisp white shirt, is escorted by two stoic FBI agents in heavy wool trench coats. Standing in the doorway of their plantation home, elderly Sachiko Nakamura with silver-streaked hair and her young adult granddaughter Leilani Kealoha wearing a floral tea dress look on with fearful expressions, while the small, silent Nakamura children cluster behind them. Faint, dark smoke rises in the distant horizon.</p></details>
-</li>
-<li class="panel">
-  <h3>1944 Kenji Amidst Italian Ruins</h3>
-  <p class="meta"><span class="year">1944</span> · service · people: Kenji Nakamura, 442nd RCT nisei soldiers</p>
-  <p class="paragraph">Kenji, in the uniform of the 442nd Regimental Combat Team, moved with his squad through a rubbled Italian village in 1944. He carried a rifle and a medic&#x27;s pack; a small folded photograph of Leilani was tucked inside his helmet liner. Other nisei soldiers advanced along the shattered street.</p>
-  <details><summary>Image prompt</summary><p>Kenji Nakamura, a young Japanese-American soldier in his early twenties with a focused gaze and a dusty 442nd Regimental Combat Team uniform, cautiously steps through a crumbling stone street in a war-torn Italian village. Behind him, other nisei soldiers in standard-issue olive drab gear move alertly through the debris. The late afternoon sun casts long shadows over shattered masonry and broken timber, creating a somber, gritty, and atmospheric historical scene.</p></details>
-</li>
-<li class="panel">
-  <h3>1952 Kenji and Leilani in Waikiki</h3>
-  <p class="meta"><span class="year">1952</span> · legacy · people: Kenji Nakamura, Leilani Kealoha, Leilani&#x27;s hula students, Waikiki tourists</p>
-  <p class="paragraph">In 1952 Kenji opened a surfboard shop on a Waikiki side street, its painted sign reading NAKAMURA-KEALOHA SURF &amp; REPAIR. He stood in the open doorway shaping a redwood board with a hand plane while Leilani, now a hula teacher, led a small class of children on the lanai behind. Tourists passed on the sidewalk beyond.</p>
-  <details><summary>Image prompt</summary><p>Inside a sun-drenched Waikiki shop in 1952, Kenji Nakamura, a lean middle-aged man in a rolled-sleeve shirt, focusely shapes a dark redwood surfboard with a hand plane. Through an open doorway, Leilani Kealoha, an elegant woman in a floral holoku dress, gracefully teaches a group of young hula students on the wooden lanai. In the background, diverse 1950s tourists walk along a bustling, sun-baked tropical side street.</p></details>
-</li>
-<li class="panel">
-  <h3>2010 Family Farewell at Sunset</h3>
-  <p class="meta"><span class="year">2010</span> · legacy · people: outrigger-paddling grandchild, Tokyo-bound grandchild, outrigger crew, Nakamura-Kealoha great-granddaughter</p>
-  <p class="paragraph">Years later the family gathered on the beach at sunset. One grandchild paddled offshore in a Hawaiian outrigger with his crew; another, in a dark suit, held a plane ticket to Tokyo for an engineering job; a small great-granddaughter in a white dress held a lei in one hand and a folded paper crane in the other. The sky behind them was the color of fire.</p>
-  <details><summary>Image prompt</summary><p>On a tropical beach at sunset, an outrigger-paddling grandchild and his athletic outrigger crew glide across fiery orange waters. Nearby, a Tokyo-bound grandchild in a sharp, modern dark suit stands on the golden sand, clutching a plane ticket. Beside him, Nakamura-Kealoha great-granddaughter, a young girl in a delicate white cotton dress, stands patiently holding a fragrant plumeria lei and a meticulously folded paper crane. The sky is ablaze with deep crimson clouds.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Ricci-Bradford Chronicle <span class="style">bayeux</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/ricci-bradford-1880-bayeux-poisson.jpg" alt="The Ricci-Bradford Chronicle rendered in bayeux style">
+  <h2>The Ricci-Bradford Chronicle <span class="style-descriptor">— Watercolor style</span></h2>
+  <img class="hero" loading="lazy" src="tapestries/ricci-bradford-1880-watercolor.jpg" alt="The Ricci-Bradford Chronicle rendered in Watercolor style">
   <details>
     <summary>12 panels</summary>
     <ol class="panels">
@@ -1118,332 +492,8 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
   </details>
 </section>
 <section class="tapestry">
-  <h2>The Ricci-Bradford Chronicle <span class="style">hanna-barbera</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/ricci-bradford-1880-hanna-barbera-poisson.jpg" alt="The Ricci-Bradford Chronicle rendered in hanna-barbera style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1880 The Ricci Family Arrival</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Tommaso Ricci, Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci, immigration officials, fellow immigrants</p>
-  <p class="paragraph">In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy middle-aged stonemason in a worn woolen coat, stands on the bustling Castle Garden dock clutching a small linen pouch. Beside him, Lucia Ricci, a tired but hopeful woman in a simple floral apron and headscarf, holds Salvatore Ricci, a swaddled infant. Their children, Giuseppe, Rosa, and Carmela, cluster nearby amidst two wooden trunks. Steam rises around immigration officials and fellow immigrants in the hazy, crowded New York harbor at dawn.</p></details>
-</li>
-<li class="panel">
-  <h3>1880 The Riccis on Elizabeth Street</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci</p>
-  <p class="paragraph">The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor.</p>
-  <details><summary>Image prompt</summary><p>Lucia Ricci, a tired woman in her twenties wearing a tattered wool shawl, stands by a narrow, grimy window in a cramped room overlooking a New York street. She holds her infant, Salvatore Ricci, wrapped tightly in a frayed blanket. Nearby, the older children, Giuseppe Ricci, Rosa Ricci, and Carmela Ricci, all dressed in dusty, worn immigrants&#x27; clothing, kneel on rough wooden floorboards unpacking a battered metal trunk, bathed in bleak afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 Tommaso Shapes the Bridge</h3>
-  <p class="meta"><span class="year">1882</span> · labor · people: Tommaso Ricci, fellow stonemasons, bridge laborers</p>
-  <p class="paragraph">Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy man in his thirties wearing a grime-streaked leather apron over a rolled-sleeve wool shirt, stands on a massive stone pier. He grips a mallet and steel chisel to carve a granite block. Nearby, fellow stonemasons in weathered work clothes and bridge laborers navigate intricate wooden scaffolds and thick hemp ropes suspended over the misty East River, set against a bright, hazy late morning sky during the city&#x27;s industrial expansion</p></details>
-</li>
-<li class="panel">
-  <h3>1886 Salvatore Negotiates the Coal</h3>
-  <p class="meta"><span class="year">1886</span> · childhood · people: Salvatore Ricci, Tommaso Ricci, Lucia Ricci, Irish delivery boy</p>
-  <p class="paragraph">Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1886 New York tenement stoop, six-year-old Salvatore Ricci, a bright-eyed boy in a flat cap and patched knickers, points at a crumpled rent notice. Beside him, his father Tommaso Ricci, a weary laborer with rolled-up sleeves and dusty trousers, watches the Irish delivery boy, a freckled teenager in a tattered wool vest, holding a heavy coal sack. Mother Lucia Ricci stands in the shadowed doorway, wearing a worn floral apron, gazing at her son with a mix of maternal pride and apprehension.</p></details>
-</li>
-<li class="panel">
-  <h3>1898 The Ricci Siblings At Work</h3>
-  <p class="meta"><span class="year">1898</span> · family · people: Giuseppe Ricci, Rosa Ricci, Rosa&#x27;s husband, Rosa&#x27;s children, Carmela Ricci</p>
-  <p class="paragraph">The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door.</p>
-  <details><summary>Image prompt</summary><p>A bustling 1898 New York City street scene showcasing three distinct locations. Giuseppe Ricci, a muscular man in a dusty flat cap and linen shirt, balances on a wooden scaffold laying bricks. Nearby, Rosa Ricci, a young mother in a worn apron, stands at a fruit stall beside her husband in a wool vest and her two small children in simple rags. Finally, Carmela Ricci sits inside a sunlit shop, hunched over a heavy cast-iron sewing machine.</p></details>
-</li>
-<li class="panel">
-  <h3>1900 Salvatore Ricci at College</h3>
-  <p class="meta"><span class="year">1900</span> · education · people: Salvatore Ricci, City College students</p>
-  <p class="paragraph">Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college&#x27;s gothic arches and tall windows, and other students passed in twos and threes.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in his early twenties with intense eyes wearing a fraying wool jacket and a stiff starched white collar, sits on a weathered stone bench holding an open Dickens novel. Beside him lies a small paper-wrapped lunch. In the blurred background, City College students in period academic attire walk past ornate gothic stone arches and towering stained-glass windows under the soft light of a bright afternoon.</p></details>
-</li>
-<li class="panel">
-  <h3>1902 Salvatore and Eleanor Ledger</h3>
-  <p class="meta"><span class="year">1902</span> · work · people: Salvatore Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim 1902 Manhattan counting room with high ceilings, Salvatore Ricci, a middle-aged man in a crisp white stiff collar and dark vest, leans over a tall wooden desk. He gestures toward an open, leather-bound ledger. Across from him, Eleanor Bradford, a focused young bookkeeper wearing a modest dark floor-length skirt and high-collared blouse, inspects the page intently. A warm, flickering gaslight fixture hangs low above them, casting deep shadows against the crowded office walls.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Salvatore and Eleanor Wed</h3>
-  <p class="meta"><span class="year">1906</span> · marriage · people: Salvatore Ricci, Eleanor Bradford, City Hall clerk, Carmela Ricci, Prudence Bradford</p>
-  <p class="paragraph">Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore&#x27;s sister Carmela in a dark dress, and Eleanor&#x27;s cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in a sharp charcoal suit, stands next to Eleanor Bradford, a bride in a high-collared white lace dress, before an elderly City Hall clerk wearing spectacles at a marble desk. Carmela Ricci, a somber woman in a dark mourning dress, and Prudence Bradford, a modest woman in a plain wool coat, watch closely. A lone, crumpled telegram resting on a polished wooden table bears the stark word NO</p></details>
-</li>
-<li class="panel">
-  <h3>1910 Lucia and Eleanor Rolling Pasta</h3>
-  <p class="meta"><span class="year">1910</span> · family · people: Lucia Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit, narrow Brooklyn kitchen, Lucia Ricci, a middle-aged woman with greying hair in a simple linen apron, stands beside Eleanor Bradford, a young woman in her twenties wearing a crisp high-collared blouse. They are kneading dough together on a rustic wooden table. Beside them, a small green notebook labeled Receipts, Ricci rests near a bubbling pot of fish chowder. Bunches of garlic and dried herbs hang from the low wooden ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1908 Mrs. Bradford Visits Brooklyn</h3>
-  <p class="meta"><span class="year">1908</span> · family · people: Mrs. Bradford (Eleanor&#x27;s mother), Eleanor Bradford, Lucia Ricci</p>
-  <p class="paragraph">In 1908, Eleanor&#x27;s Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet.</p>
-  <details><summary>Image prompt</summary><p>Mrs. Bradford, a stern woman in her sixties wearing a structured dark traveling dress and a feathered hat, sits rigidly on a horsehair settee holding a delicate porcelain coffee cup. Opposite her, Eleanor Bradford, a refined young woman in an Edwardian blouse, and Lucia Ricci, a dark-haired woman in a simple lace-trimmed dress, sit attentively. A silver coffee service and a plate of biscotti rest on a low mahogany table between them in a quiet, formal parlor</p></details>
-</li>
-<li class="panel">
-  <h3>1915 The Ricci Family Portrait</h3>
-  <p class="meta"><span class="year">1915</span> · children · people: Salvatore Ricci, Eleanor Bradford, Thomas Ricci, Prudence Ricci, Annie (Lucia Anne) Ricci</p>
-  <p class="paragraph">Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother&#x27;s hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway.</p>
-  <details><summary>Image prompt</summary><p>In front of a brick Brooklyn brownstone, Salvatore Ricci, a tall man in a crisp wool vest, stands beside Eleanor Bradford, an elegant woman in a long linen dress. Their children are grouped nearby: eight-year-old Thomas Ricci clutching a schoolbook, five-year-old Prudence Ricci holding Eleanor&#x27;s hand, and toddler Annie Ricci holding a worn rag doll. The morning sunlight illuminates their faces, with the dark, open doorway of the narrow hallway visible behind them.</p></details>
-</li>
-<li class="panel">
-  <h3>1920 The Ricci Children&#x27;s Journey</h3>
-  <p class="meta"><span class="year">1920</span> · heritage · people: Thomas Ricci, Prudence Ricci, Annie Ricci, Bradford great-aunts, Ricci cousins</p>
-  <p class="paragraph">A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp.</p>
-  <details><summary>Image prompt</summary><p>A split scene composition. On the left, Thomas Ricci, Prudence Ricci, and Annie Ricci, young siblings in linen summer sailor suits, sail a wooden toy boat in Plymouth Harbor with two elderly Bradford great-aunts in long Victorian dresses near a lighthouse. On the right, the same three siblings in formal Sunday attire join their exuberant Italian Ricci cousins in rustic clothes to shape golden struffoli dough at a long, candlelit Bronx dinner table under a warm hanging lamp.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Ricci-Bradford Chronicle <span class="style">rembrandt</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/ricci-bradford-1880-rembrandt-poisson.jpg" alt="The Ricci-Bradford Chronicle rendered in rembrandt style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1880 The Ricci Family Arrival</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Tommaso Ricci, Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci, immigration officials, fellow immigrants</p>
-  <p class="paragraph">In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy middle-aged stonemason in a worn woolen coat, stands on the bustling Castle Garden dock clutching a small linen pouch. Beside him, Lucia Ricci, a tired but hopeful woman in a simple floral apron and headscarf, holds Salvatore Ricci, a swaddled infant. Their children, Giuseppe, Rosa, and Carmela, cluster nearby amidst two wooden trunks. Steam rises around immigration officials and fellow immigrants in the hazy, crowded New York harbor at dawn.</p></details>
-</li>
-<li class="panel">
-  <h3>1880 The Riccis on Elizabeth Street</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci</p>
-  <p class="paragraph">The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor.</p>
-  <details><summary>Image prompt</summary><p>Lucia Ricci, a tired woman in her twenties wearing a tattered wool shawl, stands by a narrow, grimy window in a cramped room overlooking a New York street. She holds her infant, Salvatore Ricci, wrapped tightly in a frayed blanket. Nearby, the older children, Giuseppe Ricci, Rosa Ricci, and Carmela Ricci, all dressed in dusty, worn immigrants&#x27; clothing, kneel on rough wooden floorboards unpacking a battered metal trunk, bathed in bleak afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 Tommaso Shapes the Bridge</h3>
-  <p class="meta"><span class="year">1882</span> · labor · people: Tommaso Ricci, fellow stonemasons, bridge laborers</p>
-  <p class="paragraph">Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy man in his thirties wearing a grime-streaked leather apron over a rolled-sleeve wool shirt, stands on a massive stone pier. He grips a mallet and steel chisel to carve a granite block. Nearby, fellow stonemasons in weathered work clothes and bridge laborers navigate intricate wooden scaffolds and thick hemp ropes suspended over the misty East River, set against a bright, hazy late morning sky during the city&#x27;s industrial expansion</p></details>
-</li>
-<li class="panel">
-  <h3>1886 Salvatore Negotiates the Coal</h3>
-  <p class="meta"><span class="year">1886</span> · childhood · people: Salvatore Ricci, Tommaso Ricci, Lucia Ricci, Irish delivery boy</p>
-  <p class="paragraph">Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1886 New York tenement stoop, six-year-old Salvatore Ricci, a bright-eyed boy in a flat cap and patched knickers, points at a crumpled rent notice. Beside him, his father Tommaso Ricci, a weary laborer with rolled-up sleeves and dusty trousers, watches the Irish delivery boy, a freckled teenager in a tattered wool vest, holding a heavy coal sack. Mother Lucia Ricci stands in the shadowed doorway, wearing a worn floral apron, gazing at her son with a mix of maternal pride and apprehension.</p></details>
-</li>
-<li class="panel">
-  <h3>1898 The Ricci Siblings At Work</h3>
-  <p class="meta"><span class="year">1898</span> · family · people: Giuseppe Ricci, Rosa Ricci, Rosa&#x27;s husband, Rosa&#x27;s children, Carmela Ricci</p>
-  <p class="paragraph">The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door.</p>
-  <details><summary>Image prompt</summary><p>A bustling 1898 New York City street scene showcasing three distinct locations. Giuseppe Ricci, a muscular man in a dusty flat cap and linen shirt, balances on a wooden scaffold laying bricks. Nearby, Rosa Ricci, a young mother in a worn apron, stands at a fruit stall beside her husband in a wool vest and her two small children in simple rags. Finally, Carmela Ricci sits inside a sunlit shop, hunched over a heavy cast-iron sewing machine.</p></details>
-</li>
-<li class="panel">
-  <h3>1900 Salvatore Ricci at College</h3>
-  <p class="meta"><span class="year">1900</span> · education · people: Salvatore Ricci, City College students</p>
-  <p class="paragraph">Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college&#x27;s gothic arches and tall windows, and other students passed in twos and threes.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in his early twenties with intense eyes wearing a fraying wool jacket and a stiff starched white collar, sits on a weathered stone bench holding an open Dickens novel. Beside him lies a small paper-wrapped lunch. In the blurred background, City College students in period academic attire walk past ornate gothic stone arches and towering stained-glass windows under the soft light of a bright afternoon.</p></details>
-</li>
-<li class="panel">
-  <h3>1902 Salvatore and Eleanor Ledger</h3>
-  <p class="meta"><span class="year">1902</span> · work · people: Salvatore Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim 1902 Manhattan counting room with high ceilings, Salvatore Ricci, a middle-aged man in a crisp white stiff collar and dark vest, leans over a tall wooden desk. He gestures toward an open, leather-bound ledger. Across from him, Eleanor Bradford, a focused young bookkeeper wearing a modest dark floor-length skirt and high-collared blouse, inspects the page intently. A warm, flickering gaslight fixture hangs low above them, casting deep shadows against the crowded office walls.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Salvatore and Eleanor Wed</h3>
-  <p class="meta"><span class="year">1906</span> · marriage · people: Salvatore Ricci, Eleanor Bradford, City Hall clerk, Carmela Ricci, Prudence Bradford</p>
-  <p class="paragraph">Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore&#x27;s sister Carmela in a dark dress, and Eleanor&#x27;s cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in a sharp charcoal suit, stands next to Eleanor Bradford, a bride in a high-collared white lace dress, before an elderly City Hall clerk wearing spectacles at a marble desk. Carmela Ricci, a somber woman in a dark mourning dress, and Prudence Bradford, a modest woman in a plain wool coat, watch closely. A lone, crumpled telegram resting on a polished wooden table bears the stark word NO</p></details>
-</li>
-<li class="panel">
-  <h3>1910 Lucia and Eleanor Rolling Pasta</h3>
-  <p class="meta"><span class="year">1910</span> · family · people: Lucia Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit, narrow Brooklyn kitchen, Lucia Ricci, a middle-aged woman with greying hair in a simple linen apron, stands beside Eleanor Bradford, a young woman in her twenties wearing a crisp high-collared blouse. They are kneading dough together on a rustic wooden table. Beside them, a small green notebook labeled Receipts, Ricci rests near a bubbling pot of fish chowder. Bunches of garlic and dried herbs hang from the low wooden ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1908 Mrs. Bradford Visits Brooklyn</h3>
-  <p class="meta"><span class="year">1908</span> · family · people: Mrs. Bradford (Eleanor&#x27;s mother), Eleanor Bradford, Lucia Ricci</p>
-  <p class="paragraph">In 1908, Eleanor&#x27;s Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet.</p>
-  <details><summary>Image prompt</summary><p>Mrs. Bradford, a stern woman in her sixties wearing a structured dark traveling dress and a feathered hat, sits rigidly on a horsehair settee holding a delicate porcelain coffee cup. Opposite her, Eleanor Bradford, a refined young woman in an Edwardian blouse, and Lucia Ricci, a dark-haired woman in a simple lace-trimmed dress, sit attentively. A silver coffee service and a plate of biscotti rest on a low mahogany table between them in a quiet, formal parlor</p></details>
-</li>
-<li class="panel">
-  <h3>1915 The Ricci Family Portrait</h3>
-  <p class="meta"><span class="year">1915</span> · children · people: Salvatore Ricci, Eleanor Bradford, Thomas Ricci, Prudence Ricci, Annie (Lucia Anne) Ricci</p>
-  <p class="paragraph">Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother&#x27;s hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway.</p>
-  <details><summary>Image prompt</summary><p>In front of a brick Brooklyn brownstone, Salvatore Ricci, a tall man in a crisp wool vest, stands beside Eleanor Bradford, an elegant woman in a long linen dress. Their children are grouped nearby: eight-year-old Thomas Ricci clutching a schoolbook, five-year-old Prudence Ricci holding Eleanor&#x27;s hand, and toddler Annie Ricci holding a worn rag doll. The morning sunlight illuminates their faces, with the dark, open doorway of the narrow hallway visible behind them.</p></details>
-</li>
-<li class="panel">
-  <h3>1920 The Ricci Children&#x27;s Journey</h3>
-  <p class="meta"><span class="year">1920</span> · heritage · people: Thomas Ricci, Prudence Ricci, Annie Ricci, Bradford great-aunts, Ricci cousins</p>
-  <p class="paragraph">A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp.</p>
-  <details><summary>Image prompt</summary><p>A split scene composition. On the left, Thomas Ricci, Prudence Ricci, and Annie Ricci, young siblings in linen summer sailor suits, sail a wooden toy boat in Plymouth Harbor with two elderly Bradford great-aunts in long Victorian dresses near a lighthouse. On the right, the same three siblings in formal Sunday attire join their exuberant Italian Ricci cousins in rustic clothes to shape golden struffoli dough at a long, candlelit Bronx dinner table under a warm hanging lamp.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Ricci-Bradford Chronicle <span class="style">ukiyo-e</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/ricci-bradford-1880-ukiyo-e-poisson.jpg" alt="The Ricci-Bradford Chronicle rendered in ukiyo-e style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1880 The Ricci Family Arrival</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Tommaso Ricci, Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci, immigration officials, fellow immigrants</p>
-  <p class="paragraph">In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy middle-aged stonemason in a worn woolen coat, stands on the bustling Castle Garden dock clutching a small linen pouch. Beside him, Lucia Ricci, a tired but hopeful woman in a simple floral apron and headscarf, holds Salvatore Ricci, a swaddled infant. Their children, Giuseppe, Rosa, and Carmela, cluster nearby amidst two wooden trunks. Steam rises around immigration officials and fellow immigrants in the hazy, crowded New York harbor at dawn.</p></details>
-</li>
-<li class="panel">
-  <h3>1880 The Riccis on Elizabeth Street</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci</p>
-  <p class="paragraph">The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor.</p>
-  <details><summary>Image prompt</summary><p>Lucia Ricci, a tired woman in her twenties wearing a tattered wool shawl, stands by a narrow, grimy window in a cramped room overlooking a New York street. She holds her infant, Salvatore Ricci, wrapped tightly in a frayed blanket. Nearby, the older children, Giuseppe Ricci, Rosa Ricci, and Carmela Ricci, all dressed in dusty, worn immigrants&#x27; clothing, kneel on rough wooden floorboards unpacking a battered metal trunk, bathed in bleak afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 Tommaso Shapes the Bridge</h3>
-  <p class="meta"><span class="year">1882</span> · labor · people: Tommaso Ricci, fellow stonemasons, bridge laborers</p>
-  <p class="paragraph">Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy man in his thirties wearing a grime-streaked leather apron over a rolled-sleeve wool shirt, stands on a massive stone pier. He grips a mallet and steel chisel to carve a granite block. Nearby, fellow stonemasons in weathered work clothes and bridge laborers navigate intricate wooden scaffolds and thick hemp ropes suspended over the misty East River, set against a bright, hazy late morning sky during the city&#x27;s industrial expansion</p></details>
-</li>
-<li class="panel">
-  <h3>1886 Salvatore Negotiates the Coal</h3>
-  <p class="meta"><span class="year">1886</span> · childhood · people: Salvatore Ricci, Tommaso Ricci, Lucia Ricci, Irish delivery boy</p>
-  <p class="paragraph">Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1886 New York tenement stoop, six-year-old Salvatore Ricci, a bright-eyed boy in a flat cap and patched knickers, points at a crumpled rent notice. Beside him, his father Tommaso Ricci, a weary laborer with rolled-up sleeves and dusty trousers, watches the Irish delivery boy, a freckled teenager in a tattered wool vest, holding a heavy coal sack. Mother Lucia Ricci stands in the shadowed doorway, wearing a worn floral apron, gazing at her son with a mix of maternal pride and apprehension.</p></details>
-</li>
-<li class="panel">
-  <h3>1898 The Ricci Siblings At Work</h3>
-  <p class="meta"><span class="year">1898</span> · family · people: Giuseppe Ricci, Rosa Ricci, Rosa&#x27;s husband, Rosa&#x27;s children, Carmela Ricci</p>
-  <p class="paragraph">The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door.</p>
-  <details><summary>Image prompt</summary><p>A bustling 1898 New York City street scene showcasing three distinct locations. Giuseppe Ricci, a muscular man in a dusty flat cap and linen shirt, balances on a wooden scaffold laying bricks. Nearby, Rosa Ricci, a young mother in a worn apron, stands at a fruit stall beside her husband in a wool vest and her two small children in simple rags. Finally, Carmela Ricci sits inside a sunlit shop, hunched over a heavy cast-iron sewing machine.</p></details>
-</li>
-<li class="panel">
-  <h3>1900 Salvatore Ricci at College</h3>
-  <p class="meta"><span class="year">1900</span> · education · people: Salvatore Ricci, City College students</p>
-  <p class="paragraph">Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college&#x27;s gothic arches and tall windows, and other students passed in twos and threes.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in his early twenties with intense eyes wearing a fraying wool jacket and a stiff starched white collar, sits on a weathered stone bench holding an open Dickens novel. Beside him lies a small paper-wrapped lunch. In the blurred background, City College students in period academic attire walk past ornate gothic stone arches and towering stained-glass windows under the soft light of a bright afternoon.</p></details>
-</li>
-<li class="panel">
-  <h3>1902 Salvatore and Eleanor Ledger</h3>
-  <p class="meta"><span class="year">1902</span> · work · people: Salvatore Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim 1902 Manhattan counting room with high ceilings, Salvatore Ricci, a middle-aged man in a crisp white stiff collar and dark vest, leans over a tall wooden desk. He gestures toward an open, leather-bound ledger. Across from him, Eleanor Bradford, a focused young bookkeeper wearing a modest dark floor-length skirt and high-collared blouse, inspects the page intently. A warm, flickering gaslight fixture hangs low above them, casting deep shadows against the crowded office walls.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Salvatore and Eleanor Wed</h3>
-  <p class="meta"><span class="year">1906</span> · marriage · people: Salvatore Ricci, Eleanor Bradford, City Hall clerk, Carmela Ricci, Prudence Bradford</p>
-  <p class="paragraph">Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore&#x27;s sister Carmela in a dark dress, and Eleanor&#x27;s cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in a sharp charcoal suit, stands next to Eleanor Bradford, a bride in a high-collared white lace dress, before an elderly City Hall clerk wearing spectacles at a marble desk. Carmela Ricci, a somber woman in a dark mourning dress, and Prudence Bradford, a modest woman in a plain wool coat, watch closely. A lone, crumpled telegram resting on a polished wooden table bears the stark word NO</p></details>
-</li>
-<li class="panel">
-  <h3>1910 Lucia and Eleanor Rolling Pasta</h3>
-  <p class="meta"><span class="year">1910</span> · family · people: Lucia Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit, narrow Brooklyn kitchen, Lucia Ricci, a middle-aged woman with greying hair in a simple linen apron, stands beside Eleanor Bradford, a young woman in her twenties wearing a crisp high-collared blouse. They are kneading dough together on a rustic wooden table. Beside them, a small green notebook labeled Receipts, Ricci rests near a bubbling pot of fish chowder. Bunches of garlic and dried herbs hang from the low wooden ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1908 Mrs. Bradford Visits Brooklyn</h3>
-  <p class="meta"><span class="year">1908</span> · family · people: Mrs. Bradford (Eleanor&#x27;s mother), Eleanor Bradford, Lucia Ricci</p>
-  <p class="paragraph">In 1908, Eleanor&#x27;s Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet.</p>
-  <details><summary>Image prompt</summary><p>Mrs. Bradford, a stern woman in her sixties wearing a structured dark traveling dress and a feathered hat, sits rigidly on a horsehair settee holding a delicate porcelain coffee cup. Opposite her, Eleanor Bradford, a refined young woman in an Edwardian blouse, and Lucia Ricci, a dark-haired woman in a simple lace-trimmed dress, sit attentively. A silver coffee service and a plate of biscotti rest on a low mahogany table between them in a quiet, formal parlor</p></details>
-</li>
-<li class="panel">
-  <h3>1915 The Ricci Family Portrait</h3>
-  <p class="meta"><span class="year">1915</span> · children · people: Salvatore Ricci, Eleanor Bradford, Thomas Ricci, Prudence Ricci, Annie (Lucia Anne) Ricci</p>
-  <p class="paragraph">Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother&#x27;s hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway.</p>
-  <details><summary>Image prompt</summary><p>In front of a brick Brooklyn brownstone, Salvatore Ricci, a tall man in a crisp wool vest, stands beside Eleanor Bradford, an elegant woman in a long linen dress. Their children are grouped nearby: eight-year-old Thomas Ricci clutching a schoolbook, five-year-old Prudence Ricci holding Eleanor&#x27;s hand, and toddler Annie Ricci holding a worn rag doll. The morning sunlight illuminates their faces, with the dark, open doorway of the narrow hallway visible behind them.</p></details>
-</li>
-<li class="panel">
-  <h3>1920 The Ricci Children&#x27;s Journey</h3>
-  <p class="meta"><span class="year">1920</span> · heritage · people: Thomas Ricci, Prudence Ricci, Annie Ricci, Bradford great-aunts, Ricci cousins</p>
-  <p class="paragraph">A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp.</p>
-  <details><summary>Image prompt</summary><p>A split scene composition. On the left, Thomas Ricci, Prudence Ricci, and Annie Ricci, young siblings in linen summer sailor suits, sail a wooden toy boat in Plymouth Harbor with two elderly Bradford great-aunts in long Victorian dresses near a lighthouse. On the right, the same three siblings in formal Sunday attire join their exuberant Italian Ricci cousins in rustic clothes to shape golden struffoli dough at a long, candlelit Bronx dinner table under a warm hanging lamp.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Ricci-Bradford Chronicle <span class="style">watercolor</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/ricci-bradford-1880-watercolor-poisson.jpg" alt="The Ricci-Bradford Chronicle rendered in watercolor style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1880 The Ricci Family Arrival</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Tommaso Ricci, Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci, immigration officials, fellow immigrants</p>
-  <p class="paragraph">In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy middle-aged stonemason in a worn woolen coat, stands on the bustling Castle Garden dock clutching a small linen pouch. Beside him, Lucia Ricci, a tired but hopeful woman in a simple floral apron and headscarf, holds Salvatore Ricci, a swaddled infant. Their children, Giuseppe, Rosa, and Carmela, cluster nearby amidst two wooden trunks. Steam rises around immigration officials and fellow immigrants in the hazy, crowded New York harbor at dawn.</p></details>
-</li>
-<li class="panel">
-  <h3>1880 The Riccis on Elizabeth Street</h3>
-  <p class="meta"><span class="year">1880</span> · immigration · people: Lucia Ricci, Salvatore Ricci (infant), Giuseppe Ricci, Rosa Ricci, Carmela Ricci</p>
-  <p class="paragraph">The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor.</p>
-  <details><summary>Image prompt</summary><p>Lucia Ricci, a tired woman in her twenties wearing a tattered wool shawl, stands by a narrow, grimy window in a cramped room overlooking a New York street. She holds her infant, Salvatore Ricci, wrapped tightly in a frayed blanket. Nearby, the older children, Giuseppe Ricci, Rosa Ricci, and Carmela Ricci, all dressed in dusty, worn immigrants&#x27; clothing, kneel on rough wooden floorboards unpacking a battered metal trunk, bathed in bleak afternoon sunlight.</p></details>
-</li>
-<li class="panel">
-  <h3>1882 Tommaso Shapes the Bridge</h3>
-  <p class="meta"><span class="year">1882</span> · labor · people: Tommaso Ricci, fellow stonemasons, bridge laborers</p>
-  <p class="paragraph">Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river.</p>
-  <details><summary>Image prompt</summary><p>Tommaso Ricci, a sturdy man in his thirties wearing a grime-streaked leather apron over a rolled-sleeve wool shirt, stands on a massive stone pier. He grips a mallet and steel chisel to carve a granite block. Nearby, fellow stonemasons in weathered work clothes and bridge laborers navigate intricate wooden scaffolds and thick hemp ropes suspended over the misty East River, set against a bright, hazy late morning sky during the city&#x27;s industrial expansion</p></details>
-</li>
-<li class="panel">
-  <h3>1886 Salvatore Negotiates the Coal</h3>
-  <p class="meta"><span class="year">1886</span> · childhood · people: Salvatore Ricci, Tommaso Ricci, Lucia Ricci, Irish delivery boy</p>
-  <p class="paragraph">Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit 1886 New York tenement stoop, six-year-old Salvatore Ricci, a bright-eyed boy in a flat cap and patched knickers, points at a crumpled rent notice. Beside him, his father Tommaso Ricci, a weary laborer with rolled-up sleeves and dusty trousers, watches the Irish delivery boy, a freckled teenager in a tattered wool vest, holding a heavy coal sack. Mother Lucia Ricci stands in the shadowed doorway, wearing a worn floral apron, gazing at her son with a mix of maternal pride and apprehension.</p></details>
-</li>
-<li class="panel">
-  <h3>1898 The Ricci Siblings At Work</h3>
-  <p class="meta"><span class="year">1898</span> · family · people: Giuseppe Ricci, Rosa Ricci, Rosa&#x27;s husband, Rosa&#x27;s children, Carmela Ricci</p>
-  <p class="paragraph">The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door.</p>
-  <details><summary>Image prompt</summary><p>A bustling 1898 New York City street scene showcasing three distinct locations. Giuseppe Ricci, a muscular man in a dusty flat cap and linen shirt, balances on a wooden scaffold laying bricks. Nearby, Rosa Ricci, a young mother in a worn apron, stands at a fruit stall beside her husband in a wool vest and her two small children in simple rags. Finally, Carmela Ricci sits inside a sunlit shop, hunched over a heavy cast-iron sewing machine.</p></details>
-</li>
-<li class="panel">
-  <h3>1900 Salvatore Ricci at College</h3>
-  <p class="meta"><span class="year">1900</span> · education · people: Salvatore Ricci, City College students</p>
-  <p class="paragraph">Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college&#x27;s gothic arches and tall windows, and other students passed in twos and threes.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in his early twenties with intense eyes wearing a fraying wool jacket and a stiff starched white collar, sits on a weathered stone bench holding an open Dickens novel. Beside him lies a small paper-wrapped lunch. In the blurred background, City College students in period academic attire walk past ornate gothic stone arches and towering stained-glass windows under the soft light of a bright afternoon.</p></details>
-</li>
-<li class="panel">
-  <h3>1902 Salvatore and Eleanor Ledger</h3>
-  <p class="meta"><span class="year">1902</span> · work · people: Salvatore Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead.</p>
-  <details><summary>Image prompt</summary><p>Inside a dim 1902 Manhattan counting room with high ceilings, Salvatore Ricci, a middle-aged man in a crisp white stiff collar and dark vest, leans over a tall wooden desk. He gestures toward an open, leather-bound ledger. Across from him, Eleanor Bradford, a focused young bookkeeper wearing a modest dark floor-length skirt and high-collared blouse, inspects the page intently. A warm, flickering gaslight fixture hangs low above them, casting deep shadows against the crowded office walls.</p></details>
-</li>
-<li class="panel">
-  <h3>1906 Salvatore and Eleanor Wed</h3>
-  <p class="meta"><span class="year">1906</span> · marriage · people: Salvatore Ricci, Eleanor Bradford, City Hall clerk, Carmela Ricci, Prudence Bradford</p>
-  <p class="paragraph">Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore&#x27;s sister Carmela in a dark dress, and Eleanor&#x27;s cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table.</p>
-  <details><summary>Image prompt</summary><p>Salvatore Ricci, a young man in a sharp charcoal suit, stands next to Eleanor Bradford, a bride in a high-collared white lace dress, before an elderly City Hall clerk wearing spectacles at a marble desk. Carmela Ricci, a somber woman in a dark mourning dress, and Prudence Bradford, a modest woman in a plain wool coat, watch closely. A lone, crumpled telegram resting on a polished wooden table bears the stark word NO</p></details>
-</li>
-<li class="panel">
-  <h3>1910 Lucia and Eleanor Rolling Pasta</h3>
-  <p class="meta"><span class="year">1910</span> · family · people: Lucia Ricci, Eleanor Bradford</p>
-  <p class="paragraph">In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them.</p>
-  <details><summary>Image prompt</summary><p>In a sunlit, narrow Brooklyn kitchen, Lucia Ricci, a middle-aged woman with greying hair in a simple linen apron, stands beside Eleanor Bradford, a young woman in her twenties wearing a crisp high-collared blouse. They are kneading dough together on a rustic wooden table. Beside them, a small green notebook labeled Receipts, Ricci rests near a bubbling pot of fish chowder. Bunches of garlic and dried herbs hang from the low wooden ceiling beams.</p></details>
-</li>
-<li class="panel">
-  <h3>1908 Mrs. Bradford Visits Brooklyn</h3>
-  <p class="meta"><span class="year">1908</span> · family · people: Mrs. Bradford (Eleanor&#x27;s mother), Eleanor Bradford, Lucia Ricci</p>
-  <p class="paragraph">In 1908, Eleanor&#x27;s Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet.</p>
-  <details><summary>Image prompt</summary><p>Mrs. Bradford, a stern woman in her sixties wearing a structured dark traveling dress and a feathered hat, sits rigidly on a horsehair settee holding a delicate porcelain coffee cup. Opposite her, Eleanor Bradford, a refined young woman in an Edwardian blouse, and Lucia Ricci, a dark-haired woman in a simple lace-trimmed dress, sit attentively. A silver coffee service and a plate of biscotti rest on a low mahogany table between them in a quiet, formal parlor</p></details>
-</li>
-<li class="panel">
-  <h3>1915 The Ricci Family Portrait</h3>
-  <p class="meta"><span class="year">1915</span> · children · people: Salvatore Ricci, Eleanor Bradford, Thomas Ricci, Prudence Ricci, Annie (Lucia Anne) Ricci</p>
-  <p class="paragraph">Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother&#x27;s hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway.</p>
-  <details><summary>Image prompt</summary><p>In front of a brick Brooklyn brownstone, Salvatore Ricci, a tall man in a crisp wool vest, stands beside Eleanor Bradford, an elegant woman in a long linen dress. Their children are grouped nearby: eight-year-old Thomas Ricci clutching a schoolbook, five-year-old Prudence Ricci holding Eleanor&#x27;s hand, and toddler Annie Ricci holding a worn rag doll. The morning sunlight illuminates their faces, with the dark, open doorway of the narrow hallway visible behind them.</p></details>
-</li>
-<li class="panel">
-  <h3>1920 The Ricci Children&#x27;s Journey</h3>
-  <p class="meta"><span class="year">1920</span> · heritage · people: Thomas Ricci, Prudence Ricci, Annie Ricci, Bradford great-aunts, Ricci cousins</p>
-  <p class="paragraph">A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp.</p>
-  <details><summary>Image prompt</summary><p>A split scene composition. On the left, Thomas Ricci, Prudence Ricci, and Annie Ricci, young siblings in linen summer sailor suits, sail a wooden toy boat in Plymouth Harbor with two elderly Bradford great-aunts in long Victorian dresses near a lighthouse. On the right, the same three siblings in formal Sunday attire join their exuberant Italian Ricci cousins in rustic clothes to shape golden struffoli dough at a long, candlelit Bronx dinner table under a warm hanging lamp.</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Rosenfeld-Curiqueo Chronicle <span class="style">rembrandt</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/rosenfeld-curiqueo-1905-rembrandt-poisson.jpg" alt="The Rosenfeld-Curiqueo Chronicle rendered in rembrandt style">
+  <h2>The Rosenfeld-Curiqueo Chronicle <span class="style-descriptor">— Hanna-Barbera style</span></h2>
+  <img class="hero" loading="lazy" src="tapestries/rosenfeld-curiqueo-1905-hanna-barbera.jpg" alt="The Rosenfeld-Curiqueo Chronicle rendered in Hanna-Barbera style">
   <details>
     <summary>12 panels</summary>
     <ol class="panels">
@@ -1472,59 +522,59 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
   <details><summary>Image prompt</summary><p>Inside a rustic adobe synagogue at night, Rabbi Mendel Rosenfeld, a middle-aged man with a graying beard wearing a traditional tallit, stands before an open Torah scroll. The small Moisés Ville congregation sits on wooden benches under the warm glow of hanging kerosene lamps. In the background, a village grandfather with a weathered face sits holding a small boy, a young child in a simple linen shirt resting his head against the man&#x27;s knee.</p></details>
 </li>
 <li class="panel">
-  <h3>Voice Of The Garment Union</h3>
+  <h3>1928 The Rosenfeld Siblings Scattered</h3>
   <p class="meta"><span class="year">1928</span> · family · people: Rivka Rosenfeld, Shmuel Rosenfeld, Leah Rosenfeld</p>
   <p class="paragraph">The older Rosenfeld children made their lives across Argentina. Rivka stood behind the counter of a Yiddish bookshop on Calle Corrientes in Buenos Aires. Shmuel worked at a dairy cooperative in Entre Ríos. Leah, in a simple dress, spoke at a garment workers&#x27; meeting in a union hall, her hand raised mid-sentence.</p>
-  <details><summary>Image prompt</summary><p>A young woman wearing a simple, modest cotton dress stands at the wooden podium of a dimly lit, high-ceilinged union hall in Buenos Aires. Her hand is raised expressively mid-sentence as she addresses a crowd of workers seated in rows of worn wooden chairs. Dusty light streams through tall, arched windows, illuminating floating particles in the air, creating a serious, determined atmosphere filled with the fervor of labor advocacy.</p></details>
+  <details><summary>Image prompt</summary><p>A split composition showing three scenes. In a dusty Buenos Aires bookshop, Rivka Rosenfeld, a woman in her late twenties with dark braided hair and an apron, organizes Yiddish texts. In the lush Entre Rios countryside, Shmuel Rosenfeld, a tall man in a worn work shirt, carries milk churns at a cooperative. In a dim, wooden union hall, Leah Rosenfeld, a slender young woman in a modest dark dress, stands at a podium gesturing passionately.</p></details>
 </li>
 <li class="panel">
-  <h3>The Patagonian Wool Trader</h3>
+  <h3>1930 Daniel Rosenfeld Crossing Patagonia</h3>
   <p class="meta"><span class="year">1930</span> · journey · people: Daniel Rosenfeld</p>
   <p class="paragraph">Grown now, the youngest son Daniel rode south into Patagonia as a wool trader, a pack mule following his horse. He wore a sheepskin coat against the cold, a leather satchel of ledgers at his saddle. The snow-capped Andes rose behind him as he approached a distant trading post.</p>
-  <details><summary>Image prompt</summary><p>A lone traveler on horseback rides across a desolate, wind-swept Patagonian plain under a crisp late afternoon sky. He wears a thick, rustic sheepskin coat and carries a weathered leather satchel strapped to his saddle. A pack mule follows closely behind, kicking up dust. The jagged, snow-dusted peaks of the Andes loom imposingly in the distant background, casting long shadows toward a solitary, modest wooden trading post ahead, evoking a sense of rugged, quiet solitude.</p></details>
+  <details><summary>Image prompt</summary><p>Daniel Rosenfeld, a young man in his twenties with windswept dark hair and a thick sheepskin coat, sits atop a sturdy brown horse traversing the rugged Patagonian plains. He leads a pack mule carrying weathered goods, a leather satchel of ledgers secured at his saddle. The jagged, snow-capped Andes mountains loom majestically in the clear blue distance under a bright, cold morning sky, casting long shadows across the desolate, golden-grassed landscape.</p></details>
 </li>
 <li class="panel">
-  <h3>Trading Wool By The Lake</h3>
+  <h3>1931 Daniel Meets Millaray Curiqueo</h3>
   <p class="meta"><span class="year">1931</span> · courtship · people: Daniel Rosenfeld, Millaray Curiqueo</p>
   <p class="paragraph">At a Mapuche trading post near Lago Nahuel Huapi, Daniel met Millaray Curiqueo, daughter of a Mapuche machi. She stood beside rolls of dyed wool and a hand-carved loom, wearing a silver trarilonko headband. He had come to buy her family&#x27;s wool; he stayed to share mate and conversation.</p>
-  <details><summary>Image prompt</summary><p>Beside the glistening waters of Lago Nahuel Huapi, a young woman stands amidst stacks of vibrant, hand-dyed wool at a rustic wooden trading post. She wears a traditional silver trarilonko headband, her hand resting on a sturdy carved loom. A man sits nearby on a low stool, sharing a steaming gourd of mate. The golden afternoon light filters through the pine trees, creating a warm, quiet, and contemplative atmosphere during their afternoon trade.</p></details>
+  <details><summary>Image prompt</summary><p>In the golden afternoon light of a rustic Mapuche trading post near the shores of Lago Nahuel Huapi, Daniel Rosenfeld, a young traveler in a tweed jacket and worn leather boots, sits on a wooden stool. Beside him stands Millaray Curiqueo, a poised woman with long dark hair adorned by an intricate silver trarilonko headband, wearing a traditional wool shawl. They share a mate gourd amidst piles of vibrant dyed wool and a hand-carved loom.</p></details>
 </li>
 <li class="panel">
-  <h3>A Wedding By The Lake</h3>
+  <h3>1932 Daniel and Millaray Wed</h3>
   <p class="meta"><span class="year">1932</span> · marriage · people: Daniel Rosenfeld, Millaray Curiqueo, officiating rabbi, Mapuche machi, Rosenfeld wedding guests, Curiqueo wedding guests</p>
   <p class="paragraph">In 1932 Daniel and Millaray married at the edge of the lake near Bariloche under a chuppah of four wooden poles strung with a prayer shawl. A Mapuche kultrun drum sounded as the rabbi and the machi stood side by side. Guests from both families formed a wide semicircle, snow on the distant peaks.</p>
-  <details><summary>Image prompt</summary><p>A Jewish groom and a Mapuche bride stand beneath a rustic chuppah made of four wooden poles draped with a prayer shawl on the shore of a vast, tranquil lake. A rabbi and a traditional machi stand together in prayer. Family guests form a wide, expectant semicircle on the grass. Distant Andean mountain peaks are dusted with snow under a clear, bright afternoon sky, creating a solemn and harmonious atmosphere.</p></details>
+  <details><summary>Image prompt</summary><p>Daniel Rosenfeld, a young man in a sharp charcoal suit, stands beside Millaray Curiqueo, wearing a traditional embroidered white dress, beneath a wooden chuppah adorned with a prayer shawl. An elderly officiating rabbi in black robes and a Mapuche machi in ceremonial woven textiles stand side by side on the lakeshore. Rosenfeld and Curiqueo wedding guests in diverse formal attire form a wide, expectant semicircle. Distant snow-capped Andes mountains glow under clear afternoon light.</p></details>
 </li>
 <li class="panel">
-  <h3>Evening Meal by the Lake</h3>
+  <h3>1942 Daniel and Millaray at Table</h3>
   <p class="meta"><span class="year">1942</span> · family · people: Daniel Rosenfeld, Millaray Curiqueo, Rosenfeld-Curiqueo children</p>
   <p class="paragraph">In a log house above the lake, Daniel and Millaray sat at a long table with three children. A Yiddish newspaper lay beside a Spanish primer and a Mapudungun songbook. Millaray ladled stew from a clay pot while Daniel cut bread; the eldest child read aloud in Spanish.</p>
-  <details><summary>Image prompt</summary><p>Inside a rustic log cabin at dusk, a family of five sits around a long wooden table. A woman ladles steaming stew from a clay pot, while a man slices a crusty loaf of bread. Three children watch as the eldest reads from a Spanish primer. A Yiddish newspaper and a Mapudungun songbook rest on the table, casting a warm, nostalgic atmosphere illuminated by soft golden light filtering through the window.</p></details>
+  <details><summary>Image prompt</summary><p>A warm, sunlit log cabin interior overlooking a misty mountain lake. Daniel Rosenfeld, a middle-aged man in a rugged wool vest, carefully slices bread at a long wooden table. Millaray Curiqueo, a woman in her late thirties wearing a patterned shawl, ladles hearty stew from a clay pot. Three Rosenfeld-Curiqueo children, dressed in simple homemade tunics, sit attentively, one reading from an open book. A Yiddish newspaper, a Spanish primer, and a songbook rest beside the meal.</p></details>
 </li>
 <li class="panel">
-  <h3>The Patagonian General Store</h3>
+  <h3>1955 Daniel and Millaray at the Almacén</h3>
   <p class="meta"><span class="year">1955</span> · work · people: Daniel Rosenfeld, Millaray Curiqueo, Rosenfeld-Curiqueo children</p>
   <p class="paragraph">In the 1950s the family ran a general store on the main street of Bariloche, its painted sign reading ALMACÉN ROSENFELD Y CURIQUEO. Daniel, gray-bearded, stood at the counter weighing yerba mate on a brass scale while Millaray stocked shelves with wool blankets and canned goods. Their children unloaded a delivery wagon outside.</p>
-  <details><summary>Image prompt</summary><p>An elderly bearded man in a white apron meticulously weighs loose yerba mate on a polished brass balance scale behind a wooden counter. Nearby, a woman organizes stacks of thick wool blankets and colorful tins on rustic shelves. Through a large storefront window, children are captured in the bright afternoon sun, busy unloading burlap sacks from a horse-drawn wagon on a cobblestone street. The shop feels cozy, authentic, and filled with vintage mountain town charm.</p></details>
+  <details><summary>Image prompt</summary><p>Inside a sunlit 1950s general store in Bariloche, Daniel Rosenfeld, a tall elderly man with a thick gray beard and a beige shop apron, carefully weighs yerba mate on a rustic brass scale. Millaray Curiqueo, a middle-aged woman in a simple floral apron and braided hair, neatly stacks wool blankets on wooden shelves. Outside the large storefront window, the young Rosenfeld-Curiqueo children in worn vintage clothing are seen unloading crates from a wooden delivery wagon.</p></details>
 </li>
 <li class="panel">
-  <h3>Silent Vigil For The Missing</h3>
+  <h3>1977 Millaray and Daniel&#x27;s Vigil</h3>
   <p class="meta"><span class="year">1977</span> · history · people: Daniel Rosenfeld, Millaray Curiqueo, Ester Rosenfeld (in photograph)</p>
   <p class="paragraph">In 1977 the family gathered silently around a kitchen table, a photograph of their granddaughter Ester placed upright before them. She had been a university student in La Plata; military officers had taken her in the night. Millaray, in her seventies, held Daniel&#x27;s hand; a candle burned beside the photograph.</p>
-  <details><summary>Image prompt</summary><p>An elderly couple sits at a wooden kitchen table in dim, warm light. A single flickering candle illuminates a framed portrait of a young female university student placed prominently in the center. The woman, in her seventies, tightly holds the man&#x27;s hand across the table. Their expressions are somber and grief-stricken as they stare at the photograph in the quiet shadows of a modest 1970s kitchen during the night.</p></details>
+  <details><summary>Image prompt</summary><p>In a dim, somber kitchen in 1977, elderly Millaray Curiqueo with gray hair wearing a worn shawl sits at a wooden table holding the hand of Daniel Rosenfeld, a middle-aged man in a dark sweater with a grieving posture. Between them, a single flickering candle illuminates a framed photograph of their young granddaughter, Ester Rosenfeld, a university student with dark hair and a bright, hopeful expression. The mood is heavy, quiet, and deeply reflective.</p></details>
 </li>
 <li class="panel">
-  <h3>Passover Under Andean Skies</h3>
+  <h3>2010 A Seder at Lago Nahuel Huapi</h3>
   <p class="meta"><span class="year">2010</span> · legacy · people: Rosenfeld-Curiqueo great-grandchildren, Mapuche elders, Rosenfeld cousins, seder child reader</p>
   <p class="paragraph">Decades later, great-grandchildren held a Passover seder on the shore of Lago Nahuel Huapi. A long table covered in white linen held matzah, maror, and a kultrun drum laid at one end in memory. Mapuche elders and Rosenfeld cousins sat together; a child read the Four Questions in Spanish under the open sky.</p>
-  <details><summary>Image prompt</summary><p>A long banquet table draped in crisp white linen sits on the rocky shore of a serene blue lake surrounded by towering mountains at twilight. Mapuche elders in traditional woolen ponchos sit alongside a Jewish family, their faces soft in the warm glow of candlelight. A child reads from a Haggadah while a traditional wooden kultrun drum rests near a plate of matzah. The scene is quiet, reverent, and atmospheric under a sprawling, darkening sky.</p></details>
+  <details><summary>Image prompt</summary><p>Along the stony shore of Lago Nahuel Huapi, Rosenfeld-Curiqueo great-grandchildren in modern casual wear gather with dignified Mapuche elders in traditional woven textiles and Rosenfeld cousins in layered wool clothing. A seder child reader, a young girl in a cardigan, stands reciting near a long white-clothed table set with matzah and a ceremonial kultrun drum. The late afternoon sky is vast and clear, casting a serene, unified atmosphere over the multicultural lakeside gathering.</p></details>
 </li>
     </ol>
   </details>
 </section>
 <section class="tapestry">
-  <h2>The Singh-Namutebi Chronicle <span class="style">rembrandt</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/singh-namutebi-1902-rembrandt-poisson.jpg" alt="The Singh-Namutebi Chronicle rendered in rembrandt style">
+  <h2>The Singh-Namutebi Chronicle <span class="style-descriptor">— Bayeux style</span></h2>
+  <img class="hero" loading="lazy" src="tapestries/singh-namutebi-1902-bayeux.jpg" alt="The Singh-Namutebi Chronicle rendered in Bayeux style">
   <details>
     <summary>12 panels</summary>
     <ol class="panels">
@@ -1604,89 +654,8 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
   </details>
 </section>
 <section class="tapestry">
-  <h2>The Singh-Namutebi Chronicle <span class="style">watercolor</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/singh-namutebi-1902-watercolor-poisson.jpg" alt="The Singh-Namutebi Chronicle rendered in watercolor style">
-  <details>
-    <summary>12 panels</summary>
-    <ol class="panels">
-<li class="panel">
-  <h3>1902 Harbans Singh Makes a Deal</h3>
-  <p class="meta"><span class="year">1902</span> · emigration · people: Harbans Singh, British railway recruiter, Jaswinder Kaur, four Singh children</p>
-  <p class="paragraph">In the spring of 1902, a British recruiter came to the Punjabi village of Gurdaspur seeking foremen for the Uganda Railway. Harbans Singh, a tall man in a blue turban, signed a contract at a folding table beneath a neem tree, his wife Jaswinder and four children watching. A painted poster of the East African line was tacked to the tree trunk.</p>
-  <details><summary>Image prompt</summary><p>Beneath a sprawling neem tree in a dusty Punjabi village, Harbans Singh, a tall, middle-aged man wearing a vibrant blue turban and a cotton kurta, leans over a worn wooden table to sign a railway contract. Standing beside him is Jaswinder Kaur, his wife, dressed in a simple, earth-toned dupatta. Four Singh children watch with curious expressions. Across the table, a British railway recruiter in a crisp, beige colonial suit gestures toward a detailed map.</p></details>
-</li>
-<li class="panel">
-  <h3>1903 Jaswinder Arrives at Mombasa</h3>
-  <p class="meta"><span class="year">1903</span> · immigration · people: Jaswinder Kaur, youngest Singh child (infant), older Singh children, Swahili porters, Arab traders, British officers</p>
-  <p class="paragraph">A year later the family followed, stepping off a dhow at the crowded Mombasa harbor. Jaswinder held the youngest child while the older children clutched bundles of cloth and cooking pots. Porters in kanzus, Arab traders, and British officers in pith helmets moved along the quay around them.</p>
-  <details><summary>Image prompt</summary><p>A bustling 1903 Mombasa harbor scene. Jaswinder Kaur, a resilient woman in a faded cotton sari, holds a swaddled youngest Singh child in her arms. Behind her, the older Singh children, scruffy youths in worn tunics, grip woven bundles and blackened copper pots. Swahili porters in crisp white kanzus, bearded Arab traders in dark robes, and British officers in tan uniforms and pith helmets navigate the sun-drenched wooden pier. Atmospheric, colonial port, midday heat.</p></details>
-</li>
-<li class="panel">
-  <h3>1904 Harbans Singh at Tsavo</h3>
-  <p class="meta"><span class="year">1904</span> · labor · people: Harbans Singh, Indian railway laborers, African porters, British railway engineer</p>
-  <p class="paragraph">On the red-earth cutting near Tsavo, Harbans stood at the head of a work gang laying iron rails across East Africa. Indian laborers in turbans swung hammers; African porters carried water skins; a British engineer in a sun helmet pointed along the embankment. In the acacia beyond, a lion watched from the tall grass.</p>
-  <details><summary>Image prompt</summary><p>Harbans Singh, a tall man in a worn canvas shirt and dhotis, stands firmly on red-earth ground overseeing railway construction. Nearby, Indian railway laborers wearing turbans swing heavy iron sledges, while African porters in simple tunics carry leather water skins across their shoulders. A British railway engineer in a khaki suit and pith helmet gestures toward the horizon. The golden savanna stretches out with a golden lion lurking ominously in the distant acacia grass under harsh sunlight</p></details>
-</li>
-<li class="panel">
-  <h3>1912 Harbans Opens His Doors</h3>
-  <p class="meta"><span class="year">1912</span> · work · people: Harbans Singh, Baganda customer</p>
-  <p class="paragraph">Once the railway reached Kampala, Harbans opened a hardware store on Kampala Road, its sign reading SINGH &amp; SONS HARDWARE. He stood behind a wooden counter stacked with bolts of cloth, kerosene tins, and galvanized buckets. A Baganda customer in a kanzu examined a hurricane lamp by the doorway.</p>
-  <details><summary>Image prompt</summary><p>Harbans Singh, a middle-aged Sikh man with a neat turban and a crisp white shirt, stands behind a cluttered wooden counter in a busy Kampala storefront. Beside the sunny doorway, a Baganda customer, a tall man dressed in a traditional flowing white kanzu, carefully inspects a brass hurricane lamp. Sunlight streams through the open entrance, illuminating shelves filled with galvanized buckets, stacks of colorful cloth, and tin kerosene containers, creating an atmosphere of industrious colonial commerce.</p></details>
-</li>
-<li class="panel">
-  <h3>1928 Harbans and Family at Gurdwara</h3>
-  <p class="meta"><span class="year">1928</span> · faith · people: Harbans Singh, Jaswinder Kaur, Singh children, granthi</p>
-  <p class="paragraph">On a Sunday morning the family gathered at the new Kampala Gurdwara, a modest white building with a saffron flag on its roof. Harbans, Jaswinder, and their children sat cross-legged on a carpeted floor as a granthi read from the Guru Granth Sahib. Steel bowls of langar waited in the courtyard outside.</p>
-  <details><summary>Image prompt</summary><p>Inside the modest white Kampala Gurdwara, Harbans Singh, a middle-aged man in a crisp white turban and simple kurta, sits cross-legged alongside Jaswinder Kaur, wearing a colorful, elegantly draped salwar kameez. Their young Singh children, dressed in modest festive attire, watch intently. At the front, an elderly granthi with a flowing grey beard reads from the elevated Guru Granth Sahib. Soft sunlight filters into the serene, carpeted prayer hall, creating a peaceful, reverent atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1955 The Singh Children Abroad</h3>
-  <p class="meta"><span class="year">1955</span> · family · people: Amrit Singh, Harjit Kaur, Balwant Singh</p>
-  <p class="paragraph">The older Singh children fanned out across the British Empire. Amrit ran the hardware shop with his father. Harjit, in a nurse&#x27;s uniform, worked at a hospital in Nairobi. Balwant, in a tweed jacket, studied law in London. Their framed portraits hung on the wall of the Kampala sitting room.</p>
-  <details><summary>Image prompt</summary><p>A warm, sunlit sitting room in Kampala featuring a prominent gallery wall of framed portraits. Depicted are Amrit Singh, a sturdy young man in a rolled-sleeve shop apron, Harjit Kaur, a compassionate nurse in a crisp white uniform with a cap, and Balwant Singh, a studious man in a sharp tweed jacket. The room is decorated with ornate wooden furniture and lush indoor plants, evoking a nostalgic, quiet atmosphere of familial separation and pride.</p></details>
-</li>
-<li class="panel">
-  <h3>1958 Jasbir at Makerere University</h3>
-  <p class="meta"><span class="year">1958</span> · education · people: Jasbir Singh, Makerere students</p>
-  <p class="paragraph">The youngest son Jasbir walked the red-gravel paths of Makerere University College in Kampala, a stethoscope slung over his white medical coat. Students of many backgrounds crossed the quadrangle around him; tall palms rose behind the stone lecture halls. He carried a stack of anatomy books under his arm.</p>
-  <details><summary>Image prompt</summary><p>Jasbir Singh, a young man in his early twenties wearing a crisp white medical coat with a stethoscope draped around his neck, walks along a red-gravel path at Makerere University. He holds heavy anatomy books tucked firmly under one arm. Surrounding him, diverse Makerere students in mid-century attire traverse the sunlit quadrangle. Tall, majestic palm trees stand behind grand stone lecture halls under a bright, clear tropical sky, creating a scholarly, ambitious atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1961 Jasbir and Grace at Mulago</h3>
-  <p class="meta"><span class="year">1961</span> · courtship · people: Jasbir Singh, Grace Namutebi</p>
-  <p class="paragraph">In a Mulago Hospital corridor, Jasbir met Grace Namutebi, a Baganda nursing student from a clan in Buganda. She stood at a medicine cart in a starched white cap, handing him a patient&#x27;s chart. Beyond the window, jacaranda trees bloomed violet over the hospital grounds.</p>
-  <details><summary>Image prompt</summary><p>Inside a sunlit Mulago Hospital corridor, Jasbir Singh, a young man in a sharp linen suit with a curious expression, receives a patient chart from Grace Namutebi, a diligent nursing student in her twenties wearing a crisp white uniform and a starched cap. A metal medicine cart stands between them. Beyond the large open window, vibrant violet jacaranda trees bloom across the hospital grounds in the bright afternoon light, creating a professional yet hopeful atmosphere.</p></details>
-</li>
-<li class="panel">
-  <h3>1963 Jasbir and Grace Wed</h3>
-  <p class="meta"><span class="year">1963</span> · marriage · people: Jasbir Singh, Grace Namutebi, Kampala granthi, Grace&#x27;s paternal aunt, Baganda clan elders</p>
-  <p class="paragraph">In 1963 Jasbir and Grace were married in two ceremonies held on the same weekend. In one panel they stood before the Guru Granth Sahib at the Kampala Gurdwara; in the other, at a Baganda kwanjula ceremony, Grace&#x27;s paternal aunt presented Jasbir to the clan elders under a canopy of banana leaves.</p>
-  <details><summary>Image prompt</summary><p>A vibrant split-frame image capturing two weddings. In the first panel, Jasbir Singh, a young groom in a silk sherwani, sits cross-legged before the Kampala granthi, an elderly man in a white turban. In the second, Grace Namutebi, wearing a traditional busuuti, stands beside her paternal aunt, a woman in a colorful gomesi, who introduces Jasbir to several seated Baganda clan elders under a lush green canopy of banana leaves in the Ugandan sun.</p></details>
-</li>
-<li class="panel">
-  <h3>1972 Harbans and the Kampala Departure</h3>
-  <p class="meta"><span class="year">1972</span> · exile · people: Harbans Singh, Jasbir Singh, Grace Namutebi, Singh-Namutebi children</p>
-  <p class="paragraph">In August 1972 a radio on the sitting-room table announced Idi Amin&#x27;s ninety-day expulsion order. Harbans, very old now, sat stunned in an armchair; Jasbir held a half-packed suitcase; Grace gathered children&#x27;s coats. Outside the window, a military truck idled at the end of Kampala Road.</p>
-  <details><summary>Image prompt</summary><p>Inside a dimly lit 1970s sitting room, an elderly Harbans Singh sits frozen in a velvet armchair while an ornate wooden radio broadcasts news on the table nearby. Jasbir Singh, a young man in a worn button-down shirt, grips the handle of a half-packed leather suitcase. Grace Namutebi, a determined woman in a patterned cotton dress, gathers colorful children&#x27;s coats. Through a large window, a rugged military truck waits idling on the dusty, sun-drenched Kampala Road.</p></details>
-</li>
-<li class="panel">
-  <h3>1974 Jasbir and Grace Open Shop</h3>
-  <p class="meta"><span class="year">1974</span> · refuge · people: Jasbir Singh, Grace Namutebi, Gujarati patients, Jamaican patients, English patients</p>
-  <p class="paragraph">In a narrow shop on Belgrave Road in Leicester, England, Jasbir and Grace opened a small medical practice in 1974. A painted sign read DR J. &amp; G. SINGH, FAMILY PRACTICE. Patients of Gujarati, Jamaican, and English backgrounds waited on a row of plastic chairs. Snow drifted past the window behind them.</p>
-  <details><summary>Image prompt</summary><p>Inside a narrow 1970s Leicester medical clinic, Jasbir Singh, a middle-aged man in a sharp wool suit, stands near Grace Namutebi, a professional woman in a crisp white blouse. A painted sign reads Dr J. &amp; G. Singh. A diverse waiting room filled with Gujarati, Jamaican, and English patients in varied winter attire sits on plastic chairs. Soft light fills the room as snow drifts past the large glass window, creating a cozy and diligent atmosphere</p></details>
-</li>
-<li class="panel">
-  <h3>2015 Priya Singh Arrives Home</h3>
-  <p class="meta"><span class="year">2015</span> · legacy · people: Priya Singh, Namutebi-lineage cousin</p>
-  <p class="paragraph">In 2015 their granddaughter Priya Singh, an MSF doctor, stepped off a plane at Entebbe carrying a medical kit. A cousin of Grace&#x27;s lineage met her with a hand-lettered sign reading WELCOME HOME. Behind them, the Ugandan countryside stretched green toward Lake Victoria.</p>
-  <details><summary>Image prompt</summary><p>Priya Singh, a young doctor in her thirties wearing practical cargo trousers and a light linen shirt, carries a weathered medical supply kit as she steps onto the tarmac at Entebbe airport. A smiling Namutebi-lineage cousin, a middle-aged woman in a vibrant patterned kitenge dress, holds a hand-painted wooden sign reading WELCOME HOME. The bright afternoon sunlight illuminates the lush green Ugandan countryside and the sparkling horizon of Lake Victoria in the distance</p></details>
-</li>
-    </ol>
-  </details>
-</section>
-<section class="tapestry">
-  <h2>The Tatosian-Wolde Chronicle <span class="style">rembrandt</span>  <span class="variant">poisson</span></h2>
-  <img class="hero" loading="lazy" src="tapestries/tatosian-wolde-1915-rembrandt-poisson.jpg" alt="The Tatosian-Wolde Chronicle rendered in rembrandt style">
+  <h2>The Tatosian-Wolde Chronicle <span class="style-descriptor">— Ukiyo-e style</span></h2>
+  <img class="hero" loading="lazy" src="tapestries/tatosian-wolde-1915-ukiyo-e.jpg" alt="The Tatosian-Wolde Chronicle rendered in Ukiyo-e style">
   <details>
     <summary>12 panels</summary>
     <ol class="panels">
@@ -1774,6 +743,9 @@ footer .tagline { font-style: italic; margin-top: 0.5rem; }
   </div>
   <div class="tagline">
     Family-history paragraphs → Gemini 3.1 Flash Lite prompts → Nunchaku Qwen-Image panels → tapestry.
+  </div>
+  <div class="tagline">
+    All family chronicles are fictional, created to illustrate the pipeline.
   </div>
 </footer>
 </body>

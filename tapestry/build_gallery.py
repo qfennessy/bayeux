@@ -44,14 +44,26 @@ def find_output_jpg(
     """Return (preferred_jpg, variant_label) for a (family, style) pair.
 
     Priority: ``-poisson`` > ``-blended`` > raw. ``variant_label`` is
-    one of ``"poisson"``, ``"blended"``, ``"raw"`` for display in the
-    gallery.
+    one of ``"poisson"``, ``"blended"``, ``"raw"`` — useful for log
+    output, not surfaced to gallery viewers.
     """
     for suffix in VARIANT_PRIORITY:
         candidate = images_dir / f"{family_stem}-{style_stem}{suffix}.jpg"
         if candidate.exists():
             return candidate, suffix.lstrip("-") or "raw"
     return None, ""
+
+
+# Style names in JSON are lowercase-with-hyphens identifiers; these are
+# their display forms. Fall back to ``.title()`` for anything unlisted,
+# which handles "hanna-barbera" → "Hanna-Barbera" correctly.
+STYLE_DISPLAY = {
+    "ukiyo-e": "Ukiyo-e",
+}
+
+
+def style_display(name: str) -> str:
+    return STYLE_DISPLAY.get(name, name.title())
 
 
 def load_panels(family_stem: str, stories: list[dict]) -> list[dict]:
@@ -97,9 +109,14 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
-  font-size: 16px;
-  line-height: 1.55;
+  /* Crisp system sans for body legibility; serif is reserved for the
+     h1 wordmark and panel titles below. */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 header {
   padding: 3rem 1.5rem 1.5rem;
@@ -107,12 +124,31 @@ header {
   border-bottom: 1px solid var(--rule);
 }
 header h1 {
-  font-family: ui-serif, Georgia, serif;
-  font-size: 3rem;
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  font-size: 3.25rem;
   margin: 0 0 0.5rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  font-weight: 600;
 }
-header p { margin: 0; color: var(--muted); }
+header > p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+header .disclaimer {
+  max-width: 620px;
+  margin: 0.9rem auto 0;
+  padding: 0.65rem 1.1rem;
+  background: rgba(122, 46, 32, 0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+}
+header .disclaimer strong { color: var(--accent); }
+header .stats {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
 header .links {
   margin-top: 1rem;
   font-size: 0.95rem;
@@ -165,15 +201,20 @@ header .links a:hover { border-bottom-color: var(--accent); }
 }
 .sponsors .pitch {
   margin: 0;
-  font-size: 0.95rem;
-  font-style: italic;
-  line-height: 1.5;
-  opacity: 0.95;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #fff;
+}
+.sponsors .pitch code {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
 .sponsors .pitch a {
   color: #fff;
+  font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.55);
   text-underline-offset: 2px;
 }
 main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 4rem; }
@@ -188,30 +229,17 @@ main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 4rem; }
   margin: 0;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--rule);
+  font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
   font-size: 1.5rem;
   font-weight: 600;
 }
-.tapestry h2 .style {
-  display: inline-block;
-  font-size: 0.85rem;
+.tapestry h2 .style-descriptor {
   color: var(--muted);
   font-weight: 400;
-  margin-left: 0.5rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.tapestry h2 .variant {
-  display: inline-block;
-  font-size: 0.7rem;
-  color: var(--accent);
-  font-weight: 500;
-  margin-left: 0.5rem;
-  padding: 0.1rem 0.5rem;
-  border: 1px solid var(--accent);
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  vertical-align: middle;
+  font-size: 1.05rem;
+  margin-left: 0.35rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 .tapestry .hero { display: block; width: 100%; height: auto; }
 .tapestry details { border-top: 1px solid var(--rule); }
@@ -275,7 +303,7 @@ footer {
 }
 footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
-footer .tagline { font-style: italic; margin-top: 0.5rem; }
+footer .tagline { margin-top: 0.5rem; color: var(--muted); }
 """.strip()
 
 
@@ -316,19 +344,15 @@ def render_tapestry(entry: dict) -> str:
     panel_html = "\n".join(
         render_panel(p, i) for i, p in enumerate(entry["panels"])
     )
-    variant_badge = (
-        f'<span class="variant">{e(entry["variant"])}</span>'
-        if entry["variant"] != "raw"
-        else ""
-    )
+    style_label = style_display(entry["style_name"])
     return (
         f'<section class="tapestry">\n'
         f"  <h2>{e(entry['family_title'])}"
-        f' <span class="style">{e(entry["style_name"])}</span>'
-        f"  {variant_badge}</h2>\n"
+        f' <span class="style-descriptor">— {e(style_label)} style</span>'
+        f"</h2>\n"
         f'  <img class="hero" loading="lazy" '
         f'src="tapestries/{e(entry["jpg_name"])}" '
-        f'alt="{e(entry["family_title"])} rendered in {e(entry["style_name"])} style">\n'
+        f'alt="{e(entry["family_title"])} rendered in {e(style_label)} style">\n'
         f"  <details>\n"
         f"    <summary>{len(entry['panels'])} panels</summary>\n"
         f'    <ol class="panels">\n{panel_html}\n    </ol>\n'
@@ -339,9 +363,16 @@ def render_tapestry(entry: dict) -> str:
 
 def render_index(entries: list[dict]) -> str:
     tapestry_html = "\n".join(render_tapestry(entry) for entry in entries)
-    summary = (
-        f"{len(entries)} tapestries" if entries else "No tapestries yet"
-    )
+    n_families = len({entry["family_stem"] for entry in entries})
+    n_styles = len({entry["style_name"] for entry in entries})
+    if entries:
+        stats = (
+            f"{len(entries)} tapestries across "
+            f"{n_families} famil{'y' if n_families == 1 else 'ies'} and "
+            f"{n_styles} style{'' if n_styles == 1 else 's'}."
+        )
+    else:
+        stats = "No tapestries rendered yet."
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -355,7 +386,13 @@ def render_index(entries: list[dict]) -> str:
 <body>
 <header>
   <h1>bayeux</h1>
-  <p>Family-history tapestries. {e(summary)}.</p>
+  <p>Tapestries of fictional family histories.</p>
+  <p class="disclaimer">
+    <strong>These chronicles are fictional.</strong> Every family, name, and
+    event shown here was invented to demonstrate the pipeline — any resemblance
+    to real people or events is coincidental.
+  </p>
+  <p class="stats">{e(stats)}</p>
   <section class="sponsors" aria-label="Sponsors">
     <p class="label">Sponsored by</p>
     <p class="logos">
@@ -390,6 +427,9 @@ def render_index(entries: list[dict]) -> str:
   <div class="tagline">
     Family-history paragraphs → Gemini 3.1 Flash Lite prompts → Nunchaku Qwen-Image panels → tapestry.
   </div>
+  <div class="tagline">
+    All family chronicles are fictional, created to illustrate the pipeline.
+  </div>
 </footer>
 </body>
 </html>
@@ -410,6 +450,16 @@ def build(args: argparse.Namespace) -> int:
     output_dir: Path = args.output_dir
     images_dir: Path = args.images_dir
     tapestries_out = output_dir / "tapestries"
+    if args.clean and tapestries_out.exists():
+        removed = 0
+        for p in tapestries_out.iterdir():
+            if p.is_file():
+                p.unlink()
+                removed += 1
+        print(
+            f"clean: wiped {removed} files from {tapestries_out}; "
+            "gallery will be an exact mirror of --images-dir"
+        )
     tapestries_out.mkdir(parents=True, exist_ok=True)
 
     families = discover_families()
@@ -436,7 +486,11 @@ def build(args: argparse.Namespace) -> int:
             if jpg is None:
                 skipped.append(f"{family_path.stem} × {style_name}")
                 continue
-            dest = tapestries_out / jpg.name
+            # Strip the -poisson / -blended suffix on copy: viewers don't
+            # need to know which post-process variant they're looking at,
+            # so the public URL is always <family>-<style>.jpg.
+            dest_name = f"{family_path.stem}-{style_path.stem}.jpg"
+            dest = tapestries_out / dest_name
             if (
                 not dest.exists()
                 or dest.stat().st_mtime < jpg.stat().st_mtime
@@ -448,7 +502,7 @@ def build(args: argparse.Namespace) -> int:
                     "family_title": family_title,
                     "style_name": style_name,
                     "style_description": style_data.get("description", ""),
-                    "jpg_name": jpg.name,
+                    "jpg_name": dest_name,
                     "variant": variant,
                     "panels": panels,
                 }
@@ -486,6 +540,14 @@ def main() -> int:
         "--verbose",
         action="store_true",
         help="list every skipped (family, style) pair that had no rendered image.",
+    )
+    parser.add_argument(
+        "--clean",
+        action="store_true",
+        help="wipe public/tapestries/ before repopulating so the deployed "
+        "directory is an exact mirror of what's discoverable in "
+        "--images-dir. Use this after deleting images from out/ — without "
+        "--clean, orphaned copies linger in public/ and keep getting served.",
     )
     args = parser.parse_args()
     return build(args)
