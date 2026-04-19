@@ -281,5 +281,7 @@ Other directories (`demo/`, `tests/`, video/JS/cURL starters under `examples/`) 
 Built by Quentin Fennessy at the [Sundai Club](https://sundai.club) on 19 April 2026, as a demonstration of the highly optimized diffusion models from [Nunchaku](https://nunchaku.dev). This project began as Nunchaku's Python/cURL/JS starter kit and has been narrowed to the tapestry pipeline. All family chronicles shown in the gallery are fictional, created to demonstrate the pipeline.
 
 Web URL: https://bayeux.vercel.app
+
 Sundai Project: https://www.sundai.club/projects/b07760aa-fa4c-4a21-9302-9f2050dd846f
+
 Repository: https://github.com/qfennessy/bayeux
