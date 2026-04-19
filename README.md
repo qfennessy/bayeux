@@ -21,8 +21,8 @@ Family history can be represented with creative graphics. A small AI pipeline fi
 ```bash
 pip install -r requirements.txt
 
-# Put NUNCHAKU_API_KEY and GEMINI_API_KEY in tapestry/.env.
-set -a && source tapestry/.env && set +a
+# Put NUNCHAKU_API_KEY and GEMINI_API_KEY in .env.
+set -a && source .env && set +a
 
 # 2x2 preview (default --limit 4) of one family in one style:
 python -u tapestry/build_tapestry.py \
@@ -221,6 +221,31 @@ Gemini image-edit calls (used by `--edit-provider gemini`) retry 5xx (e.g. *"Dea
 
 For a full 30-combo matrix run (6 families × 5 styles × 12 panels), use `tapestry/render_all.sh` — it iterates, skips anything already in `out/`, and is safe to re-invoke until every combo is assembled.
 
+## Benchmarking Nunchaku vs Gemini
+
+`tapestry/benchmark.py` runs the same prompt set through both providers and writes:
+
+```
+bench/results.csv                 per-call provider, seconds, bytes, status
+bench/images/<id>-nunchaku.jpg
+bench/images/<id>-gemini.jpg
+bench/index.html                  side-by-side gallery for human quality eval
+```
+
+Prompts come from cached Gemini outputs so both providers receive the same concrete visual prompt the pipeline would normally hand to Nunchaku.
+
+```bash
+set -a && source .env && set +a
+python tapestry/benchmark.py \
+    --family tapestry/ricci-bradford-1880.json \
+    --family tapestry/chen-vasquez-1865.json \
+    --count 12 --size 768x768
+```
+
+Flags: `--count N` (default 12), `--size WxH` (default 768x768), `--seed N` (base seed for Nunchaku; Gemini has no exposed seed), `--skip-if-cached` to extend a prior run without re-billing.
+
+Open `bench/index.html` for the pairwise viewer — each prompt card shows the source prompt, Nunchaku on the left, Gemini on the right, with per-call latency and file size captions. The top of the page carries a summary table of median/p95 latency and average byte size per provider.
+
 ## Notes on model choices
 
 - `gemini-3.1-flash-lite-preview` — the 3.1 Flash family ships only as `-lite-preview`, `-image-preview`, `-tts-preview`, `-live-preview`; there is no bare `gemini-3.1-flash`. Lite is the right choice for cheap, fast text rewriting.
@@ -254,3 +279,7 @@ Other directories (`demo/`, `tests/`, video/JS/cURL starters under `examples/`) 
 ## Acknowledgements
 
 Built by Quentin Fennessy at the [Sundai Club](https://sundai.club) on 19 April 2026, as a demonstration of the highly optimized diffusion models from [Nunchaku](https://nunchaku.dev). This project began as Nunchaku's Python/cURL/JS starter kit and has been narrowed to the tapestry pipeline. All family chronicles shown in the gallery are fictional, created to demonstrate the pipeline.
+
+Web URL: https://bayeux.vercel.app
+Sundai Project: https://www.sundai.club/projects/b07760aa-fa4c-4a21-9302-9f2050dd846f
+Repository: https://github.com/qfennessy/bayeux
