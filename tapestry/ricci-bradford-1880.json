@@ -10,62 +10,86 @@
     {
       "id": "01-castle-garden-arrival",
       "category": "immigration",
-      "paragraph": "In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam."
+      "year": "1880",
+      "paragraph": "In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam.",
+      "people": ["Tommaso Ricci", "Lucia Ricci", "Salvatore Ricci (infant)", "Giuseppe Ricci", "Rosa Ricci", "Carmela Ricci", "immigration officials", "fellow immigrants"]
     },
     {
       "id": "02-elizabeth-street-rooms",
       "category": "immigration",
-      "paragraph": "The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor."
+      "year": "1880",
+      "paragraph": "The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor.",
+      "people": ["Lucia Ricci", "Salvatore Ricci (infant)", "Giuseppe Ricci", "Rosa Ricci", "Carmela Ricci"]
     },
     {
       "id": "03-tommaso-on-the-bridge",
       "category": "labor",
-      "paragraph": "Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river."
+      "year": "1882",
+      "paragraph": "Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river.",
+      "people": ["Tommaso Ricci", "fellow stonemasons", "bridge laborers"]
     },
     {
       "id": "04-salvatore-golden-tongue",
       "category": "childhood",
-      "paragraph": "Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue."
+      "year": "1886",
+      "paragraph": "Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue.",
+      "people": ["Salvatore Ricci", "Tommaso Ricci", "Lucia Ricci", "Irish delivery boy"]
     },
     {
       "id": "05-siblings-of-little-italy",
       "category": "family",
-      "paragraph": "The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door."
+      "year": "1898",
+      "paragraph": "The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door.",
+      "people": ["Giuseppe Ricci", "Rosa Ricci", "Rosa's husband", "Rosa's children", "Carmela Ricci"]
     },
     {
       "id": "06-salvatore-at-city-college",
       "category": "education",
-      "paragraph": "Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college's gothic arches and tall windows, and other students passed in twos and threes."
+      "year": "1900",
+      "paragraph": "Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college's gothic arches and tall windows, and other students passed in twos and threes.",
+      "people": ["Salvatore Ricci", "City College students"]
     },
     {
       "id": "07-the-shipping-firm-ledger",
       "category": "work",
-      "paragraph": "In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead."
+      "year": "1902",
+      "paragraph": "In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead.",
+      "people": ["Salvatore Ricci", "Eleanor Bradford"]
     },
     {
       "id": "08-city-hall-wedding",
       "category": "marriage",
-      "paragraph": "Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore's sister Carmela in a dark dress, and Eleanor's cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table."
+      "year": "1906",
+      "paragraph": "Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore's sister Carmela in a dark dress, and Eleanor's cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table.",
+      "people": ["Salvatore Ricci", "Eleanor Bradford", "City Hall clerk", "Carmela Ricci", "Prudence Bradford"]
     },
     {
       "id": "09-brooklyn-kitchen-receipts",
       "category": "family",
-      "paragraph": "In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them."
+      "year": "1910",
+      "paragraph": "In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them.",
+      "people": ["Lucia Ricci", "Eleanor Bradford"]
     },
     {
       "id": "10-the-beacon-hill-visit",
       "category": "family",
-      "paragraph": "In 1908, Eleanor's Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet."
+      "year": "1908",
+      "paragraph": "In 1908, Eleanor's Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet.",
+      "people": ["Mrs. Bradford (Eleanor's mother)", "Eleanor Bradford", "Lucia Ricci"]
     },
     {
       "id": "11-three-children-of-the-bridge",
       "category": "children",
-      "paragraph": "Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother's hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway."
+      "year": "1915",
+      "paragraph": "Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother's hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway.",
+      "people": ["Salvatore Ricci", "Eleanor Bradford", "Thomas Ricci", "Prudence Ricci", "Annie (Lucia Anne) Ricci"]
     },
     {
       "id": "12-plymouth-and-arthur-avenue",
       "category": "heritage",
-      "paragraph": "A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp."
+      "year": "1920",
+      "paragraph": "A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp.",
+      "people": ["Thomas Ricci", "Prudence Ricci", "Annie Ricci", "Bradford great-aunts", "Ricci cousins"]
     }
   ]
 }

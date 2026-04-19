@@ -10,62 +10,86 @@
     {
       "id": "01-san-francisco-arrival",
       "category": "immigration",
-      "paragraph": "In the spring of 1865, the Chen family stepped off a Pacific Mail steamer at the San Francisco wharf after a six-week voyage from Hong Kong. Father Fu-hai carried a bamboo trunk balanced on a shoulder pole, and mother Mei-ling held baby Wei against the cold Pacific wind. The harbor was crowded with gulls, longshoremen, and piled crates of tea and silk."
+      "year": "1865",
+      "paragraph": "In the spring of 1865, the Chen family stepped off a Pacific Mail steamer at the San Francisco wharf after a six-week voyage from Hong Kong. Father Fu-hai carried a bamboo trunk balanced on a shoulder pole, and mother Mei-ling held baby Wei against the cold Pacific wind. The harbor was crowded with gulls, longshoremen, and piled crates of tea and silk.",
+      "people": ["Fu-hai Chen", "Mei-ling Chen", "Wei Chen (infant)", "Jian Chen", "Lin-hua Chen", "Hong-wei Chen", "longshoremen"]
     },
     {
       "id": "02-jian-in-the-sierra-tunnel",
       "category": "labor",
-      "paragraph": "Eldest son Jian was hired onto the Central Pacific Railroad, chipping granite inside a half-finished Sierra Nevada tunnel. He swung a heavy hammer by lantern light beside other Chinese laborers, their queues tied up under knit caps. Beyond the tunnel mouth, snowdrifts leaned against the wooden scaffolds."
+      "year": "1867",
+      "paragraph": "Eldest son Jian was hired onto the Central Pacific Railroad, chipping granite inside a half-finished Sierra Nevada tunnel. He swung a heavy hammer by lantern light beside other Chinese laborers, their queues tied up under knit caps. Beyond the tunnel mouth, snowdrifts leaned against the wooden scaffolds.",
+      "people": ["Jian Chen", "fellow Chinese railroad laborers"]
     },
     {
       "id": "03-sacramento-laundry",
       "category": "family",
-      "paragraph": "In a narrow Sacramento storefront, Mei-ling and her daughter Lin-hua ran a hand laundry behind a painted sign reading CHEN WASH HOUSE. Steam rose from copper tubs as they pressed white shirts with heavy irons. A row of folded bundles lined a shelf, each tagged with a paper customer's ticket."
+      "year": "1870",
+      "paragraph": "In a narrow Sacramento storefront, Mei-ling and her daughter Lin-hua ran a hand laundry behind a painted sign reading CHEN WASH HOUSE. Steam rose from copper tubs as they pressed white shirts with heavy irons. A row of folded bundles lined a shelf, each tagged with a paper customer's ticket.",
+      "people": ["Mei-ling Chen", "Lin-hua Chen"]
     },
     {
       "id": "04-chinatown-herbalist",
       "category": "family",
-      "paragraph": "Middle brother Hong-wei opened a small herbalist's shop on Dupont Street in San Francisco's Chinatown. He stood behind a wooden counter fitted with many small drawers, weighing dried ginseng on a brass balance. A painted scroll of medicinal roots hung on the wall, and an old customer waited on a stool."
+      "year": "1878",
+      "paragraph": "Middle brother Hong-wei opened a small herbalist's shop on Dupont Street in San Francisco's Chinatown. He stood behind a wooden counter fitted with many small drawers, weighing dried ginseng on a brass balance. A painted scroll of medicinal roots hung on the wall, and an old customer waited on a stool.",
+      "people": ["Hong-wei Chen", "elderly customer"]
     },
     {
       "id": "05-wei-at-mission-school",
       "category": "childhood",
-      "paragraph": "Seven-year-old Wei sat on a wooden bench at a Protestant mission school in Sacramento, copying English letters from a slate. A white teacher in a high collar walked among a mix of Chinese, Mexican, and Anglo children. Wei's queue hung down his back as he bent over his work."
+      "year": "1872",
+      "paragraph": "Seven-year-old Wei sat on a wooden bench at a Protestant mission school in Sacramento, copying English letters from a slate. A white teacher in a high collar walked among a mix of Chinese, Mexican, and Anglo children. Wei's queue hung down his back as he bent over his work.",
+      "people": ["Wei Chen", "Protestant mission teacher", "Chinese classmates", "Mexican classmates", "Anglo classmates"]
     },
     {
       "id": "06-exclusion-act-letter",
       "category": "history",
-      "paragraph": "In 1882 the family gathered around the kitchen table as Hong-wei read aloud from a newspaper reporting the Chinese Exclusion Act. Fu-hai, gray-haired now, stared at the stove; Mei-ling folded her hands; Jian, still unmarried, set down a tea cup. A printed broadside with the act's text lay on the table."
+      "year": "1882",
+      "paragraph": "In 1882 the family gathered around the kitchen table as Hong-wei read aloud from a newspaper reporting the Chinese Exclusion Act. Fu-hai, gray-haired now, stared at the stove; Mei-ling folded her hands; Jian, still unmarried, set down a tea cup. A printed broadside with the act's text lay on the table.",
+      "people": ["Hong-wei Chen", "Fu-hai Chen", "Mei-ling Chen", "Jian Chen"]
     },
     {
       "id": "07-wei-at-vasquez-vineyard",
       "category": "labor",
-      "paragraph": "Grown now, Wei took work at the Vasquez vineyard in the Napa Valley, once part of a Californio land grant. He carried a wooden basket of purple grapes down a long row of vines toward a waiting mule cart. Mexican and Chinese workers moved along the rows under a hot autumn sun."
+      "year": "1887",
+      "paragraph": "Grown now, Wei took work at the Vasquez vineyard in the Napa Valley, once part of a Californio land grant. He carried a wooden basket of purple grapes down a long row of vines toward a waiting mule cart. Mexican and Chinese workers moved along the rows under a hot autumn sun.",
+      "people": ["Wei Chen", "Mexican field workers", "Chinese field workers"]
     },
     {
       "id": "08-meeting-dolores-under-the-oak",
       "category": "courtship",
-      "paragraph": "Under a great valley oak at the edge of the vineyard, Wei met Dolores Vasquez, the vintner's youngest daughter. She held a clay jug of water for the workers; he had paused, hat in hand, to drink. Behind them, the adobe walls of the old rancho rose against golden hills."
+      "year": "1888",
+      "paragraph": "Under a great valley oak at the edge of the vineyard, Wei met Dolores Vasquez, the vintner's youngest daughter. She held a clay jug of water for the workers; he had paused, hat in hand, to drink. Behind them, the adobe walls of the old rancho rose against golden hills.",
+      "people": ["Wei Chen", "Dolores Vasquez"]
     },
     {
       "id": "09-mission-wedding",
       "category": "marriage",
-      "paragraph": "In 1889 Wei and Dolores married quietly at a small mission chapel in Sonoma, the ceremony conducted in Spanish and Latin. Wei wore a black American suit; Dolores wore a lace mantilla over dark hair. Two witnesses stood beside them: his sister Lin-hua and her elder brother Rafael, the families still uncertain of one another."
+      "year": "1889",
+      "paragraph": "In 1889 Wei and Dolores married quietly at a small mission chapel in Sonoma, the ceremony conducted in Spanish and Latin. Wei wore a black American suit; Dolores wore a lace mantilla over dark hair. Two witnesses stood beside them: his sister Lin-hua and her elder brother Rafael, the families still uncertain of one another.",
+      "people": ["Wei Chen", "Dolores Vasquez", "mission priest", "Lin-hua Chen", "Rafael Vasquez"]
     },
     {
       "id": "10-kitchen-of-two-tables",
       "category": "family",
-      "paragraph": "In the adobe farmhouse kitchen, Dolores rolled corn tortillas at one end of a long plank table while Wei chopped scallions and ginger at the other. A pot of red mole simmered on one side of the wood stove, a pot of rice porridge on the other. Strings of dried chiles and dried mushrooms hung from the same ceiling beam."
+      "year": "1895",
+      "paragraph": "In the adobe farmhouse kitchen, Dolores rolled corn tortillas at one end of a long plank table while Wei chopped scallions and ginger at the other. A pot of red mole simmered on one side of the wood stove, a pot of rice porridge on the other. Strings of dried chiles and dried mushrooms hung from the same ceiling beam.",
+      "people": ["Wei Chen", "Dolores Vasquez"]
     },
     {
       "id": "11-earthquake-of-1906",
       "category": "history",
-      "paragraph": "On the morning of April 18, 1906, the family ran from their San Francisco flat as the city shook and chimneys fell. Hong-wei stood in the street clutching an account book; his wife carried their small children; an elderly Fu-hai leaned on Wei's arm. Smoke rose in black columns over Chinatown behind them."
+      "year": "1906",
+      "paragraph": "On the morning of April 18, 1906, the family ran from their San Francisco flat as the city shook and chimneys fell. Hong-wei stood in the street clutching an account book; his wife carried their small children; an elderly Fu-hai leaned on Wei's arm. Smoke rose in black columns over Chinatown behind them.",
+      "people": ["Hong-wei Chen", "Hong-wei's wife", "Hong-wei's small children", "Fu-hai Chen", "Wei Chen"]
     },
     {
       "id": "12-grandchildren-at-the-gate",
       "category": "legacy",
-      "paragraph": "Three grandchildren of Wei and Dolores stood together at the vineyard gate during the Second World War. Miguel wore a U.S. Army uniform bound for the Pacific; Elena wore a nurse's cape, bound for a San Francisco hospital; young Tomás, still in high school, held schoolbooks. Beyond the gate stretched the old rancho's vineyard rows toward the hills."
+      "year": "1943",
+      "paragraph": "Three grandchildren of Wei and Dolores stood together at the vineyard gate during the Second World War. Miguel wore a U.S. Army uniform bound for the Pacific; Elena wore a nurse's cape, bound for a San Francisco hospital; young Tomás, still in high school, held schoolbooks. Beyond the gate stretched the old rancho's vineyard rows toward the hills.",
+      "people": ["Miguel Chen-Vasquez", "Elena Chen-Vasquez", "Tomás Chen-Vasquez"]
     }
   ]
 }

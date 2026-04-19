@@ -1,3 +1,5 @@
 requests
 Pillow
 google-genai
+numpy
+opencv-python-headless

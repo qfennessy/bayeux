@@ -41,6 +41,40 @@ requirements.txt       deps for the tapestry app
 
 Other directories (`demo/`, `tests/`, video/JS/cURL starters under `examples/`) are left over from the original Nunchaku starter kit. They are gitignored but kept on disk as a local reference.
 
+## Publishing the gallery
+
+Read-only public gallery is deployed via **Vercel** as a static site. The repo root contains:
+
+```
+public/         static site emitted by tapestry/build_gallery.py
+vercel.json     CDN cache headers + cleanUrls
+```
+
+**Build the gallery locally:**
+
+```bash
+# Render whichever tapestries you want to publish (default --out-dir is cwd):
+python -u tapestry/build_tapestry.py tapestry/ricci-bradford-1880.json \
+    --style tapestry/styles/bayeux.json --full-blend --out-dir out
+
+# Walk cache + rendered images, emit public/index.html + public/tapestries/*.jpg:
+python tapestry/build_gallery.py --images-dir out
+```
+
+`build_gallery.py` picks the most-processed variant available per (family, style) — `-poisson` > `-blended` > raw — and embeds per-panel metadata (title, year, people, paragraph, generated prompt) as expandable `<details>` sections. Pure Python + Pillow; no JS toolchain.
+
+Preview locally with `python -m http.server 8000 -d public` and open `http://localhost:8000`.
+
+**Deploy to Vercel:**
+
+```bash
+npm i -g vercel   # one-time
+vercel            # first time: link to a Vercel project
+vercel --prod     # deploy
+```
+
+No serverless functions, no env vars on Vercel — it's just `public/`. API keys stay local. Re-run `build_tapestry.py` and `build_gallery.py`, git-commit `public/`, then `vercel --prod` (or push to a git-connected branch and let Vercel auto-deploy).
+
 ## Acknowledgements
 
 This project began as Nunchaku's Python/cURL/JS starter kit and has been narrowed to the tapestry pipeline.

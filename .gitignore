@@ -17,6 +17,16 @@ cache/
 !docs/images/*.jpeg
 !docs/images/*.png
 
+# Built gallery for Vercel — the index.html and copied tapestry JPGs
+# need to be tracked so `vercel --prod` can deploy them reproducibly
+# from a git push.
+!public/
+!public/**/*.html
+!public/**/*.jpg
+!public/**/*.jpeg
+!public/**/*.png
+!public/**/*.svg
+
 # Python
 __pycache__/
 *.pyc

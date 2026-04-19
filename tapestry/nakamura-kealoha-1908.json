@@ -10,62 +10,86 @@
     {
       "id": "01-hiroshima-photograph",
       "category": "emigration",
-      "paragraph": "In a small photography studio in a Hiroshima village in 1908, twenty-year-old Sachiko Inoue sat for a formal portrait in a crisp kimono. A photographer in a Western suit stooped behind a wooden plate camera. The photograph would be mailed across the Pacific to a sugarcane worker in Hawaii she had never met."
+      "year": "1908",
+      "paragraph": "In a small photography studio in a Hiroshima village in 1908, twenty-year-old Sachiko Inoue sat for a formal portrait in a crisp kimono. A photographer in a Western suit stooped behind a wooden plate camera. The photograph would be mailed across the Pacific to a sugarcane worker in Hawaii she had never met.",
+      "people": ["Sachiko Inoue", "Hiroshima village photographer"]
     },
     {
       "id": "02-honolulu-pier",
       "category": "immigration",
-      "paragraph": "A year later Sachiko stepped off the Nippon Maru at the Honolulu pier, clutching the photograph that matched her waiting husband. Tadao Nakamura, a lean man in a straw hat and work clothes, bowed to her among a crowd of other picture brides and plantation agents. Palm trees leaned over the bright harbor."
+      "year": "1909",
+      "paragraph": "A year later Sachiko stepped off the Nippon Maru at the Honolulu pier, clutching the photograph that matched her waiting husband. Tadao Nakamura, a lean man in a straw hat and work clothes, bowed to her among a crowd of other picture brides and plantation agents. Palm trees leaned over the bright harbor.",
+      "people": ["Sachiko Inoue", "Tadao Nakamura", "fellow picture brides", "plantation agents"]
     },
     {
       "id": "03-plantation-barracks",
       "category": "labor",
-      "paragraph": "On an Oahu sugar plantation, rows of tin-roofed worker barracks stretched toward green cane fields. Sachiko hung laundry on a line outside one of the shacks while Tadao, in a wide hat and canvas leggings, swung a machete among the tall cane. A luna on horseback rode down the narrow dirt road."
+      "year": "1912",
+      "paragraph": "On an Oahu sugar plantation, rows of tin-roofed worker barracks stretched toward green cane fields. Sachiko hung laundry on a line outside one of the shacks while Tadao, in a wide hat and canvas leggings, swung a machete among the tall cane. A luna on horseback rode down the narrow dirt road.",
+      "people": ["Sachiko Nakamura", "Tadao Nakamura", "plantation luna"]
     },
     {
       "id": "04-japanese-school-afternoon",
       "category": "childhood",
-      "paragraph": "After the public school day, the Nakamura children walked to a small wooden Japanese-language school beside the plantation camp. A teacher in a dark kimono stood at a blackboard writing hiragana; ten children in neat rows copied the characters. The youngest son, Kenji, sat at the end of the front row."
+      "year": "1923",
+      "paragraph": "After the public school day, the Nakamura children walked to a small wooden Japanese-language school beside the plantation camp. A teacher in a dark kimono stood at a blackboard writing hiragana; ten children in neat rows copied the characters. The youngest son, Kenji, sat at the end of the front row.",
+      "people": ["Japanese-language teacher", "Nakamura children", "Kenji Nakamura", "plantation-camp classmates"]
     },
     {
       "id": "05-hongwanji-temple-bell",
       "category": "faith",
-      "paragraph": "On a Sunday morning the family climbed the steps of a Hongwanji Buddhist temple with a wooden bell tower. Sachiko lit incense before a gilded altar; Tadao knelt beside her; the children bowed behind them. Through the open doors, sugarcane fields stretched toward the sea."
+      "year": "1925",
+      "paragraph": "On a Sunday morning the family climbed the steps of a Hongwanji Buddhist temple with a wooden bell tower. Sachiko lit incense before a gilded altar; Tadao knelt beside her; the children bowed behind them. Through the open doors, sugarcane fields stretched toward the sea.",
+      "people": ["Sachiko Nakamura", "Tadao Nakamura", "Nakamura children"]
     },
     {
       "id": "06-kenji-at-the-cannery",
       "category": "work",
-      "paragraph": "Grown into a young man, Kenji worked at a pineapple cannery in Honolulu. He stood at a long stainless-steel line trimming fruit, his sleeves rolled to the elbow, an apron over his work shirt. Women in white caps and aprons worked beside him, slicing and packing the bright yellow rings."
+      "year": "1937",
+      "paragraph": "Grown into a young man, Kenji worked at a pineapple cannery in Honolulu. He stood at a long stainless-steel line trimming fruit, his sleeves rolled to the elbow, an apron over his work shirt. Women in white caps and aprons worked beside him, slicing and packing the bright yellow rings.",
+      "people": ["Kenji Nakamura", "cannery line women"]
     },
     {
       "id": "07-meeting-leilani",
       "category": "courtship",
-      "paragraph": "At a Saturday luau on a beach near Waikiki, Kenji met Leilani Kealoha, a hula dancer from a Hawaiian family of fishermen and chanters. She stood barefoot on lauhala mats, a plumeria lei around her neck, a ti-leaf skirt at her hips. He stood at the edge of the gathering, unsure whether to approach."
+      "year": "1938",
+      "paragraph": "At a Saturday luau on a beach near Waikiki, Kenji met Leilani Kealoha, a hula dancer from a Hawaiian family of fishermen and chanters. She stood barefoot on lauhala mats, a plumeria lei around her neck, a ti-leaf skirt at her hips. He stood at the edge of the gathering, unsure whether to approach.",
+      "people": ["Kenji Nakamura", "Leilani Kealoha", "luau guests"]
     },
     {
       "id": "08-two-traditions-wedding",
       "category": "marriage",
-      "paragraph": "In 1939 Kenji and Leilani married in a ceremony that joined two traditions. A Shinto priest in white robes purified the couple with a sakaki branch while a Hawaiian kahu blessed them with ti-leaf salt water. Leilani wore a white holokū; a lei and a cup of sake rested on the low altar between them."
+      "year": "1939",
+      "paragraph": "In 1939 Kenji and Leilani married in a ceremony that joined two traditions. A Shinto priest in white robes purified the couple with a sakaki branch while a Hawaiian kahu blessed them with ti-leaf salt water. Leilani wore a white holokū; a lei and a cup of sake rested on the low altar between them.",
+      "people": ["Kenji Nakamura", "Leilani Kealoha", "Shinto priest", "Hawaiian kahu"]
     },
     {
       "id": "09-pearl-harbor-and-internment",
       "category": "history",
-      "paragraph": "On a December afternoon in 1941, FBI agents in dark coats escorted Tadao from his plantation house as his family watched from the doorway. Sachiko, gray-haired, held Leilani's arm; the children stood silent. Smoke still rose faintly over Pearl Harbor in the distance behind them."
+      "year": "1941",
+      "paragraph": "On a December afternoon in 1941, FBI agents in dark coats escorted Tadao from his plantation house as his family watched from the doorway. Sachiko, gray-haired, held Leilani's arm; the children stood silent. Smoke still rose faintly over Pearl Harbor in the distance behind them.",
+      "people": ["Tadao Nakamura", "FBI agents", "Sachiko Nakamura", "Leilani Kealoha", "Nakamura children"]
     },
     {
       "id": "10-kenji-in-italy",
       "category": "service",
-      "paragraph": "Kenji, in the uniform of the 442nd Regimental Combat Team, moved with his squad through a rubbled Italian village in 1944. He carried a rifle and a medic's pack; a small folded photograph of Leilani was tucked inside his helmet liner. Other nisei soldiers advanced along the shattered street."
+      "year": "1944",
+      "paragraph": "Kenji, in the uniform of the 442nd Regimental Combat Team, moved with his squad through a rubbled Italian village in 1944. He carried a rifle and a medic's pack; a small folded photograph of Leilani was tucked inside his helmet liner. Other nisei soldiers advanced along the shattered street.",
+      "people": ["Kenji Nakamura", "442nd RCT nisei soldiers"]
     },
     {
       "id": "11-waikiki-surfboard-shop",
       "category": "legacy",
-      "paragraph": "In 1952 Kenji opened a surfboard shop on a Waikiki side street, its painted sign reading NAKAMURA-KEALOHA SURF & REPAIR. He stood in the open doorway shaping a redwood board with a hand plane while Leilani, now a hula teacher, led a small class of children on the lanai behind. Tourists passed on the sidewalk beyond."
+      "year": "1952",
+      "paragraph": "In 1952 Kenji opened a surfboard shop on a Waikiki side street, its painted sign reading NAKAMURA-KEALOHA SURF & REPAIR. He stood in the open doorway shaping a redwood board with a hand plane while Leilani, now a hula teacher, led a small class of children on the lanai behind. Tourists passed on the sidewalk beyond.",
+      "people": ["Kenji Nakamura", "Leilani Kealoha", "Leilani's hula students", "Waikiki tourists"]
     },
     {
       "id": "12-grandchildren-of-two-oceans",
       "category": "legacy",
-      "paragraph": "Years later the family gathered on the beach at sunset. One grandchild paddled offshore in a Hawaiian outrigger with his crew; another, in a dark suit, held a plane ticket to Tokyo for an engineering job; a small great-granddaughter in a white dress held a lei in one hand and a folded paper crane in the other. The sky behind them was the color of fire."
+      "year": "2010",
+      "paragraph": "Years later the family gathered on the beach at sunset. One grandchild paddled offshore in a Hawaiian outrigger with his crew; another, in a dark suit, held a plane ticket to Tokyo for an engineering job; a small great-granddaughter in a white dress held a lei in one hand and a folded paper crane in the other. The sky behind them was the color of fire.",
+      "people": ["outrigger-paddling grandchild", "Tokyo-bound grandchild", "outrigger crew", "Nakamura-Kealoha great-granddaughter"]
     }
   ]
 }

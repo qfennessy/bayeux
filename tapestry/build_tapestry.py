@@ -23,6 +23,7 @@ import json
 import logging
 import os
 import random
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -57,18 +58,35 @@ GEMINI_MODEL = "gemini-3.1-flash-lite-preview"
 GEMINI_EDIT_MODEL = "gemini-3.1-flash-image-preview"
 
 PROMPT_SYSTEM_INSTRUCTION = (
-    "You receive a paragraph of family history. Return a JSON object with "
-    "two fields: \n"
-    "  1. 'title': a short narrative title for the scene, 3-6 words, Title "
-    "Case, evocative and specific (e.g. 'Arrival at Castle Garden'), no "
-    "trailing punctuation.\n"
+    "You receive a JSON object with three fields: 'paragraph' (a passage "
+    "of family history), 'people' (an ordered list of characters or "
+    "roles present in that scene), and 'year' (an optional string like "
+    "'1880' or '' when unknown). Return a JSON object with two fields: \n"
+    "  1. 'title': a short narrative title for the scene, 3-6 words, "
+    "Title Case, evocative and specific. When the 'year' field is "
+    "non-empty, PREFIX the title with that year followed by a single "
+    "space, for example: '1902 A Contract Under the Neem' or '1906 "
+    "Eleanor at City Hall'. When 'year' is empty or missing, omit the "
+    "year prefix — do not invent a year from the paragraph text. When "
+    "the 'people' list is non-empty, reference at least one named "
+    "character (or their relationship, like 'the Ricci Daughters') in "
+    "the title where it reads naturally. No trailing punctuation. \n"
     "  2. 'prompt': a single concise visual image prompt describing ONE "
-    "scene with concrete visual elements: who is present, what they are "
-    "doing, the setting, key objects, time of day, and mood. Roughly 50-80 "
-    "words. Do not name specific real people. Do not include camera or lens "
-    "jargon. Do not add preamble or labels.\n"
+    "scene. When 'people' is non-empty, refer to each listed character "
+    "by name or role at their first mention in the prompt, and give "
+    "each a short physical descriptor appropriate to their role and era "
+    "(age bracket, clothing, posture) so a text-to-image model can "
+    "render a recognisable figure. Include concrete visual elements: "
+    "who is present, what they are doing, the setting, key objects, "
+    "time of day, and mood. Roughly 50-80 words. These are fictional "
+    "family members, not public figures — naming them is fine. Do not "
+    "include camera or lens jargon. Do not add preamble or labels. \n"
     "Return only the JSON object."
 )
+
+PROMPT_INSTRUCTION_HASH = hashlib.sha256(
+    PROMPT_SYSTEM_INSTRUCTION.encode("utf-8")
+).hexdigest()[:10]
 
 GEMINI_JSON_SCHEMA = {
     "type": "object",
@@ -81,19 +99,30 @@ GEMINI_JSON_SCHEMA = {
 
 
 def gemini_title_and_prompt(
-    client: genai.Client, paragraph: str
+    client: genai.Client,
+    paragraph: str,
+    people: list[str] | None = None,
+    year: str | None = None,
 ) -> tuple[str, str]:
     """Ask Gemini 3.1 Flash to return both a narrative title and a visual
     prompt for a paragraph. Returns ``(title, prompt)``.
 
-    Uses structured-output mode so we get reliable JSON back. Thinking is
-    disabled (``thinking_budget=0``): paragraph rewriting doesn't need
-    reasoning, and leaving it on returns a ``thought_signature`` part that
-    the SDK warns about and costs extra latency.
+    When ``people`` is non-empty, each character or role in the list gets
+    a short visual descriptor in the generated prompt so the same person
+    can be rendered consistently across multiple panels. When ``year`` is
+    provided, the title is prefixed with that year (e.g. ``"1902 A
+    Contract Under the Neem"``) — the model does not attempt to infer
+    the year from the paragraph text. Uses structured JSON input AND
+    output. Thinking is disabled.
     """
+    request = {
+        "paragraph": paragraph,
+        "people": list(people) if people else [],
+        "year": str(year).strip() if year else "",
+    }
     resp = client.models.generate_content(
         model=GEMINI_MODEL,
-        contents=paragraph,
+        contents=json.dumps(request, ensure_ascii=False),
         config={
             "system_instruction": PROMPT_SYSTEM_INSTRUCTION,
             "response_mime_type": "application/json",
@@ -689,26 +718,73 @@ def render_panel(
         "title": "",
     }
 
+    current_people = story.get("people") or []
+    current_year = (str(story.get("year")).strip() if story.get("year") else "")
+
+    title: str | None = None
+    visual_prompt: str | None = None
+
     if cache_path.exists():
         cached = json.loads(cache_path.read_text())
-        title = cached["title"]
-        visual_prompt = cached["prompt"]
-        stats["prompt_cached"] = True
-        stats["prompt_chars"] = len(visual_prompt)
-        print(
-            f"  gemini: cached title={title!r}, {len(visual_prompt)} prompt chars",
-            flush=True,
-        )
-    elif legacy_prompt_path.exists():
-        # Migration: old cache had prompt-only. Keep the prompt, ask Gemini
-        # just for the title this time. Save merged cache, drop legacy file.
+        cached_people = cached.get("people") or []
+        cached_year = cached.get("year") or ""
+        cached_instruction = cached.get("instruction_hash")
+        people_match = cached_people == current_people
+        year_match = cached_year == current_year
+        instruction_match = cached_instruction == PROMPT_INSTRUCTION_HASH
+        if people_match and year_match and instruction_match:
+            title = cached["title"]
+            visual_prompt = cached["prompt"]
+            stats["prompt_cached"] = True
+            stats["prompt_chars"] = len(visual_prompt)
+            print(
+                f"  gemini: cached title={title!r}, "
+                f"{len(visual_prompt)} prompt chars, people={len(current_people)}",
+                flush=True,
+            )
+        else:
+            reasons = []
+            if not people_match:
+                reasons.append(
+                    f"people {len(cached_people)}→{len(current_people)}"
+                )
+            if not year_match:
+                reasons.append(
+                    f"year {cached_year or 'none'}→{current_year or 'none'}"
+                )
+            if not instruction_match:
+                reasons.append(
+                    f"system-instruction {cached_instruction or 'none'}"
+                    f"→{PROMPT_INSTRUCTION_HASH}"
+                )
+            print(
+                f"  gemini: cache invalidated ({', '.join(reasons)}); "
+                "regenerating title + prompt",
+                flush=True,
+            )
+
+    if visual_prompt is None and legacy_prompt_path.exists() and not current_people:
+        # Legacy cache (prompt-only .txt file) migrates only when the
+        # story has no people list — otherwise we want a fresh,
+        # people-aware prompt rather than a salvage of the old one.
         visual_prompt = legacy_prompt_path.read_text().strip()
         t0 = time.monotonic()
         print(f"  gemini: migrating cache — fetching title only...", flush=True)
-        title, _ = gemini_title_and_prompt(gemini_client, story["paragraph"])
+        title, _ = gemini_title_and_prompt(
+            gemini_client, story["paragraph"], year=current_year
+        )
         elapsed = time.monotonic() - t0
         cache_path.write_text(
-            json.dumps({"title": title, "prompt": visual_prompt}, ensure_ascii=False)
+            json.dumps(
+                {
+                    "title": title,
+                    "prompt": visual_prompt,
+                    "people": current_people,
+                    "year": current_year,
+                    "instruction_hash": PROMPT_INSTRUCTION_HASH,
+                },
+                ensure_ascii=False,
+            )
         )
         legacy_prompt_path.unlink()
         stats["prompt_seconds"] = elapsed
@@ -717,16 +793,31 @@ def render_panel(
             f"  gemini: migrated ({elapsed:.2f}s, title={title!r})",
             flush=True,
         )
-    else:
+
+    if visual_prompt is None:
         t0 = time.monotonic()
-        print(f"  gemini: generating title + prompt...", flush=True)
+        print(
+            f"  gemini: generating title + prompt (people={len(current_people)})...",
+            flush=True,
+        )
         title, visual_prompt = gemini_title_and_prompt(
-            gemini_client, story["paragraph"]
+            gemini_client, story["paragraph"], current_people, current_year
         )
         elapsed = time.monotonic() - t0
         cache_path.write_text(
-            json.dumps({"title": title, "prompt": visual_prompt}, ensure_ascii=False)
+            json.dumps(
+                {
+                    "title": title,
+                    "prompt": visual_prompt,
+                    "people": current_people,
+                    "year": current_year,
+                    "instruction_hash": PROMPT_INSTRUCTION_HASH,
+                },
+                ensure_ascii=False,
+            )
         )
+        if legacy_prompt_path.exists():
+            legacy_prompt_path.unlink()
         stats["prompt_seconds"] = elapsed
         stats["prompt_chars"] = len(visual_prompt)
         print(
@@ -831,6 +922,51 @@ def label_tile(
     return labeled
 
 
+def frame_tile(tile: Image.Image, thickness: int) -> Image.Image:
+    """Return a copy of ``tile`` with a thin decorative frame painted
+    around its edges.
+
+    The frame is drawn over the tile's outermost pixels (not added as
+    extra canvas), so it does not change tile dimensions or grid math.
+    Two-tone: an outer thin dark outline plus an inner cream inset
+    that together evoke a panel-style illumination frame. Used to turn
+    the tile boundary into a deliberate design element rather than a
+    defect to hide.
+    """
+    if thickness <= 0:
+        return tile
+    framed = tile.copy()
+    draw = ImageDraw.Draw(framed)
+    w, h = framed.size
+    dark = (38, 28, 18)
+    cream = (238, 227, 200)
+    outer = max(1, thickness // 3)
+    # Dark outer band.
+    for i in range(outer):
+        draw.rectangle([(i, i), (w - 1 - i, h - 1 - i)], outline=dark)
+    # Cream inset band.
+    for i in range(outer, thickness):
+        draw.rectangle([(i, i), (w - 1 - i, h - 1 - i)], outline=cream)
+    return framed
+
+
+def _horizontal_alpha_gradient(
+    width: int, height: int, feather_px: int
+) -> Image.Image:
+    """Build an L-mode alpha mask the shape of a tile: a linear 0→255
+    ramp over the first ``feather_px`` columns, then fully opaque. Used
+    when pasting the Nth tile (N > 0) over the previous tile's right
+    edge to produce a cross-dissolve along the seam.
+    """
+    import numpy as np
+
+    arr = np.full((height, width), 255, dtype=np.uint8)
+    if feather_px > 0:
+        ramp = np.linspace(0, 255, feather_px, dtype=np.uint8)
+        arr[:, :feather_px] = ramp[None, :]
+    return Image.fromarray(arr, mode="L")
+
+
 def assemble_tapestry(
     panels: list[Path],
     cols: int,
@@ -838,13 +974,26 @@ def assemble_tapestry(
     out_path: Path,
     labels: list[str] | None = None,
     font_path: Path | None = None,
+    feather_px: int = 0,
+    frame_px: int = 0,
 ) -> None:
     """Paste all panels into a cols x rows grid and save.
 
-    When ``labels`` is provided (one string per panel), each tile gets a
-    translucent caption bar at the bottom before being pasted. Labels are
-    only drawn on the final tapestry, never on the cached per-panel
+    When ``labels`` is provided (one string per panel), each tile gets
+    its title drawn at the bottom with an outlined white stroke. Labels
+    are only drawn on the final tapestry, never on the cached per-panel
     images, so you can change or disable them without regenerating.
+
+    ``feather_px > 0`` overlaps adjacent columns by ``feather_px``
+    pixels and cross-dissolves them with a horizontal alpha gradient.
+    This narrows the output canvas by ``(cols - 1) * feather_px`` and
+    produces a genuinely continuous transition at each vertical seam at
+    the cost of both tiles showing faintly through each other in the
+    overlap zone. Rows are never feathered — caption text lives there.
+
+    ``frame_px > 0`` paints a thin two-tone frame around each tile
+    before it is pasted, turning visible seams into deliberate panel
+    borders.
     """
     if len(panels) != cols * rows:
         raise ValueError(
@@ -857,16 +1006,77 @@ def assemble_tapestry(
 
     tiles = [Image.open(p).convert("RGB") for p in panels]
     w, h = tiles[0].size
-    canvas = Image.new("RGB", (cols * w, rows * h), "white")
+    feather_px = max(0, min(feather_px, w - 1))
+    canvas_w = cols * w - (cols - 1) * feather_px
+    canvas = Image.new("RGB", (canvas_w, rows * h), "white")
     font = _load_font(int(h * 0.045), font_path) if labels else None
+    gradient_mask = (
+        _horizontal_alpha_gradient(w, h, feather_px) if feather_px > 0 else None
+    )
     for i, tile in enumerate(tiles):
         if tile.size != (w, h):
             tile = tile.resize((w, h), Image.LANCZOS)
+        if frame_px > 0:
+            tile = frame_tile(tile, frame_px)
         if labels:
             tile = label_tile(tile, labels[i], font)
         r, c = divmod(i, cols)
-        canvas.paste(tile, (c * w, r * h))
+        x = c * (w - feather_px)
+        y = r * h
+        if feather_px > 0 and c > 0:
+            canvas.paste(tile, (x, y), gradient_mask)
+        else:
+            canvas.paste(tile, (x, y))
     canvas.save(out_path, quality=92)
+
+
+def poisson_blend_seams(
+    tapestry_path: Path,
+    out_path: Path,
+    cols: int,
+    rows: int,
+    tile_w: int,
+    strip_width: int = 192,
+) -> None:
+    """Gradient-domain (Poisson) smoothing of every vertical seam.
+
+    Uses OpenCV's ``cv2.seamlessClone`` in ``MIXED_CLONE`` mode on a
+    vertical strip of width ``2 * strip_width`` centered on each seam.
+    MIXED_CLONE keeps the stronger gradient from either the surrounding
+    tapestry or the strip, which preserves detail on both sides while
+    matching the boundary colors — typically the seam becomes invisible
+    on sky / ground / background-dominated boundaries. Writes the
+    blended result to ``out_path`` alongside the raw tapestry.
+
+    ``opencv-python`` is imported lazily so users who never pass
+    ``--poisson`` don't need it installed.
+    """
+    import cv2
+    import numpy as np
+
+    bgr = cv2.imread(str(tapestry_path))
+    if bgr is None:
+        raise RuntimeError(f"could not read {tapestry_path}")
+    h_img, w_img = bgr.shape[:2]
+    result = bgr.copy()
+    applied = 0
+    for c in range(1, cols):
+        seam_x = c * tile_w
+        left = max(0, seam_x - strip_width)
+        right = min(w_img, seam_x + strip_width)
+        if right - left < 4:
+            continue
+        src = result[:, left:right].copy()
+        mask = np.full((src.shape[0], src.shape[1]), 255, dtype=np.uint8)
+        center = ((left + right) // 2, h_img // 2)
+        result = cv2.seamlessClone(src, result, mask, center, cv2.MIXED_CLONE)
+        applied += 1
+    cv2.imwrite(str(out_path), result, [cv2.IMWRITE_JPEG_QUALITY, 92])
+    print(
+        f"poisson: wrote {out_path} "
+        f"(blended {applied} vertical seams, strip ±{strip_width}px)",
+        flush=True,
+    )
 
 
 def pick_grid(n: int) -> tuple[int, int]:
@@ -908,6 +1118,10 @@ def build_one(
     font_path: Path | None = None,
     blend: bool = False,
     edit_provider: str = "nunchaku",
+    feather_px: int = 0,
+    frame_px: int = 0,
+    poisson: bool = False,
+    regenerate_images: bool = False,
 ) -> None:
     """Render a single family into its own styled tapestry image.
 
@@ -946,6 +1160,16 @@ def build_one(
     family_cache = cache_root / stories_path.stem
     prompt_dir = family_cache / "prompts"
     image_dir = family_cache / "images" / style_name
+    if regenerate_images and image_dir.exists():
+        # Nuke the per-(family, style) image dir, including any seam patches
+        # built from the old images. Prompts are preserved so we keep the
+        # people-aware Gemini work and only re-call Nunchaku for the panels.
+        print(
+            f"regenerate-images: clearing {image_dir} "
+            f"(prompts under {prompt_dir} untouched)",
+            flush=True,
+        )
+        shutil.rmtree(image_dir)
     prompt_dir.mkdir(parents=True, exist_ok=True)
     image_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1026,7 +1250,14 @@ def build_one(
     else:
         label_texts = None
     assemble_tapestry(
-        panels, cols, rows, out_path, labels=label_texts, font_path=font_path
+        panels,
+        cols,
+        rows,
+        out_path,
+        labels=label_texts,
+        font_path=font_path,
+        feather_px=feather_px,
+        frame_px=frame_px,
     )
     print(
         f"wrote {out_path} (total {time.monotonic() - run_start:.0f}s)",
@@ -1053,6 +1284,21 @@ def build_one(
             gemini_client=gemini_client,
             patch_cache_dir=patch_cache_dir,
             verbose=verbose,
+        )
+
+    if poisson:
+        tile_w_p = Image.open(panels[0]).size[0]
+        # With feather, the seams on disk sit at (tile_w - feather_px)
+        # increments, not tile_w. Compute the on-disk seam stride so
+        # Poisson targets the right columns.
+        seam_stride = tile_w_p - feather_px
+        poisson_path = out_path.with_name(f"{out_path.stem}-poisson{out_path.suffix}")
+        poisson_blend_seams(
+            tapestry_path=out_path,
+            out_path=poisson_path,
+            cols=cols,
+            rows=rows,
+            tile_w=seam_stride,
         )
 
 
@@ -1156,7 +1402,65 @@ def main() -> int:
         "(better at 'preserve content, only fix seam' instructions; "
         "somewhat slower). Default: nunchaku.",
     )
+    parser.add_argument(
+        "--poisson",
+        action="store_true",
+        help="deterministic alternative to --blend: after assembling the "
+        "tapestry, run OpenCV gradient-domain (Poisson) seamless cloning "
+        "on a strip straddling every vertical seam. No LLM, no API cost, "
+        "milliseconds per seam. Writes <stem>-poisson.jpg. Requires "
+        "opencv-python (imported lazily).",
+    )
+    parser.add_argument(
+        "--feather",
+        dest="feather_px",
+        type=int,
+        default=0,
+        metavar="PX",
+        help="overlap adjacent columns by PX pixels during assembly and "
+        "cross-dissolve them with a horizontal alpha gradient. 0 disables "
+        "(default). Try 64-128 to soften seams. Narrows the output canvas "
+        "by (cols-1)*PX pixels. Unlike --blend and --poisson, this "
+        "changes the main <stem>.jpg, not a sibling file.",
+    )
+    parser.add_argument(
+        "--frame",
+        dest="frame_px",
+        type=int,
+        default=12,
+        metavar="PX",
+        help="paint a two-tone (dark outer + cream inner) frame PX "
+        "pixels thick around every tile before pasting. Default: 12 "
+        "(understated panel borders). Pass 0 to disable, or a larger "
+        "value (e.g. 20, 32) for a heavier frame. Turns visible seams "
+        "into deliberate panel dividers.",
+    )
+    parser.add_argument(
+        "--full-blend",
+        dest="full_blend",
+        action="store_true",
+        help="shortcut for the recommended deterministic stack: enables "
+        "--poisson and sets --feather to 96 unless you passed a "
+        "different --feather explicitly. Keeps whatever --frame you "
+        "chose (default 12). Costs nothing extra vs running the flags "
+        "separately.",
+    )
+    parser.add_argument(
+        "--regenerate-images",
+        dest="regenerate_images",
+        action="store_true",
+        help="before rendering, wipe the cached images (and seam "
+        "patches) for the selected (family, style) so every panel is "
+        "re-rendered from scratch. Prompts are preserved, so Gemini is "
+        "not re-called — only Nunchaku. Useful after you change the "
+        "story paragraphs or the 'people' list and want fresh images "
+        "without manually deleting cache directories.",
+    )
     args = parser.parse_args()
+    if args.full_blend:
+        args.poisson = True
+        if args.feather_px == 0:
+            args.feather_px = 96
     limit = None if args.all_stories else args.limit
 
     if args.out is not None and len(args.family) > 1:
@@ -1204,6 +1508,10 @@ def main() -> int:
             font_path=args.font,
             blend=args.blend,
             edit_provider=args.edit_provider,
+            feather_px=args.feather_px,
+            frame_px=args.frame_px,
+            poisson=args.poisson,
+            regenerate_images=args.regenerate_images,
         )
     if len(args.family) > 1:
         print(

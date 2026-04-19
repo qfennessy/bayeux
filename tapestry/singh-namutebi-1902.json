@@ -10,62 +10,86 @@
     {
       "id": "01-gurdaspur-recruitment",
       "category": "emigration",
-      "paragraph": "In the spring of 1902, a British recruiter came to the Punjabi village of Gurdaspur seeking foremen for the Uganda Railway. Harbans Singh, a tall man in a blue turban, signed a contract at a folding table beneath a neem tree, his wife Jaswinder and four children watching. A painted poster of the East African line was tacked to the tree trunk."
+      "year": "1902",
+      "paragraph": "In the spring of 1902, a British recruiter came to the Punjabi village of Gurdaspur seeking foremen for the Uganda Railway. Harbans Singh, a tall man in a blue turban, signed a contract at a folding table beneath a neem tree, his wife Jaswinder and four children watching. A painted poster of the East African line was tacked to the tree trunk.",
+      "people": ["Harbans Singh", "British railway recruiter", "Jaswinder Kaur", "four Singh children"]
     },
     {
       "id": "02-mombasa-landing",
       "category": "immigration",
-      "paragraph": "A year later the family followed, stepping off a dhow at the crowded Mombasa harbor. Jaswinder held the youngest, Jasbir, while the older children clutched bundles of cloth and cooking pots. Porters in kanzus, Arab traders, and British officers in pith helmets moved along the quay around them."
+      "year": "1903",
+      "paragraph": "A year later the family followed, stepping off a dhow at the crowded Mombasa harbor. Jaswinder held the youngest child while the older children clutched bundles of cloth and cooking pots. Porters in kanzus, Arab traders, and British officers in pith helmets moved along the quay around them.",
+      "people": ["Jaswinder Kaur", "youngest Singh child (infant)", "older Singh children", "Swahili porters", "Arab traders", "British officers"]
     },
     {
       "id": "03-tsavo-tracks",
       "category": "labor",
-      "paragraph": "On the red-earth cutting near Tsavo, Harbans stood at the head of a work gang laying iron rails across East Africa. Indian laborers in turbans swung hammers; African porters carried water skins; a British engineer in a sun helmet pointed along the embankment. In the acacia beyond, a lion watched from the tall grass."
+      "year": "1904",
+      "paragraph": "On the red-earth cutting near Tsavo, Harbans stood at the head of a work gang laying iron rails across East Africa. Indian laborers in turbans swung hammers; African porters carried water skins; a British engineer in a sun helmet pointed along the embankment. In the acacia beyond, a lion watched from the tall grass.",
+      "people": ["Harbans Singh", "Indian railway laborers", "African porters", "British railway engineer"]
     },
     {
       "id": "04-kampala-hardware-store",
       "category": "work",
-      "paragraph": "Once the railway reached Kampala, Harbans opened a hardware store on Kampala Road, its sign reading SINGH & SONS HARDWARE. He stood behind a wooden counter stacked with bolts of cloth, kerosene tins, and galvanized buckets. A Baganda customer in a kanzu examined a hurricane lamp by the doorway."
+      "year": "1912",
+      "paragraph": "Once the railway reached Kampala, Harbans opened a hardware store on Kampala Road, its sign reading SINGH & SONS HARDWARE. He stood behind a wooden counter stacked with bolts of cloth, kerosene tins, and galvanized buckets. A Baganda customer in a kanzu examined a hurricane lamp by the doorway.",
+      "people": ["Harbans Singh", "Baganda customer"]
     },
     {
       "id": "05-gurdwara-on-kampala-road",
       "category": "faith",
-      "paragraph": "On a Sunday morning the family gathered at the new Kampala Gurdwara, a modest white building with a saffron flag on its roof. Harbans, Jaswinder, and their children sat cross-legged on a carpeted floor as a granthi read from the Guru Granth Sahib. Steel bowls of langar waited in the courtyard outside."
+      "year": "1928",
+      "paragraph": "On a Sunday morning the family gathered at the new Kampala Gurdwara, a modest white building with a saffron flag on its roof. Harbans, Jaswinder, and their children sat cross-legged on a carpeted floor as a granthi read from the Guru Granth Sahib. Steel bowls of langar waited in the courtyard outside.",
+      "people": ["Harbans Singh", "Jaswinder Kaur", "Singh children", "granthi"]
     },
     {
       "id": "06-siblings-across-empire",
       "category": "family",
-      "paragraph": "The older Singh children fanned out across the British Empire. Amrit ran the hardware shop with his father. Harjit, in a nurse's uniform, worked at a hospital in Nairobi. Balwant, in a tweed jacket, studied law in London. Their framed portraits hung on the wall of the Kampala sitting room."
+      "year": "1955",
+      "paragraph": "The older Singh children fanned out across the British Empire. Amrit ran the hardware shop with his father. Harjit, in a nurse's uniform, worked at a hospital in Nairobi. Balwant, in a tweed jacket, studied law in London. Their framed portraits hung on the wall of the Kampala sitting room.",
+      "people": ["Amrit Singh", "Harjit Kaur", "Balwant Singh"]
     },
     {
       "id": "07-jasbir-at-makerere",
       "category": "education",
-      "paragraph": "The youngest son Jasbir walked the red-gravel paths of Makerere University College in Kampala, a stethoscope slung over his white medical coat. Students of many backgrounds crossed the quadrangle around him; tall palms rose behind the stone lecture halls. He carried a stack of anatomy books under his arm."
+      "year": "1958",
+      "paragraph": "The youngest son Jasbir walked the red-gravel paths of Makerere University College in Kampala, a stethoscope slung over his white medical coat. Students of many backgrounds crossed the quadrangle around him; tall palms rose behind the stone lecture halls. He carried a stack of anatomy books under his arm.",
+      "people": ["Jasbir Singh", "Makerere students"]
     },
     {
       "id": "08-meeting-grace-namutebi",
       "category": "courtship",
-      "paragraph": "In a Mulago Hospital corridor, Jasbir met Grace Namutebi, a Baganda nursing student from a clan in Buganda. She stood at a medicine cart in a starched white cap, handing him a patient's chart. Beyond the window, jacaranda trees bloomed violet over the hospital grounds."
+      "year": "1961",
+      "paragraph": "In a Mulago Hospital corridor, Jasbir met Grace Namutebi, a Baganda nursing student from a clan in Buganda. She stood at a medicine cart in a starched white cap, handing him a patient's chart. Beyond the window, jacaranda trees bloomed violet over the hospital grounds.",
+      "people": ["Jasbir Singh", "Grace Namutebi"]
     },
     {
       "id": "09-two-ceremonies-wedding",
       "category": "marriage",
-      "paragraph": "In 1963 Jasbir and Grace were married in two ceremonies held on the same weekend. In one panel they stood before the Guru Granth Sahib at the Kampala Gurdwara; in the other, at a Baganda kwanjula ceremony, Grace's paternal aunt presented Jasbir to the clan elders under a canopy of banana leaves."
+      "year": "1963",
+      "paragraph": "In 1963 Jasbir and Grace were married in two ceremonies held on the same weekend. In one panel they stood before the Guru Granth Sahib at the Kampala Gurdwara; in the other, at a Baganda kwanjula ceremony, Grace's paternal aunt presented Jasbir to the clan elders under a canopy of banana leaves.",
+      "people": ["Jasbir Singh", "Grace Namutebi", "Kampala granthi", "Grace's paternal aunt", "Baganda clan elders"]
     },
     {
       "id": "10-expulsion-order-1972",
       "category": "exile",
-      "paragraph": "In August 1972 a radio on the sitting-room table announced Idi Amin's ninety-day expulsion order. Harbans, very old now, sat stunned in an armchair; Jasbir held a half-packed suitcase; Grace gathered children's coats. Outside the window, a military truck idled at the end of Kampala Road."
+      "year": "1972",
+      "paragraph": "In August 1972 a radio on the sitting-room table announced Idi Amin's ninety-day expulsion order. Harbans, very old now, sat stunned in an armchair; Jasbir held a half-packed suitcase; Grace gathered children's coats. Outside the window, a military truck idled at the end of Kampala Road.",
+      "people": ["Harbans Singh", "Jasbir Singh", "Grace Namutebi", "Singh-Namutebi children"]
     },
     {
       "id": "11-leicester-rebuilding",
       "category": "refuge",
-      "paragraph": "In a narrow shop on Belgrave Road in Leicester, England, Jasbir and Grace opened a small medical practice in 1974. A painted sign read DR J. & G. SINGH, FAMILY PRACTICE. Patients of Gujarati, Jamaican, and English backgrounds waited on a row of plastic chairs. Snow drifted past the window behind them."
+      "year": "1974",
+      "paragraph": "In a narrow shop on Belgrave Road in Leicester, England, Jasbir and Grace opened a small medical practice in 1974. A painted sign read DR J. & G. SINGH, FAMILY PRACTICE. Patients of Gujarati, Jamaican, and English backgrounds waited on a row of plastic chairs. Snow drifted past the window behind them.",
+      "people": ["Jasbir Singh", "Grace Namutebi", "Gujarati patients", "Jamaican patients", "English patients"]
     },
     {
       "id": "12-granddaughter-returns",
       "category": "legacy",
-      "paragraph": "In 2015 their granddaughter Priya Singh, an MSF doctor, stepped off a plane at Entebbe carrying a medical kit. A cousin of Grace's lineage met her with a hand-lettered sign reading WELCOME HOME. Behind them, the Ugandan countryside stretched green toward Lake Victoria."
+      "year": "2015",
+      "paragraph": "In 2015 their granddaughter Priya Singh, an MSF doctor, stepped off a plane at Entebbe carrying a medical kit. A cousin of Grace's lineage met her with a hand-lettered sign reading WELCOME HOME. Behind them, the Ugandan countryside stretched green toward Lake Victoria.",
+      "people": ["Priya Singh", "Namutebi-lineage cousin"]
     }
   ]
 }
