@@ -16,6 +16,10 @@ cache/
 !docs/images/*.jpg
 !docs/images/*.jpeg
 !docs/images/*.png
+!assets/
+!assets/*.jpg
+!assets/*.jpeg
+!assets/*.png
 
 # Built gallery for Vercel — the index.html and copied tapestry JPGs
 # need to be tracked so `vercel --prod` can deploy them reproducibly

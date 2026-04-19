@@ -34,6 +34,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TAPESTRY_DIR = REPO_ROOT / "tapestry"
 STYLES_DIR = TAPESTRY_DIR / "styles"
 CACHE_DIR = REPO_ROOT / "cache"
+HERO_SOURCE = REPO_ROOT / "assets" / "Bayeux-hero.jpg"
+HERO_DEPLOY_NAME = "hero.jpg"
 
 VARIANT_PRIORITY = ("-poisson", "-blended", "")
 
@@ -105,6 +107,14 @@ CSS = """
   --card: #ffffff;
 }
 * { box-sizing: border-box; }
+.hero-banner {
+  display: block;
+  width: 100%;
+  max-height: 440px;
+  object-fit: cover;
+  object-position: center;
+  border-bottom: 1px solid var(--rule);
+}
 body {
   margin: 0;
   background: var(--bg);
@@ -131,24 +141,52 @@ header h1 {
   font-weight: 600;
 }
 header > p { margin: 0; color: var(--muted); font-size: 1.05rem; }
-header .disclaimer {
-  max-width: 620px;
-  margin: 0.9rem auto 0;
-  padding: 0.65rem 1.1rem;
-  background: rgba(122, 46, 32, 0.08);
-  border-left: 3px solid var(--accent);
-  border-radius: 2px;
-  color: var(--ink);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  text-align: left;
-}
-header .disclaimer strong { color: var(--accent); }
 header .stats {
   margin-top: 0.5rem;
   color: var(--muted);
   font-size: 0.95rem;
 }
+.intro {
+  max-width: 760px;
+  margin: 2.5rem auto 2rem;
+  padding: 0 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+.intro p { margin: 0 0 1.1rem; }
+.intro strong { color: var(--ink); }
+a.highlight {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+a.highlight:hover { background: rgba(122, 46, 32, 0.1); }
+.pipeline {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.pipeline li {
+  margin: 0.55rem 0;
+  padding: 0.35rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(122, 46, 32, 0.05);
+}
+.pipeline li strong { color: var(--accent); font-weight: 600; }
+.intro .cta {
+  font-style: italic;
+  color: var(--muted);
+}
+.intro .disclaimer {
+  padding: 0.75rem 1.1rem;
+  background: rgba(122, 46, 32, 0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+  font-size: 0.95rem;
+}
+.intro .disclaimer strong { color: var(--accent); }
 header .links {
   margin-top: 1rem;
   font-size: 0.95rem;
@@ -384,15 +422,10 @@ def render_index(entries: list[dict]) -> str:
 </style>
 </head>
 <body>
+<img class="hero-banner" src="hero.jpg" alt="Detail from the Bayeux Tapestry">
 <header>
   <h1>bayeux</h1>
-  <p>Tapestries of fictional family histories.</p>
-  <p class="disclaimer">
-    <strong>These chronicles are fictional.</strong> Every family, name, and
-    event shown here was invented to demonstrate the pipeline — any resemblance
-    to real people or events is coincidental.
-  </p>
-  <p class="stats">{e(stats)}</p>
+  <p>Family-history tapestries.</p>
   <section class="sponsors" aria-label="Sponsors">
     <p class="label">Sponsored by</p>
     <p class="logos">
@@ -407,14 +440,37 @@ def render_index(entries: list[dict]) -> str:
       at the <code>radically_fast</code> tier.
     </p>
   </section>
-  <p class="links">
-    <a href="https://github.com/qfennessy/bayeux">Source on GitHub</a>
-    <span aria-hidden="true">·</span>
-    <a href="https://sundai.club">sundai.club</a>
-    <span aria-hidden="true">·</span>
-    <a href="https://nunchaku.dev">nunchaku.dev</a>
-  </p>
+  <p class="stats">{e(stats)}</p>
 </header>
+<section class="intro">
+  <p>
+    A demonstration of the diffusion models at
+    <a class="highlight" href="https://nunchaku.dev">nunchaku.dev</a>.
+    Built by <strong>Quentin Fennessy</strong> at
+    <a class="highlight" href="https://sundai.club">Sundai.club</a>
+    on <strong>19 April 2026</strong>. Source and architecture:
+    <a class="highlight" href="https://github.com/qfennessy/bayeux">github.com/qfennessy/bayeux</a>.
+  </p>
+  <p>
+    Each tapestry illustrates a fictional family's history in twelve panels.
+    Four models cooperate to produce each one:
+  </p>
+  <ul class="pipeline">
+    <li><strong>Claude Opus 4.7</strong> wrote the twelve story paragraphs for each family.</li>
+    <li><strong>Gemini 3.1 Flash Lite</strong> turned each paragraph into a concise visual prompt.</li>
+    <li><strong>nunchaku-qwen-image</strong> rendered each panel from its prompt.</li>
+    <li><strong>Python + Pillow</strong> assembled the twelve panels into a single tapestry.</li>
+  </ul>
+  <p class="cta">
+    Expand the "12 panels" disclosure under each tapestry to read the story
+    behind every image.
+  </p>
+  <p class="disclaimer">
+    <strong>All family chronicles are fictional</strong> — invented to
+    demonstrate the pipeline. Any resemblance to real people or events is
+    coincidental.
+  </p>
+</section>
 <main>
 {tapestry_html}
 </main>
@@ -461,6 +517,23 @@ def build(args: argparse.Namespace) -> int:
             "gallery will be an exact mirror of --images-dir"
         )
     tapestries_out.mkdir(parents=True, exist_ok=True)
+
+    # Copy hero banner (assets/Bayeux-hero.jpg → public/hero.jpg) so it
+    # ships with the deployed static site.
+    if HERO_SOURCE.exists():
+        hero_dest = output_dir / HERO_DEPLOY_NAME
+        if (
+            not hero_dest.exists()
+            or hero_dest.stat().st_mtime < HERO_SOURCE.stat().st_mtime
+        ):
+            shutil.copy2(HERO_SOURCE, hero_dest)
+            print(f"hero: copied {HERO_SOURCE.name} → {hero_dest}")
+    else:
+        print(
+            f"warning: hero image {HERO_SOURCE} not found; "
+            "the <img class=\"hero-banner\"> will 404.",
+            file=sys.stderr,
+        )
 
     families = discover_families()
     styles = discover_styles()
