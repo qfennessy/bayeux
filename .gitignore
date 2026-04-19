@@ -30,6 +30,8 @@ cache/
 !public/**/*.jpeg
 !public/**/*.png
 !public/**/*.svg
+!public/**/*.ico
+!public/**/*.webmanifest
 
 # Python
 __pycache__/

@@ -417,6 +417,9 @@ def render_index(entries: list[dict]) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>bayeux — family-history tapestries</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="mask-icon" href="favicon.svg" color="#7a2e20">
+<meta name="theme-color" content="#7a2e20">
 <style>
 {CSS}
 </style>
