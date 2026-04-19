@@ -127,18 +127,55 @@ header .links a {
   transition: border-color 0.12s ease;
 }
 header .links a:hover { border-bottom-color: var(--accent); }
-header .sundai {
-  display: inline-block;
-  margin-top: 1.25rem;
-  padding: 0.3rem 0.85rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.sponsors {
+  max-width: 720px;
+  margin: 1.75rem auto 0;
+  padding: 1.25rem 1.5rem;
   background: var(--accent);
   color: #fff;
-  border-radius: 2px;
+  border-radius: 4px;
+  text-align: center;
 }
-header .sundai a { color: #fff; text-decoration: none; }
+.sponsors .label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin: 0 0 0.5rem;
+}
+.sponsors .logos {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.75rem;
+}
+.sponsors .logos a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  padding-bottom: 2px;
+  transition: border-color 0.12s ease;
+}
+.sponsors .logos a:hover { border-bottom-color: #fff; }
+.sponsors .logos .sep {
+  display: inline-block;
+  margin: 0 0.75rem;
+  opacity: 0.6;
+  font-weight: 300;
+}
+.sponsors .pitch {
+  margin: 0;
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+.sponsors .pitch a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.55);
+  text-underline-offset: 2px;
+}
 main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 4rem; }
 .tapestry {
   margin: 0 0 4rem;
@@ -319,19 +356,35 @@ def render_index(entries: list[dict]) -> str:
 <header>
   <h1>bayeux</h1>
   <p>Family-history tapestries. {e(summary)}.</p>
+  <section class="sponsors" aria-label="Sponsors">
+    <p class="label">Sponsored by</p>
+    <p class="logos">
+      <a href="https://sundai.club">Sundai Club</a>
+      <span class="sep" aria-hidden="true">×</span>
+      <a href="https://nunchaku.dev">Nunchaku.dev</a>
+    </p>
+    <p class="pitch">
+      A demonstration of the highly optimized diffusion models from
+      <a href="https://nunchaku.dev">Nunchaku</a> —
+      every panel rendered by <code>nunchaku-qwen-image</code>
+      at the <code>radically_fast</code> tier.
+    </p>
+  </section>
   <p class="links">
     <a href="https://github.com/qfennessy/bayeux">Source on GitHub</a>
     <span aria-hidden="true">·</span>
     <a href="https://sundai.club">sundai.club</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://nunchaku.dev">nunchaku.dev</a>
   </p>
-  <p class="sundai"><a href="https://sundai.club">Built at Sundai Club</a></p>
 </header>
 <main>
 {tapestry_html}
 </main>
 <footer>
   <div>
-    Built at <a href="https://sundai.club">Sundai Club</a> ·
+    Sponsored by <a href="https://sundai.club">Sundai Club</a> and
+    <a href="https://nunchaku.dev">Nunchaku.dev</a> ·
     <a href="https://github.com/qfennessy/bayeux">qfennessy/bayeux</a> on GitHub
   </div>
   <div class="tagline">
