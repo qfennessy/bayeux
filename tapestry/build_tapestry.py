@@ -17,6 +17,7 @@ Usage:
 
 import argparse
 import base64
+import io
 import json
 import logging
 import os
@@ -27,7 +28,7 @@ from pathlib import Path
 
 import requests
 from google import genai
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 
 class _DropNonTextPartsWarning(logging.Filter):
@@ -47,35 +48,59 @@ logging.getLogger("google_genai.types").addFilter(_DropNonTextPartsWarning())
 
 NUNCHAKU_URL = "https://api.nunchaku.dev/v1/images/generations"
 NUNCHAKU_MODEL = "nunchaku-qwen-image"
+NUNCHAKU_EDIT_URL = "https://api.nunchaku.dev/v1/images/edits"
+NUNCHAKU_EDIT_MODEL = "nunchaku-qwen-image-edit"
+SEAM_PATCH_SIZE = 1024  # image-edit model's fixed working size
 GEMINI_MODEL = "gemini-3.1-flash-lite-preview"
+GEMINI_EDIT_MODEL = "gemini-3.1-flash-image-preview"
 
 PROMPT_SYSTEM_INSTRUCTION = (
-    "You convert a paragraph of family history into a single concise visual "
-    "image prompt for a text-to-image model. Describe ONE scene with concrete "
-    "visual elements: who is present, what they are doing, the setting, key "
-    "objects, time of day, and mood. Do not name specific real people. Do not "
-    "include camera or lens jargon. Output only the prompt as one paragraph of "
-    "roughly 50-80 words. Do not add preamble, quotes, or labels."
+    "You receive a paragraph of family history. Return a JSON object with "
+    "two fields: \n"
+    "  1. 'title': a short narrative title for the scene, 3-6 words, Title "
+    "Case, evocative and specific (e.g. 'Arrival at Castle Garden'), no "
+    "trailing punctuation.\n"
+    "  2. 'prompt': a single concise visual image prompt describing ONE "
+    "scene with concrete visual elements: who is present, what they are "
+    "doing, the setting, key objects, time of day, and mood. Roughly 50-80 "
+    "words. Do not name specific real people. Do not include camera or lens "
+    "jargon. Do not add preamble or labels.\n"
+    "Return only the JSON object."
 )
 
+GEMINI_JSON_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "title": {"type": "string"},
+        "prompt": {"type": "string"},
+    },
+    "required": ["title", "prompt"],
+}
 
-def gemini_prompt_for(client: genai.Client, paragraph: str) -> str:
-    """Ask Gemini 3.1 Flash to turn a paragraph into a visual prompt.
 
-    Thinking is disabled (``thinking_budget=0``): paragraph-to-prompt
-    rewriting doesn't need reasoning, and leaving it on returns a
-    ``thought_signature`` part that the SDK warns about and that costs
-    extra latency and tokens.
+def gemini_title_and_prompt(
+    client: genai.Client, paragraph: str
+) -> tuple[str, str]:
+    """Ask Gemini 3.1 Flash to return both a narrative title and a visual
+    prompt for a paragraph. Returns ``(title, prompt)``.
+
+    Uses structured-output mode so we get reliable JSON back. Thinking is
+    disabled (``thinking_budget=0``): paragraph rewriting doesn't need
+    reasoning, and leaving it on returns a ``thought_signature`` part that
+    the SDK warns about and costs extra latency.
     """
     resp = client.models.generate_content(
         model=GEMINI_MODEL,
         contents=paragraph,
         config={
             "system_instruction": PROMPT_SYSTEM_INSTRUCTION,
+            "response_mime_type": "application/json",
+            "response_schema": GEMINI_JSON_SCHEMA,
             "thinking_config": {"thinking_budget": 0},
         },
     )
-    return resp.text.strip()
+    data = json.loads(resp.text)
+    return data["title"].strip(), data["prompt"].strip()
 
 
 _RATE_LIMIT_HEADER_PREFIXES = ("ratelimit", "x-ratelimit", "x-rate-limit")
@@ -211,6 +236,273 @@ def nunchaku_image(api_key: str, prompt: str, size: str, seed: int) -> bytes:
     )
 
 
+def nunchaku_edit(
+    api_key: str, patch: Image.Image, prompt: str
+) -> Image.Image:
+    """Send a PIL image to the image-edit endpoint and return the edited result.
+
+    Uses the same retry / verbose-error policy as ``nunchaku_image``.
+    """
+    buf = io.BytesIO()
+    patch.save(buf, format="JPEG", quality=92)
+    img_b64 = base64.b64encode(buf.getvalue()).decode()
+    payload = {
+        "model": NUNCHAKU_EDIT_MODEL,
+        "prompt": prompt,
+        "url": f"data:image/jpeg;base64,{img_b64}",
+        "n": 1,
+        "size": f"{patch.width}x{patch.height}",
+        "tier": "normal",
+        # Higher step count than text-to-image: the model tends to be
+        # conservative on edits at this tier, and extra steps make the
+        # seam-removal actually take effect.
+        "num_inference_steps": 40,
+        "response_format": "b64_json",
+    }
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+    max_attempts = 8
+    last_err: Exception | None = None
+    last_resp: "requests.Response | None" = None
+    for attempt in range(max_attempts):
+        try:
+            resp = requests.post(
+                NUNCHAKU_EDIT_URL, headers=headers, json=payload, timeout=240
+            )
+            last_resp = resp
+            if resp.status_code == 429 or resp.status_code >= 500:
+                raise requests.HTTPError(
+                    f"{resp.status_code} from nunchaku-edit", response=resp
+                )
+            if not resp.ok:
+                print(
+                    f"    nunchaku-edit non-retriable error:\n{_describe_response(resp)}",
+                    flush=True,
+                )
+                resp.raise_for_status()
+            data = base64.b64decode(resp.json()["data"][0]["b64_json"])
+            return Image.open(io.BytesIO(data)).convert("RGB")
+        except (requests.HTTPError, requests.ConnectionError, requests.Timeout) as e:
+            last_err = e
+            resp = getattr(e, "response", None)
+            status = getattr(resp, "status_code", None)
+            retry_after = None
+            if status == 429 and resp is not None:
+                ra = resp.headers.get("Retry-After")
+                if ra and ra.isdigit():
+                    retry_after = int(ra)
+            if retry_after is not None:
+                sleep_s = retry_after + random.random()
+            elif status == 429:
+                sleep_s = 20 * (attempt + 1) + random.random() * 5
+            else:
+                sleep_s = 2 ** attempt + random.random()
+            print(
+                f"    edit attempt {attempt + 1}/{max_attempts} failed — "
+                f"sleeping {sleep_s:.1f}s then retrying",
+                flush=True,
+            )
+            detail = _describe_exception(e)
+            for line in detail.splitlines():
+                print(f"      {line}", flush=True)
+            time.sleep(sleep_s)
+    tail = (
+        "\n" + _describe_response(last_resp) if last_resp is not None else ""
+    )
+    raise RuntimeError(
+        f"nunchaku-edit failed after {max_attempts} attempts: {last_err}{tail}"
+    )
+
+
+def gemini_edit_image(
+    client: genai.Client, patch: Image.Image, prompt: str
+) -> Image.Image:
+    """Edit an image via Gemini 3.1 Flash Image Preview.
+
+    Unlike the Nunchaku diffusion edit, this model follows nuanced
+    instructions well (e.g. "only modify the seam, leave captions
+    alone"), at the cost of somewhat higher latency per call. Returns
+    the edited image as a PIL ``Image`` at the original patch size
+    (resized if the model returned a different dimension).
+
+    The SDK retries transient errors internally; we only decode the
+    returned inline image bytes.
+    """
+    buf = io.BytesIO()
+    patch.save(buf, format="JPEG", quality=92)
+    resp = client.models.generate_content(
+        model=GEMINI_EDIT_MODEL,
+        contents=[
+            {
+                "inline_data": {
+                    "mime_type": "image/jpeg",
+                    "data": base64.b64encode(buf.getvalue()).decode(),
+                }
+            },
+            prompt,
+        ],
+    )
+    for part in resp.candidates[0].content.parts:
+        data = getattr(part, "inline_data", None)
+        if data is not None and getattr(data, "data", None):
+            raw = data.data
+            if isinstance(raw, str):
+                raw = base64.b64decode(raw)
+            edited = Image.open(io.BytesIO(raw)).convert("RGB")
+            if edited.size != patch.size:
+                edited = edited.resize(patch.size, Image.LANCZOS)
+            return edited
+    raise RuntimeError(
+        f"gemini-edit returned no image parts. "
+        f"candidate.content.parts: {resp.candidates[0].content.parts}"
+    )
+
+
+def _seam_feather_mask(size: int, feather: int) -> Image.Image:
+    """Soft rectangular mask: white in the center, fading to black near
+    the edges over ``feather`` pixels. Used to blend an edited patch back
+    into the tapestry without visible patch boundaries.
+    """
+    mask = Image.new("L", (size, size), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rectangle((feather, feather, size - feather, size - feather), fill=255)
+    return mask.filter(ImageFilter.GaussianBlur(feather / 2))
+
+
+def _seam_patch_centers(
+    cols: int, rows: int, tile_w: int, tile_h: int, vertical_only: bool = True
+) -> list[tuple[int, int]]:
+    """Compute the (x, y) center of each seam-segment patch.
+
+    For every vertical seam at x = c*tile_w (c in 1..cols-1), one patch
+    sits at the midpoint of each row. When ``vertical_only`` is False we
+    additionally emit patches for every horizontal seam.
+
+    Horizontal seams are skipped by default because the caption bar
+    drawn by ``label_tile`` sits right at the bottom of each tile — a
+    horizontal-seam patch runs straight through it and the edit model
+    reliably corrupts the label text when asked to smooth that region.
+    """
+    centers: list[tuple[int, int]] = []
+    for c in range(1, cols):
+        x = c * tile_w
+        for r in range(rows):
+            centers.append((x, r * tile_h + tile_h // 2))
+    if not vertical_only:
+        for r in range(1, rows):
+            y = r * tile_h
+            for c in range(cols):
+                centers.append((c * tile_w + tile_w // 2, y))
+    return centers
+
+
+def blend_seams(
+    tapestry_path: Path,
+    out_path: Path,
+    cols: int,
+    rows: int,
+    tile_w: int,
+    tile_h: int,
+    edit_provider: str,
+    nunchaku_key: str,
+    gemini_client: genai.Client,
+    verbose: bool = False,
+) -> None:
+    """Post-process a completed tapestry to smooth the seams where panels meet.
+
+    Walks each vertical seam (horizontal seams are skipped by default —
+    the caption bar lives there), extracts 1024x1024 patches straddling
+    the seam, runs each patch through the configured image-edit backend
+    with a seam-blending prompt, then pastes the edited patch back
+    through a feathered mask so patch boundaries dissolve into the rest
+    of the tapestry.
+
+    ``edit_provider`` selects the backend:
+        ``"nunchaku"`` → ``nunchaku-qwen-image-edit`` (fast, cheap,
+          conservative — can fail to actually remove the seam).
+        ``"gemini"``   → ``gemini-3.1-flash-image-preview`` (better
+          instruction-following for "preserve content, only fix seam";
+          somewhat slower).
+    """
+    if edit_provider not in ("nunchaku", "gemini"):
+        raise ValueError(f"unknown edit_provider: {edit_provider!r}")
+    img = Image.open(tapestry_path).convert("RGB")
+    W, H = img.size
+    patch = SEAM_PATCH_SIZE
+    if tile_w < patch // 2 or tile_h < patch // 2:
+        print(
+            f"warning: tiles are {tile_w}x{tile_h}, smaller than half the "
+            f"{patch}x{patch} edit window. Seam blending will still run, but "
+            "patches will span several tiles and the edit may smear content.",
+            file=sys.stderr,
+            flush=True,
+        )
+
+    centers = _seam_patch_centers(cols, rows, tile_w, tile_h)
+    feather = patch // 4  # 256px for a 1024 patch
+    mask = _seam_feather_mask(patch, feather)
+
+    prompt = (
+        "This image contains a single sharp VERTICAL seam where two "
+        "separately-drawn illustrations meet side by side. There is an "
+        "abrupt change in sky color, ground color, horizon line, or "
+        "lighting along that vertical line. Your job: eliminate the "
+        "vertical seam. Extend the sky, ground, horizon, foliage, walls, "
+        "and shadows smoothly from left to right across the former seam "
+        "so the two halves read as one continuous illustration drawn by "
+        "a single artist. Match colors and tones across the boundary. Do "
+        "not draw any vertical straight edge, frame, rectangle, or line "
+        "coincident with the former seam. Do not modify any horizontal "
+        "band or caption bar at the bottom of the image — leave any text "
+        "or labels strictly unchanged. Keep every character, object, "
+        "facial expression, and pose exactly where they are."
+    )
+
+    print(
+        f"blend-seams: {len(centers)} patches "
+        f"(each {patch}x{patch}, feather {feather}px, provider "
+        f"{edit_provider}) on {tapestry_path}",
+        flush=True,
+    )
+    run_start = time.monotonic()
+    for i, (cx, cy) in enumerate(centers, 1):
+        x0 = max(0, min(W - patch, cx - patch // 2))
+        y0 = max(0, min(H - patch, cy - patch // 2))
+        crop = img.crop((x0, y0, x0 + patch, y0 + patch))
+        t0 = time.monotonic()
+        print(
+            f"  [{i}/{len(centers)}] seam patch at ({cx},{cy}) "
+            f"crop=({x0},{y0}) via {edit_provider}...",
+            flush=True,
+        )
+        if edit_provider == "gemini":
+            edited = gemini_edit_image(gemini_client, crop, prompt)
+        else:
+            edited = nunchaku_edit(nunchaku_key, crop, prompt)
+        if edited.size != (patch, patch):
+            edited = edited.resize((patch, patch), Image.LANCZOS)
+        img.paste(edited, (x0, y0), mask)
+        print(
+            f"    ok ({time.monotonic() - t0:.2f}s)",
+            flush=True,
+        )
+        if verbose:
+            print(
+                f"    covers seam segment; patch {patch}x{patch}, "
+                f"feather {feather}px",
+                flush=True,
+            )
+
+    img.save(out_path, quality=92)
+    print(
+        f"blend-seams: wrote {out_path} "
+        f"(total {time.monotonic() - run_start:.0f}s)",
+        flush=True,
+    )
+
+
 def render_panel(
     story: dict,
     index: int,
@@ -225,17 +517,21 @@ def render_panel(
 ) -> tuple[Path, dict]:
     """Generate (or load from cache) a single panel image.
 
-    Prompts are cached under ``prompt_dir`` (style-independent — Gemini
-    only sees the family paragraph) and images under ``image_dir`` (per
-    style). This lets multiple styles of the same family share the
-    Gemini work and only re-render the Nunchaku image.
+    Title + prompt are cached together at ``prompt_dir/<id>.json`` (style-
+    independent — Gemini only sees the family paragraph). Legacy caches
+    that still hold a bare ``<id>.txt`` prompt file are migrated
+    transparently: the prompt is preserved and we call Gemini once to
+    fill in the title. Images are cached under ``image_dir`` (per style),
+    so multiple styles of the same family share the Gemini work.
 
     Returns (image_path, stats). Stats keys: ``prompt_seconds``,
     ``image_seconds`` (0.0 when served from cache), ``prompt_cached``,
-    ``image_cached``, ``prompt_chars``, ``image_bytes``, ``seed``.
+    ``image_cached``, ``prompt_chars``, ``image_bytes``, ``seed``,
+    ``title``.
     """
     sid = story["id"]
-    prompt_path = prompt_dir / f"{sid}.txt"
+    cache_path = prompt_dir / f"{sid}.json"
+    legacy_prompt_path = prompt_dir / f"{sid}.txt"
     image_path = image_dir / f"{sid}.jpg"
     stats: dict = {
         "prompt_seconds": 0.0,
@@ -245,26 +541,55 @@ def render_panel(
         "prompt_chars": 0,
         "image_bytes": 0,
         "seed": base_seed + index,
+        "title": "",
     }
 
-    if prompt_path.exists():
-        visual_prompt = prompt_path.read_text().strip()
+    if cache_path.exists():
+        cached = json.loads(cache_path.read_text())
+        title = cached["title"]
+        visual_prompt = cached["prompt"]
         stats["prompt_cached"] = True
         stats["prompt_chars"] = len(visual_prompt)
-        print(f"  prompt: cached ({len(visual_prompt)} chars)", flush=True)
-    else:
+        print(
+            f"  gemini: cached title={title!r}, {len(visual_prompt)} prompt chars",
+            flush=True,
+        )
+    elif legacy_prompt_path.exists():
+        # Migration: old cache had prompt-only. Keep the prompt, ask Gemini
+        # just for the title this time. Save merged cache, drop legacy file.
+        visual_prompt = legacy_prompt_path.read_text().strip()
         t0 = time.monotonic()
-        print(f"  prompt: gemini...", flush=True)
-        visual_prompt = gemini_prompt_for(gemini_client, story["paragraph"])
+        print(f"  gemini: migrating cache — fetching title only...", flush=True)
+        title, _ = gemini_title_and_prompt(gemini_client, story["paragraph"])
         elapsed = time.monotonic() - t0
-        prompt_path.write_text(visual_prompt + "\n")
+        cache_path.write_text(
+            json.dumps({"title": title, "prompt": visual_prompt}, ensure_ascii=False)
+        )
+        legacy_prompt_path.unlink()
         stats["prompt_seconds"] = elapsed
         stats["prompt_chars"] = len(visual_prompt)
         print(
-            f"  prompt: ok ({elapsed:.2f}s, {len(visual_prompt)} chars, "
-            f"model {GEMINI_MODEL})",
+            f"  gemini: migrated ({elapsed:.2f}s, title={title!r})",
             flush=True,
         )
+    else:
+        t0 = time.monotonic()
+        print(f"  gemini: generating title + prompt...", flush=True)
+        title, visual_prompt = gemini_title_and_prompt(
+            gemini_client, story["paragraph"]
+        )
+        elapsed = time.monotonic() - t0
+        cache_path.write_text(
+            json.dumps({"title": title, "prompt": visual_prompt}, ensure_ascii=False)
+        )
+        stats["prompt_seconds"] = elapsed
+        stats["prompt_chars"] = len(visual_prompt)
+        print(
+            f"  gemini: ok ({elapsed:.2f}s, title={title!r}, "
+            f"{len(visual_prompt)} prompt chars, model {GEMINI_MODEL})",
+            flush=True,
+        )
+    stats["title"] = title
     if verbose:
         preview = visual_prompt if len(visual_prompt) <= 400 else visual_prompt[:400] + " …"
         print(f"    > {preview}", flush=True)
@@ -433,6 +758,8 @@ def build_one(
     verbose: bool = False,
     labels: bool = True,
     font_path: Path | None = None,
+    blend: bool = False,
+    edit_provider: str = "nunchaku",
 ) -> None:
     """Render a single family into its own styled tapestry image.
 
@@ -539,10 +866,13 @@ def build_one(
 
     print(f"assembling {cols}x{rows} grid...", flush=True)
     if labels:
-        # Extension point: a future per-story "label" field wins over the
-        # numbered default. For now, stories rarely carry one.
+        # Priority: explicit per-story "label" > Gemini-generated narrative
+        # title > "Image N" fallback. The explicit label lets a family
+        # override what the LLM picked, without editing the cache.
         label_texts = [
-            story.get("label") or f"Image {i + 1}"
+            story.get("label")
+            or all_stats[i]["title"]
+            or f"Image {i + 1}"
             for i, story in enumerate(stories)
         ]
     else:
@@ -554,6 +884,22 @@ def build_one(
         f"wrote {out_path} (total {time.monotonic() - run_start:.0f}s)",
         flush=True,
     )
+
+    if blend:
+        tile_w, tile_h = Image.open(panels[0]).size
+        blended_path = out_path.with_name(f"{out_path.stem}-blended{out_path.suffix}")
+        blend_seams(
+            tapestry_path=out_path,
+            out_path=blended_path,
+            cols=cols,
+            rows=rows,
+            tile_w=tile_w,
+            tile_h=tile_h,
+            edit_provider=edit_provider,
+            nunchaku_key=nunchaku_key,
+            gemini_client=gemini_client,
+            verbose=verbose,
+        )
 
 
 def main() -> int:
@@ -636,6 +982,26 @@ def main() -> int:
         "first match among common system paths (Arial on macOS, DejaVu "
         "Sans on Linux), falling back to PIL's bitmap default.",
     )
+    parser.add_argument(
+        "--blend",
+        action="store_true",
+        help="after assembling the tapestry, run a second pass through the "
+        "configured image-edit model to smooth the vertical seams where "
+        "panels meet. Writes <stem>-blended.jpg alongside the raw tapestry. "
+        "Costs one edit call per vertical seam segment (9 for a 4x3 grid, "
+        "2 for a 2x2).",
+    )
+    parser.add_argument(
+        "--edit-provider",
+        dest="edit_provider",
+        choices=("nunchaku", "gemini"),
+        default="nunchaku",
+        help="backend used for --blend seam edits. "
+        "'nunchaku' uses nunchaku-qwen-image-edit (fast, cheap, often "
+        "conservative). 'gemini' uses gemini-3.1-flash-image-preview "
+        "(better at 'preserve content, only fix seam' instructions; "
+        "somewhat slower). Default: nunchaku.",
+    )
     args = parser.parse_args()
     limit = None if args.all_stories else args.limit
 
@@ -682,6 +1048,8 @@ def main() -> int:
             verbose=args.verbose,
             labels=args.labels,
             font_path=args.font,
+            blend=args.blend,
+            edit_provider=args.edit_provider,
         )
     if len(args.family) > 1:
         print(

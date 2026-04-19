@@ -5,14 +5,19 @@
 *.mp4
 *.webm
 *.webp
+out/
 output/
+cache/
 
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
 .pytest_cache/
 .venv/
 venv/
+.python-version
 
 # Node
 node_modules/
@@ -21,6 +26,20 @@ node_modules/
 .env
 .env.local
 
-# IDE
+# IDE / OS
 .vscode/
 .idea/
+.DS_Store
+
+# Nunchaku starter-kit leftovers — kept on disk as local reference but
+# not tracked in this repo since it's now a tapestry project, not a
+# Nunchaku demo. Tapestry-relevant examples (text_to_image.py,
+# image_to_image.py) are explicitly re-included below.
+demo/
+tests/
+pytest.ini
+examples/curl/
+examples/javascript/
+examples/python/
+!examples/python/text_to_image.py
+!examples/python/image_to_image.py

@@ -1,0 +1,71 @@
+{
+  "title": "The Tatosian-Wolde Chronicle",
+  "seed": 19151934,
+  "grid": {
+    "cols": 4,
+    "rows": 3
+  },
+  "image_size": "768x768",
+  "stories": [
+    {
+      "id": "01-flight-from-van",
+      "category": "exile",
+      "paragraph": "In the spring of 1915 the Tatosian family fled the city of Van during the Armenian Genocide. Father Hagop, a photographer, carried a leather case holding his glass plates; mother Araxi carried their youngest son Vahan; two older children walked at their side. Smoke rose behind them over the stone houses of the old Armenian quarter."
+    },
+    {
+      "id": "02-desert-caravan",
+      "category": "exile",
+      "paragraph": "For many months the family moved south with a long caravan of survivors through the deserts of Syria and Sudan. They rode on an exhausted camel, Hagop walking beside it with a wooden stick. The line of refugees stretched across a bare horizon of sand and dry hills."
+    },
+    {
+      "id": "03-arrival-in-addis-ababa",
+      "category": "refuge",
+      "paragraph": "In 1922 the family reached Addis Ababa, where a small Armenian community met them outside the city. A priest in a black robe embraced Araxi; Ethiopian onlookers in white shammas watched with quiet sympathy. Behind them the highland hills rose green under a bright sky."
+    },
+    {
+      "id": "04-cathedral-of-saint-george",
+      "category": "faith",
+      "paragraph": "On a Sunday the family climbed the steps of Saint George's Cathedral on a hill above the city. Hagop and his sons stood on one side in dark suits; Araxi and her daughters stood on the other in white shammas draped over their heads. Ethiopian and Armenian worshippers moved together under painted icons."
+    },
+    {
+      "id": "05-piazza-photography-studio",
+      "category": "work",
+      "paragraph": "Hagop opened a photography studio on the Piazza of Addis Ababa, its painted sign reading TATOSIAN PHOTOGRAPHE. He stood behind a large wooden bellows camera, a black cloth draped over his head; an Ethiopian army officer in a plumed helmet posed stiffly on a carved chair before a painted backdrop."
+    },
+    {
+      "id": "06-children-learning-amharic",
+      "category": "childhood",
+      "paragraph": "The Tatosian children played in the dirt lane outside the studio with Ethiopian neighbors, chasing a cloth ball. Vahan, the youngest, counted aloud in Amharic as he ran; his sister called him back in Armenian. An elderly neighbor woman watched from a doorway, grinding coffee in a wooden mortar."
+    },
+    {
+      "id": "07-vahan-at-the-palace",
+      "category": "work",
+      "paragraph": "As a young man, Vahan became apprentice to his father in the imperial court's photography service. He stood beside Hagop in a hall of the Jubilee Palace, adjusting a tripod as Emperor Haile Selassie, in a white cape and dark uniform, sat for an official portrait. Palace guards in white tunics stood along the walls."
+    },
+    {
+      "id": "08-coffee-ceremony-courtship",
+      "category": "courtship",
+      "paragraph": "In a courtyard in the Kazanchis neighborhood, Vahan attended a buna coffee ceremony at the home of an Ethiopian Orthodox priest. The priest's daughter, Almaz Wolde, knelt on a straw mat before a small charcoal brazier, roasting green coffee beans. She looked up to offer Vahan the first cup, incense drifting between them."
+    },
+    {
+      "id": "09-two-crowns-wedding",
+      "category": "marriage",
+      "paragraph": "In 1934 Vahan and Almaz married in a ceremony that joined two Orthodox traditions. An Armenian priest and an Ethiopian Orthodox priest stood side by side before the couple, each placing a crown on their heads. Guests in white shammas and dark suits filled the small church; choirs of two traditions sang together."
+    },
+    {
+      "id": "10-italian-invasion-hiding",
+      "category": "history",
+      "paragraph": "In 1936, during the Italian occupation, the family hid in a farmhouse in the highlands outside Addis Ababa. Hagop, very old now, sat by a small hearth holding a wrapped bundle of glass plates; Vahan stood at a shuttered window watching a distant Italian column move along a road. Almaz held their first child on her lap."
+    },
+    {
+      "id": "11-liberation-and-reopening",
+      "category": "legacy",
+      "paragraph": "After liberation in 1941 the family reopened the Piazza studio with a new painted sign. Vahan, now the master photographer, arranged a portrait of Emperor Haile Selassie surrounded by his generals and ministers; Almaz stood behind the counter organizing prints. Sunlight fell through a high window onto the polished wooden floor."
+    },
+    {
+      "id": "12-reunion-in-addis",
+      "category": "legacy",
+      "paragraph": "In 2015 the great-grandchildren of the Tatosian-Wolde family gathered in the courtyard of the old studio from four countries: Ethiopia, Armenia, France, and the United States. They held framed photographs their great-grandfather had taken a century before. An old coffee brazier burned at the center of the circle, incense rising into the jacaranda branches above."
+    }
+  ]
+}

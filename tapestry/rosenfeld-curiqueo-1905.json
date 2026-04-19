@@ -1,0 +1,71 @@
+{
+  "title": "The Rosenfeld-Curiqueo Chronicle",
+  "seed": 19051932,
+  "grid": {
+    "cols": 4,
+    "rows": 3
+  },
+  "image_size": "768x768",
+  "stories": [
+    {
+      "id": "01-odessa-pogrom",
+      "category": "exile",
+      "paragraph": "In October 1905 a pogrom swept through the Jewish quarter of Odessa. The Rosenfeld family fled their tailor's shop by lamplight, father Yaakov carrying a bundle of prayer books, mother Chana carrying the youngest child, Daniel. Smoke rose from a neighbor's burning house as Cossacks rode past the end of the street."
+    },
+    {
+      "id": "02-voyage-to-buenos-aires",
+      "category": "immigration",
+      "paragraph": "The family boarded a steamer at Hamburg bound for Buenos Aires in the spring of 1906. They stood among hundreds on the third-class deck, wrapped in dark coats, watching the European coast fall away. A folded letter from the Jewish Colonization Association lay in Yaakov's inner pocket, promising farmland on the Argentine pampa."
+    },
+    {
+      "id": "03-moises-ville-wheat",
+      "category": "settlement",
+      "paragraph": "In the Jewish agricultural colony of Moisés Ville on the open pampa, Yaakov walked between long rows of wheat with a scythe over his shoulder. The younger sons followed, gathering sheaves; in the distance, a new adobe synagogue rose from the flat horizon. A gaucho on horseback watched from a dirt road."
+    },
+    {
+      "id": "04-synagogue-on-the-pampa",
+      "category": "faith",
+      "paragraph": "Inside the adobe synagogue on a Shabbat evening, Rabbi Mendel Rosenfeld — Yaakov's brother — chanted from a Torah scroll before a small congregation. Kerosene lamps lit the whitewashed walls. Women sat in a back row wrapped in dark shawls; a small boy leaned against his grandfather's knee."
+    },
+    {
+      "id": "05-siblings-branching-out",
+      "category": "family",
+      "paragraph": "The older Rosenfeld children made their lives across Argentina. Rivka stood behind the counter of a Yiddish bookshop on Calle Corrientes in Buenos Aires. Shmuel worked at a dairy cooperative in Entre Ríos. Leah, in a simple dress, spoke at a garment workers' meeting in a union hall, her hand raised mid-sentence."
+    },
+    {
+      "id": "06-daniel-rides-south",
+      "category": "journey",
+      "paragraph": "Grown now, the youngest son Daniel rode south into Patagonia as a wool trader, a pack mule following his horse. He wore a sheepskin coat against the cold, a leather satchel of ledgers at his saddle. The snow-capped Andes rose behind him as he approached a distant trading post."
+    },
+    {
+      "id": "07-meeting-millaray",
+      "category": "courtship",
+      "paragraph": "At a Mapuche trading post near Lago Nahuel Huapi, Daniel met Millaray Curiqueo, daughter of a Mapuche machi. She stood beside rolls of dyed wool and a hand-carved loom, wearing a silver trarilonko headband. He had come to buy her family's wool; he stayed to share mate and conversation."
+    },
+    {
+      "id": "08-bariloche-wedding",
+      "category": "marriage",
+      "paragraph": "In 1932 Daniel and Millaray married at the edge of the lake near Bariloche under a chuppah of four wooden poles strung with a prayer shawl. A Mapuche kultrun drum sounded as the rabbi and the machi stood side by side. Guests from both families formed a wide semicircle, snow on the distant peaks."
+    },
+    {
+      "id": "09-three-languages-at-table",
+      "category": "family",
+      "paragraph": "In a log house above the lake, Daniel and Millaray sat at a long table with three children. A Yiddish newspaper lay beside a Spanish primer and a Mapudungun songbook. Millaray ladled stew from a clay pot while Daniel cut bread; the eldest child read aloud in Spanish."
+    },
+    {
+      "id": "10-the-bariloche-store",
+      "category": "work",
+      "paragraph": "In the 1950s the family ran a general store on the main street of Bariloche, its painted sign reading ALMACÉN ROSENFELD Y CURIQUEO. Daniel, gray-bearded, stood at the counter weighing yerba mate on a brass scale while Millaray stocked shelves with wool blankets and canned goods. Their children unloaded a delivery wagon outside."
+    },
+    {
+      "id": "11-the-disappeared-granddaughter",
+      "category": "history",
+      "paragraph": "In 1977 the family gathered silently around a kitchen table, a photograph of their granddaughter Ester placed upright before them. She had been a university student in La Plata; military officers had taken her in the night. Millaray, in her seventies, held Daniel's hand; a candle burned beside the photograph."
+    },
+    {
+      "id": "12-seder-with-mapuche-elders",
+      "category": "legacy",
+      "paragraph": "Decades later, great-grandchildren held a Passover seder on the shore of Lago Nahuel Huapi. A long table covered in white linen held matzah, maror, and a kultrun drum laid at one end in memory. Mapuche elders and Rosenfeld cousins sat together; a child read the Four Questions in Spanish under the open sky."
+    }
+  ]
+}

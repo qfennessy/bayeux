@@ -1,0 +1,71 @@
+{
+  "title": "The Ricci-Bradford Chronicle",
+  "seed": 18801906,
+  "grid": {
+    "cols": 4,
+    "rows": 3
+  },
+  "image_size": "768x768",
+  "stories": [
+    {
+      "id": "01-castle-garden-arrival",
+      "category": "immigration",
+      "paragraph": "In the autumn of 1880, Tommaso and Lucia Ricci stepped off the steamship Canopic at Castle Garden in New York with four children and two wooden trunks. Tommaso, a stonemason from outside Avellino, carried a linen pouch of seed garlic from their village. The harbor was crowded with immigrants, officials, and steam."
+    },
+    {
+      "id": "02-elizabeth-street-rooms",
+      "category": "immigration",
+      "paragraph": "The cousin who had promised them work had left for Pittsburgh. The Riccis took two rooms above a livery stable on Elizabeth Street in Little Italy. Lucia stood at a narrow window holding eleven-month-old Salvatore wrapped against a sharp New York wind, while the older children unpacked a trunk on the plank floor."
+    },
+    {
+      "id": "03-tommaso-on-the-bridge",
+      "category": "labor",
+      "paragraph": "Tommaso found work on the great bridge rising across the East River, chipping granite for the approaches. He stood on a stone pier in a leather apron, mallet and chisel in hand, shaping a massive granite block while other masons and laborers moved among scaffolds and ropes above the river."
+    },
+    {
+      "id": "04-salvatore-golden-tongue",
+      "category": "childhood",
+      "paragraph": "Six-year-old Salvatore sat on the tenement stoop reading a rent notice aloud to his father, translating English into Italian. Nearby he bargained with an Irish delivery boy over the price of a sack of coal. His mother Lucia watched from the doorway, proud and uneasy at his quick tongue."
+    },
+    {
+      "id": "05-siblings-of-little-italy",
+      "category": "family",
+      "paragraph": "The older Ricci siblings made their lives in the neighborhood. Giuseppe laid bricks on a scaffold on a tenement wall. Rosa stood at a fruit stall with her husband and small children. Carmela bent over a sewing machine in her seamstress shop on Grand Street, a painted sign above the door."
+    },
+    {
+      "id": "06-salvatore-at-city-college",
+      "category": "education",
+      "paragraph": "Salvatore sat on a stone bench in the courtyard of City College, a Dickens novel open on his lap and a paper-wrapped lunch beside him. He wore a worn jacket and stiff white collar. Behind him rose the college's gothic arches and tall windows, and other students passed in twos and threes."
+    },
+    {
+      "id": "07-the-shipping-firm-ledger",
+      "category": "work",
+      "paragraph": "In a high-ceilinged Lower Manhattan counting room in 1902, Salvatore stood at a tall wooden desk in a stiff collar, pointing to a correction in a leather-bound ledger. Across from him stood Eleanor Bradford, a bookkeeper in a dark skirt and blouse, her expression sharp with interest. Gaslight hung overhead."
+    },
+    {
+      "id": "08-city-hall-wedding",
+      "category": "marriage",
+      "paragraph": "Salvatore and Eleanor married at New York City Hall in 1906. They stood before a clerk on a marble floor, flanked by only two witnesses: Salvatore's sister Carmela in a dark dress, and Eleanor's cousin Prudence in a plain coat. A folded telegram bearing the single word NO lay on a nearby table."
+    },
+    {
+      "id": "09-brooklyn-kitchen-receipts",
+      "category": "family",
+      "paragraph": "In the kitchen of a narrow Brooklyn house, Lucia and Eleanor stood side by side at a wooden table rolling pasta dough. A small green notebook labeled Receipts, Ricci lay open beside a pot of simmering fish chowder on the stove. Strings of garlic and dried herbs hung from a beam above them."
+    },
+    {
+      "id": "10-the-beacon-hill-visit",
+      "category": "family",
+      "paragraph": "In 1908, Eleanor's Beacon Hill mother visited the Brooklyn house. She sat upright on a horsehair settee in a dark traveling dress and small hat, holding a porcelain coffee cup. Eleanor and Lucia sat opposite her, a coffee service and a plate of biscotti on the low table between them, the room formal and quiet."
+    },
+    {
+      "id": "11-three-children-of-the-bridge",
+      "category": "children",
+      "paragraph": "Salvatore and Eleanor stood on the front steps of their Brooklyn house with their three children. Thomas, a boy of about eight, held a schoolbook. Prudence, a girl of about five, held her mother's hand. Little Annie, about two, clutched a rag doll. Behind them the door stood open onto a narrow hallway."
+    },
+    {
+      "id": "12-plymouth-and-arthur-avenue",
+      "category": "heritage",
+      "paragraph": "A split panel of two family scenes. On the left, the three children in summer clothes sail a small wooden boat in Plymouth harbor with their great-aunts, a New England lighthouse on the shore behind them. On the right, the same children at a long Bronx dinner table on Arthur Avenue, making struffoli with their Italian cousins under a hanging lamp."
+    }
+  ]
+}
