@@ -128,6 +128,10 @@ The assembled tapestry shows visible seams where independently-rendered panels m
 4. Feather-pastes the edited patch back into the tapestry (256px Gaussian-blurred rectangular mask) so patch boundaries dissolve.
 
 For a 4×3 grid this is 3 vertical seams × 3 row segments = **9 edit calls** per tapestry. For a 2×2 preview (`--limit 4` default) it's 1 × 2 = **2 calls**. To re-enable horizontal seam blending (e.g. if you're rendering without labels), flip `vertical_only=False` in `blend_seams`.
+
+**Seam patches are cached** under `cache/<family>/images/<style>/seams/<provider>/x<NNNNN>-y<NNNNN>.jpg`, keyed by crop origin. A partial run that fails halfway (e.g. a Gemini 503) leaves the finished patches on disk; reruns skip them and only call the edit API for the missing ones. Providers have separate subdirs so switching between `nunchaku` and `gemini` doesn't reuse the other's results. To re-blend from scratch, delete the `seams/<provider>/` directory.
+
+Both providers retry transient errors: Nunchaku retries 429/5xx with exponential backoff (honoring `Retry-After`), and Gemini retries 5xx (e.g. *"Deadline expired"*) and 429 with the same policy. Non-retriable 4xx errors (400/403/404) propagate immediately so auth or model-name mistakes fail loudly.
 - `--out PATH` — output image path. Only valid with a **single** family file. Defaults to `<family-stem>-<style-stem>.jpg`.
 - `--out-dir DIR` — directory for per-family outputs when multiple families are given. Each writes `<family-stem>-<style-stem>.jpg`. Default: current directory.
 - `--cache-root DIR` — parent directory for caches. Default: `./cache/`.

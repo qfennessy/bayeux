@@ -17,6 +17,7 @@ Usage:
 
 import argparse
 import base64
+import hashlib
 import io
 import json
 import logging
@@ -28,6 +29,7 @@ from pathlib import Path
 
 import requests
 from google import genai
+from google.genai import errors as genai_errors
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 
@@ -252,7 +254,7 @@ def nunchaku_edit(
         "url": f"data:image/jpeg;base64,{img_b64}",
         "n": 1,
         "size": f"{patch.width}x{patch.height}",
-        "tier": "normal",
+        "tier": "fast",
         # Higher step count than text-to-image: the model tends to be
         # conservative on edits at this tier, and extra steps make the
         # seam-removal actually take effect.
@@ -316,20 +318,11 @@ def nunchaku_edit(
     )
 
 
-def gemini_edit_image(
+def _gemini_edit_once(
     client: genai.Client, patch: Image.Image, prompt: str
 ) -> Image.Image:
-    """Edit an image via Gemini 3.1 Flash Image Preview.
-
-    Unlike the Nunchaku diffusion edit, this model follows nuanced
-    instructions well (e.g. "only modify the seam, leave captions
-    alone"), at the cost of somewhat higher latency per call. Returns
-    the edited image as a PIL ``Image`` at the original patch size
-    (resized if the model returned a different dimension).
-
-    The SDK retries transient errors internally; we only decode the
-    returned inline image bytes.
-    """
+    """One attempt at a Gemini image edit. Raises on API error or when
+    the response carries no image part."""
     buf = io.BytesIO()
     patch.save(buf, format="JPEG", quality=92)
     resp = client.models.generate_content(
@@ -358,6 +351,83 @@ def gemini_edit_image(
         f"gemini-edit returned no image parts. "
         f"candidate.content.parts: {resp.candidates[0].content.parts}"
     )
+
+
+def gemini_edit_image(
+    client: genai.Client, patch: Image.Image, prompt: str
+) -> Image.Image:
+    """Edit an image via Gemini 3.1 Flash Image Preview, with retries.
+
+    Retries on Gemini 5xx (server overload, deadline expired) and 429
+    (rate limit). The google-genai SDK has its own short internal
+    retry, but its default policy gives up quickly on 503s from the
+    image preview model — we wrap it to keep seam blending resilient.
+    Non-retriable 4xx errors (400, 403, 404) propagate immediately so a
+    model-name typo or quota-auth problem fails loudly.
+    """
+    max_attempts = 8
+    last_err: Exception | None = None
+    for attempt in range(max_attempts):
+        try:
+            return _gemini_edit_once(client, patch, prompt)
+        except genai_errors.APIError as e:
+            last_err = e
+            code = getattr(e, "code", None)
+            retriable = (
+                code is None  # unknown — safer to retry once or twice
+                or code == 429
+                or (isinstance(code, int) and 500 <= code < 600)
+            )
+            if not retriable or attempt == max_attempts - 1:
+                raise
+            if code == 429:
+                sleep_s = 20 * (attempt + 1) + random.random() * 5
+            else:
+                sleep_s = 2 ** attempt + random.random()
+            print(
+                f"    gemini-edit attempt {attempt + 1}/{max_attempts} "
+                f"failed (code={code}) — sleeping {sleep_s:.1f}s: {e}",
+                flush=True,
+            )
+            time.sleep(sleep_s)
+        except RuntimeError as e:
+            # "No image parts" can happen when the model safety-filtered
+            # the request; retry once in case it's transient, then fail.
+            last_err = e
+            if attempt >= 1:
+                raise
+            sleep_s = 2.0 + random.random()
+            print(
+                f"    gemini-edit attempt {attempt + 1}/{max_attempts} "
+                f"returned no image — retrying in {sleep_s:.1f}s: {e}",
+                flush=True,
+            )
+            time.sleep(sleep_s)
+    raise RuntimeError(
+        f"gemini-edit failed after {max_attempts} attempts: {last_err}"
+    )
+
+
+def _draw_seam_indicator(
+    patch: Image.Image, local_x: int, color=(255, 0, 255), width: int = 6
+) -> Image.Image:
+    """Return a copy of ``patch`` with a solid magenta vertical line
+    drawn at column ``local_x``.
+
+    Giving the edit model a concrete visual target (a bright,
+    unmistakably-artificial line) tends to produce a stronger, more
+    localized repaint than asking it to 'find the seam itself' — the
+    model both erases the line and smooths the region around it in
+    a single pass.
+    """
+    marked = patch.copy()
+    draw = ImageDraw.Draw(marked)
+    half = width // 2
+    draw.rectangle(
+        [(local_x - half, 0), (local_x + (width - half), marked.height)],
+        fill=color,
+    )
+    return marked
 
 
 def _seam_feather_mask(size: int, feather: int) -> Image.Image:
@@ -408,6 +478,7 @@ def blend_seams(
     edit_provider: str,
     nunchaku_key: str,
     gemini_client: genai.Client,
+    patch_cache_dir: Path,
     verbose: bool = False,
 ) -> None:
     """Post-process a completed tapestry to smooth the seams where panels meet.
@@ -443,22 +514,65 @@ def blend_seams(
     centers = _seam_patch_centers(cols, rows, tile_w, tile_h)
     feather = patch // 4  # 256px for a 1024 patch
     mask = _seam_feather_mask(patch, feather)
+    patch_cache_dir.mkdir(parents=True, exist_ok=True)
 
-    prompt = (
-        "This image contains a single sharp VERTICAL seam where two "
-        "separately-drawn illustrations meet side by side. There is an "
-        "abrupt change in sky color, ground color, horizon line, or "
-        "lighting along that vertical line. Your job: eliminate the "
-        "vertical seam. Extend the sky, ground, horizon, foliage, walls, "
-        "and shadows smoothly from left to right across the former seam "
-        "so the two halves read as one continuous illustration drawn by "
-        "a single artist. Match colors and tones across the boundary. Do "
-        "not draw any vertical straight edge, frame, rectangle, or line "
-        "coincident with the former seam. Do not modify any horizontal "
-        "band or caption bar at the bottom of the image — leave any text "
-        "or labels strictly unchanged. Keep every character, object, "
-        "facial expression, and pose exactly where they are."
-    )
+    # Per-provider prompt. Gemini gets a magenta-line indicator painted
+    # on the seam (the model is strong enough to both erase the line
+    # *and* blend the region around it in one pass). Nunchaku can't
+    # reliably remove the line — it leaves visible magenta residue — so
+    # we hand it a clean crop and a more traditional 'blend the seam'
+    # instruction instead.
+    use_indicator = edit_provider == "gemini"
+    if use_indicator:
+        prompt = (
+            "This image shows two separately-drawn illustrations joined "
+            "by a single VERTICAL seam running top-to-bottom. I have "
+            "painted a bright MAGENTA vertical line directly on the "
+            "image to mark exactly where that seam is. \n"
+            "\n"
+            "Your job: REMOVE the magenta line, AND at the same time "
+            "blend the scenes on its left and right sides into one "
+            "continuous illustration. Repaint the column directly under "
+            "the magenta line and a few dozen pixels to either side of "
+            "it so the sky, horizon, ground, foliage, walls, and shadows "
+            "flow naturally across the former seam. Match colors, tones, "
+            "and lighting. Do not leave any trace of magenta. Do not "
+            "replace the magenta line with a different straight vertical "
+            "edge. \n"
+            "\n"
+            "CRITICAL exception: there may be one or two thin horizontal "
+            "rows of white outlined caption text somewhere in the image "
+            "(panel titles). Do NOT modify that text or the glyphs "
+            "inside it — copy it through pixel-for-pixel. \n"
+            "\n"
+            "Keep every character, object, facial expression, and pose "
+            "exactly where they are."
+        )
+    else:
+        prompt = (
+            "This image contains a single sharp VERTICAL seam where two "
+            "separately-drawn illustrations meet side by side. There is "
+            "an abrupt change in sky color, ground color, horizon line, "
+            "or lighting along that vertical line. Your job: eliminate "
+            "the vertical seam. Extend the sky, ground, horizon, foliage, "
+            "walls, and shadows smoothly from left to right across the "
+            "former seam so the two halves read as one continuous "
+            "illustration drawn by a single artist. Match colors and "
+            "tones across the boundary. Do not draw any vertical straight "
+            "edge, frame, rectangle, or line coincident with the former "
+            "seam. Do not modify any horizontal row of outlined caption "
+            "text that may appear in the image — leave any text or "
+            "labels strictly unchanged. Keep every character, object, "
+            "facial expression, and pose exactly where they are."
+        )
+
+    # Version the patch cache by a hash of the prompt text — if we tweak
+    # the prompt (e.g. loosening preservation), old cached patches no
+    # longer reflect the current behavior, so we look them up in a fresh
+    # subdir instead of silently serving stale results.
+    prompt_tag = hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:10]
+    patch_cache_subdir = patch_cache_dir / prompt_tag
+    patch_cache_subdir.mkdir(parents=True, exist_ok=True)
 
     print(
         f"blend-seams: {len(centers)} patches "
@@ -466,23 +580,54 @@ def blend_seams(
         f"{edit_provider}) on {tapestry_path}",
         flush=True,
     )
+    print(
+        f"  patch cache: {patch_cache_subdir} (prompt_tag={prompt_tag})",
+        flush=True,
+    )
     run_start = time.monotonic()
     for i, (cx, cy) in enumerate(centers, 1):
         x0 = max(0, min(W - patch, cx - patch // 2))
         y0 = max(0, min(H - patch, cy - patch // 2))
         crop = img.crop((x0, y0, x0 + patch, y0 + patch))
+        # Cache filename encodes the crop origin so reruns skip any seam
+        # patch already edited by this provider at this prompt version.
+        # A partial run (e.g. one that 503'd halfway through) leaves
+        # finished patches on disk; changing the prompt text writes into
+        # a new subdir so old work is preserved for comparison.
+        patch_cache_path = patch_cache_subdir / f"x{x0:05d}-y{y0:05d}.jpg"
         t0 = time.monotonic()
-        print(
-            f"  [{i}/{len(centers)}] seam patch at ({cx},{cy}) "
-            f"crop=({x0},{y0}) via {edit_provider}...",
-            flush=True,
-        )
-        if edit_provider == "gemini":
-            edited = gemini_edit_image(gemini_client, crop, prompt)
+        if patch_cache_path.exists():
+            print(
+                f"  [{i}/{len(centers)}] seam patch at ({cx},{cy}) "
+                f"crop=({x0},{y0}) — cached",
+                flush=True,
+            )
+            edited = Image.open(patch_cache_path).convert("RGB")
         else:
-            edited = nunchaku_edit(nunchaku_key, crop, prompt)
-        if edited.size != (patch, patch):
-            edited = edited.resize((patch, patch), Image.LANCZOS)
+            print(
+                f"  [{i}/{len(centers)}] seam patch at ({cx},{cy}) "
+                f"crop=({x0},{y0}) via {edit_provider}...",
+                flush=True,
+            )
+            # For Gemini, paint a bright magenta guideline on the seam
+            # column within the patch and let the model both erase it
+            # and blend the region around it — a concrete visual target
+            # forces a stronger-than-identity repaint. Nunchaku leaves
+            # magenta residue on its output, so it sees the unmarked
+            # crop and a traditional 'eliminate the seam' prompt. In
+            # both cases ``cx - x0`` is the seam's x-coordinate in
+            # patch-local space (accounts for clamping at image edges).
+            if use_indicator:
+                input_patch = _draw_seam_indicator(crop, cx - x0)
+            else:
+                input_patch = crop
+            if edit_provider == "gemini":
+                edited = gemini_edit_image(gemini_client, input_patch, prompt)
+            else:
+                edited = nunchaku_edit(nunchaku_key, input_patch, prompt)
+            if edited.size != (patch, patch):
+                edited = edited.resize((patch, patch), Image.LANCZOS)
+            edited.save(patch_cache_path, quality=92)
         img.paste(edited, (x0, y0), mask)
         print(
             f"    ok ({time.monotonic() - t0:.2f}s)",
@@ -659,28 +804,31 @@ def _load_font(size: int, explicit: Path | None = None) -> ImageFont.ImageFont:
 def label_tile(
     tile: Image.Image, text: str, font: ImageFont.ImageFont
 ) -> Image.Image:
-    """Return a copy of ``tile`` with ``text`` drawn in a translucent bar.
+    """Return a copy of ``tile`` with ``text`` drawn at the bottom.
 
-    The bar is ~8% of the image height, pinned to the bottom, with
-    centered white text over a 55%-opaque black fill. Operates on a
-    copy so callers can reuse the original (cached) image object.
+    Style: white text with a dark outline stroke (no tinted band).
+    Stroke width scales with font size so labels stay crisp from 512px
+    thumbnails through 2048px hero renders without being comically thick
+    at either end. Operates on a copy so callers can reuse the original
+    (cached) image object.
     """
-    w, h = tile.size
-    bar_h = max(1, int(h * 0.08))
-    overlay = Image.new("RGBA", tile.size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
-    draw.rectangle([(0, h - bar_h), (w, h)], fill=(0, 0, 0, 140))
+    labeled = tile.copy()
+    draw = ImageDraw.Draw(labeled)
+    w, h = labeled.size
+    font_px = getattr(font, "size", None) or max(14, int(h * 0.045))
+    stroke = max(2, int(font_px * 0.15))
+    bottom_pad = max(8, int(h * 0.02))
     text_w = draw.textlength(text, font=font)
-    # Place text roughly centered vertically inside the bar.
-    text_y = h - bar_h + (bar_h - font.size) // 2 if hasattr(font, "size") else h - bar_h
+    text_y = h - font_px - bottom_pad - stroke
     draw.text(
         ((w - text_w) / 2, text_y),
         text,
-        fill=(255, 255, 255, 255),
+        fill="white",
         font=font,
+        stroke_width=stroke,
+        stroke_fill="black",
     )
-    base = tile.convert("RGBA")
-    return Image.alpha_composite(base, overlay).convert("RGB")
+    return labeled
 
 
 def assemble_tapestry(
@@ -888,6 +1036,11 @@ def build_one(
     if blend:
         tile_w, tile_h = Image.open(panels[0]).size
         blended_path = out_path.with_name(f"{out_path.stem}-blended{out_path.suffix}")
+        # Seam patches are style- and provider-specific: nunchaku and
+        # gemini will edit the same crop differently, so cache them under
+        # separate subdirs so switching providers doesn't reuse the
+        # other's results.
+        patch_cache_dir = image_dir / "seams" / edit_provider
         blend_seams(
             tapestry_path=out_path,
             out_path=blended_path,
@@ -898,6 +1051,7 @@ def build_one(
             edit_provider=edit_provider,
             nunchaku_key=nunchaku_key,
             gemini_client=gemini_client,
+            patch_cache_dir=patch_cache_dir,
             verbose=verbose,
         )
 

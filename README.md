@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/nakamura-kealoha-1908-watercolor.jpg" alt="The Nakamura-Kealoha Chronicle — a 4x3 tapestry rendered in Winslow Homer watercolor style" width="720">
+</p>
+
 # bayeux
 
 *Created: 2025-11-15 · Last edited: 2026-04-19*

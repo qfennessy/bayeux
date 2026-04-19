@@ -9,6 +9,14 @@ out/
 output/
 cache/
 
+# Hero / doc images are curated and tracked even though images are
+# otherwise gitignored.
+!docs/
+!docs/images/
+!docs/images/*.jpg
+!docs/images/*.jpeg
+!docs/images/*.png
+
 # Python
 __pycache__/
 *.pyc
