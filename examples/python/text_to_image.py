@@ -22,15 +22,24 @@ response = requests.post(
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
     },
+    timeout=180,
     json={
         "model": "nunchaku-qwen-image",
-        "prompt": "a red apple on a wooden table, photorealistic, studio lighting",
+        # nunchaku-qwen-image renders legible in-image text when the prompt
+        # (a) quotes the literal string, (b) names a surface to put it on,
+        # and (c) specifies a visual style. Meta-instructions like
+        # "label this Cat" are unreliable.
+        "prompt": (
+            "a cat wearing sunglasses on a wooden table, photorealistic, "
+            "studio lighting. A small wooden plaque propped on the table "
+            "in front of the cat reads \"CAT\" in bold black serif letters."
+        ),
         "n": 1,
         "size": "1024x1024",
         "tier": "fast",
         "num_inference_steps": 28,
         "response_format": "b64_json",
-        "seed": 42,
+        "seed": 4242,
     },
 )
 response.raise_for_status()
