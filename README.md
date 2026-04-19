@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="docs/images/nakamura-kealoha-1908-watercolor.jpg" alt="The Nakamura-Kealoha Chronicle — a 4x3 tapestry rendered in Winslow Homer watercolor style" width="720">
+  <img src="assets/Bayeux-hero.jpg" alt="Detail from the Bayeux Tapestry — the project namesake" width="720">
 </p>
 
 # bayeux
 
-*Created: 2025-11-15 · Last edited: 2026-04-19*
+*Created: 2026-04-19*
 
 Build a Bayeux-tapestry-style image grid from a JSON of family-history paragraphs.
 
@@ -12,7 +12,7 @@ Given paragraphs like *"In the autumn of 1880, Tommaso and Lucia Ricci stepped o
 
 ## Why this exists
 
-Paragraphs of family history read well but are bad image prompts — too long, abstract, full of names and dates. A small AI pipeline fixes that: Gemini 3.1 Flash Lite converts each paragraph into a concrete visual scene prompt, a shared style suffix ties every panel together visually, and a deterministic `base_seed + index` keeps reruns byte-identical while still varying per panel.
+Family history can be represented with creative graphics. A small AI pipeline fixes that: Gemini 3.1 Flash Lite converts each paragraph into a concrete visual scene prompt, a shared style suffix ties every panel together visually, and a deterministic `base_seed + index` keeps reruns byte-identical while still varying per panel.
 
 **Family** (who / what happened) and **style** (how it looks) are orthogonal. Families live in `tapestry/*.json`; styles in `tapestry/styles/*.json`. Any family can be rendered in any style without editing either file.
 
